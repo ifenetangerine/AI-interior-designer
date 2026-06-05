@@ -1,0 +1,103 @@
+# Deterministic mock LLM scene graphs by room type and density tier.
+
+bedroom:
+  compact:
+    furniture:
+      - {id: bed, model_id: bedDouble}
+      - {id: wardrobe, model_id: cabinetBed}
+    weights: {rel: 1.0, bal: 0.0, walk: 0.7}
+  standard:
+    furniture:
+      - {id: bed, model_id: bedDouble}
+      - {id: wardrobe, model_id: cabinetBed}
+      - {id: nightstand_l, model_id: sideTable}
+      - {id: nightstand_r, model_id: sideTableDrawers}
+      - {id: desk, model_id: desk}
+      - {id: desk_chair, model_id: chairDesk}
+    weights: {rel: 1.0, bal: 0.0, walk: 0.7}
+  spacious:
+    furniture:
+      - {id: bed, model_id: bedDouble}
+      - {id: wardrobe, model_id: cabinetBed}
+      - {id: nightstand_l, model_id: sideTable}
+      - {id: nightstand_r, model_id: sideTableDrawers}
+      - {id: desk, model_id: desk}
+      - {id: desk_chair, model_id: chairDesk}
+      - {id: dresser, model_id: cabinetBedDrawer}
+      - {id: reading_chair, model_id: chair}
+      - {id: side_table, model_id: sideTable}
+    weights: {rel: 1.0, bal: 0.0, walk: 0.7}
+
+living_room:
+  compact:
+    furniture:
+      - {id: sofa, model_id: loungeSofa}
+      - {id: tv, model_id: cabinetTelevision}
+      - {id: coffee_table, model_id: tableCoffee}
+    weights: {rel: 1.0, bal: 0.0, walk: 0.7}
+  standard:
+    furniture:
+      - {id: sofa, model_id: loungeSofa}
+      - {id: tv, model_id: cabinetTelevision}
+      - {id: coffee_table, model_id: tableCoffee}
+      - {id: side_table, model_id: sideTable}
+      - {id: accent_chair, model_id: loungeChair}
+      - {id: rug, model_id: rugRectangle}
+      - {id: floor_lamp, model_id: lampRoundFloor}
+    weights: {rel: 1.0, bal: 0.0, walk: 0.7}
+  spacious:
+    furniture:
+      - {id: sofa, model_id: loungeSofaLong}
+      - {id: tv, model_id: cabinetTelevision}
+      - {id: coffee_table, model_id: tableCoffee}
+      - {id: side_table, model_id: sideTable}
+      - {id: accent_chair, model_id: loungeChair}
+      - {id: bookshelf, model_id: bookcaseClosed}
+      - {id: rug, model_id: rugRectangle}
+      - {id: floor_lamp, model_id: lampRoundFloor}
+      - {id: table_lamp, model_id: lampSquareTable}
+      - {id: living_plant, model_id: pottedPlant}
+    weights: {rel: 1.0, bal: 0.0, walk: 0.7}
+
+kitchen:
+  compact:
+    furniture:
+      - {id: bar_end, model_id: kitchenBarEnd}
+      - {id: bar_1, model_id: kitchenBar}
+      - {id: cabinet_1, model_id: kitchenCabinet}
+      - {id: stove, model_id: kitchenStove}
+      - {id: sink, model_id: kitchenSink}
+      - {id: fridge, model_id: kitchenFridge}
+    weights: {rel: 1.0, bal: 0.0, walk: 0.7}
+  standard:
+    furniture:
+      - {id: bar_end, model_id: kitchenBarEnd}
+      - {id: bar_1, model_id: kitchenBar}
+      - {id: bar_2, model_id: kitchenBar}
+      - {id: cabinet_1, model_id: kitchenCabinet}
+      - {id: stove, model_id: kitchenStove}
+      - {id: sink, model_id: kitchenSink}
+      - {id: fridge, model_id: kitchenFridge}
+      - {id: dining_table, model_id: table}
+      - {id: dining_chair_1, model_id: chair}
+      - {id: dining_chair_2, model_id: chair}
+      - {id: dining_chair_3, model_id: chair}
+      - {id: dining_chair_4, model_id: chair}
+    weights: {rel: 1.0, bal: 0.0, walk: 0.7}
+  spacious:
+    furniture:
+      - {id: bar_end, model_id: kitchenBarEnd}
+      - {id: bar_1, model_id: kitchenBar}
+      - {id: bar_2, model_id: kitchenBar}
+      - {id: cabinet_1, model_id: kitchenCabinet}
+      - {id: cabinet_2, model_id: kitchenCabinetDrawer}
+      - {id: stove, model_id: kitchenStoveElectric}
+      - {id: sink, model_id: kitchenSink}
+      - {id: fridge, model_id: kitchenFridgeLarge}
+      - {id: dining_table, model_id: tableRound}
+      - {id: dining_chair_1, model_id: chair}
+      - {id: dining_chair_2, model_id: chair}
+      - {id: dining_chair_3, model_id: chair}
+      - {id: dining_chair_4, model_id: chair}
+      - {id: stool_1, model_id: stoolBar}
+    weights: {rel: 1.0, bal: 0.0, walk: 0.7}

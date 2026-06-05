@@ -1,0 +1,119 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #1a1a22;
+  color: #e8e8ef;
+}
+
+#canvas-container {
+  position: absolute;
+  inset: 0;
+  right: 320px;
+}
+
+#panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100%;
+  padding: 1rem;
+  background: #252530;
+  border-left: 1px solid #3a3a48;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#panel h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+#panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+}
+
+#panel select,
+#panel textarea {
+  padding: 0.4rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #4a4a58;
+  background: #1a1a22;
+  color: inherit;
+}
+
+#panel .checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dims {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: #9a9aaa;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#panel button {
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #4a4a58;
+  background: #353545;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+#panel button:hover {
+  background: #454558;
+}
+
+#panel button.primary {
+  background: #3d6cb5;
+  border-color: #5a8ad8;
+}
+
+#panel button.primary:hover {
+  background: #4a7cc8;
+}
+
+#panel button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#status {
+  flex: 1;
+  font-size: 0.72rem;
+  background: #1a1a22;
+  border: 1px solid #3a3a48;
+  border-radius: 4px;
+  padding: 0.5rem;
+  overflow: auto;
+  white-space: pre-wrap;
+  min-height: 120px;
+}

@@ -1,0 +1,154 @@
+/* Labeler uses #labeler-panel; mirror main viewer #panel layout */
+
+#canvas-container {
+  position: absolute;
+  inset: 0;
+  right: min(360px, 42vw);
+}
+
+#labeler-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  width: min(360px, 42vw);
+  min-width: 280px;
+  height: 100%;
+  padding: 1rem;
+  background: #252530;
+  border-left: 1px solid #3a3a48;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.35);
+}
+
+#labeler-panel h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e8e8ef;
+}
+
+#labeler-panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: #e8e8ef;
+}
+
+#labeler-panel select {
+  padding: 0.45rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #4a4a58;
+  background: #1a1a22;
+  color: #e8e8ef;
+}
+
+#labeler-panel .hint {
+  font-size: 0.8rem;
+  color: #b0b0c0;
+  line-height: 1.4;
+}
+
+#labeler-panel .hint strong {
+  color: #e8c060;
+}
+
+#labeler-panel .model-info {
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  color: #c8c8d8;
+  background: #1a1a22;
+  border: 1px solid #3a3a48;
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+#progress {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e8e8ef;
+}
+
+#labeler-panel .angle-readout {
+  font-size: 0.9rem;
+  color: #7dcea0;
+  font-weight: 600;
+}
+
+#labeler-panel .buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+#labeler-panel .buttons-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#labeler-panel .buttons-row button {
+  flex: 1;
+}
+
+#labeler-panel button {
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid #5a5a6a;
+  background: #404055;
+  color: #f0f0f8;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+#labeler-panel button:hover {
+  background: #505065;
+  border-color: #6a6a7a;
+}
+
+#labeler-panel button.primary {
+  background: #3d6cb5;
+  border-color: #6a9ae8;
+  color: #fff;
+}
+
+#labeler-panel button.primary:hover {
+  background: #4a7cc8;
+}
+
+#labeler-panel button.secondary {
+  background: #2d4a3a;
+  border-color: #4a8a6a;
+}
+
+#labeler-panel button.secondary:hover {
+  background: #3a5a48;
+}
+
+#labeler-panel .status {
+  font-size: 0.8rem;
+  color: #9a9ab0;
+  background: #1a1a22;
+  border: 1px solid #3a3a48;
+  border-radius: 4px;
+  padding: 0.5rem;
+  min-height: 2.5rem;
+}
+
+#labeler-panel a {
+  color: #7ab0ff;
+  font-size: 0.85rem;
+}
+
+#labeler-panel kbd {
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  background: #353545;
+  border: 1px solid #5a5a6a;
+  font-size: 0.75rem;
+}

@@ -1,0 +1,189 @@
+# Kenney model taxonomy: role (placement semantics) and allowed room types.
+# Build script merges with OBJ scan into kenney_catalog.json.
+
+exclude_prefixes:
+  - wall
+  - floor
+  - doorway
+  - stairs
+  - paneling
+  - ceilingFan
+  - hood
+  - shower
+  - toilet
+  - bathtub
+  - washer
+  - dryer
+
+# placement role -> IP category (coarse solver category)
+role_to_category:
+  bed: bed
+  chair: chair
+  desk: desk
+  sofa: sofa
+  wardrobe: wardrobe
+  tv_stand: tv_stand
+  coffee_table: coffee_table
+  dining_table: dining_table
+  side_table: side_table
+  nightstand: nightstand
+  dresser: dresser
+  counter_base: counter
+  counter_bar: counter
+  counter_end: counter
+  stove: counter
+  sink: counter
+  fridge: fridge
+  bookshelf: wardrobe
+  bar_stool: chair
+  rug: decor
+  lamp: decor
+  plant: decor
+  decor: decor
+
+overrides:
+  bedDouble: {role: bed, rooms: [bedroom]}
+  bedSingle: {role: bed, rooms: [bedroom]}
+  bedBunk: {role: bed, rooms: [bedroom]}
+  chair: {role: chair, rooms: [bedroom, living_room, kitchen]}
+  chairDesk: {role: chair, rooms: [bedroom]}
+  chairRounded: {role: chair, rooms: [living_room, kitchen]}
+  chairCushion: {role: chair, rooms: [living_room]}
+  chairModernCushion: {role: chair, rooms: [living_room]}
+  chairModernFrameCushion: {role: chair, rooms: [living_room]}
+  desk: {role: desk, rooms: [bedroom]}
+  deskCorner: {role: desk, rooms: [bedroom]}
+  loungeSofa: {role: sofa, rooms: [living_room]}
+  loungeSofaLong: {role: sofa, rooms: [living_room]}
+  loungeSofaCorner: {role: sofa, rooms: [living_room]}
+  loungeSofaOttoman: {role: sofa, rooms: [living_room]}
+  loungeDesignSofa: {role: sofa, rooms: [living_room]}
+  loungeDesignSofaCorner: {role: sofa, rooms: [living_room]}
+  loungeChair: {role: chair, rooms: [living_room]}
+  loungeChairRelax: {role: chair, rooms: [living_room]}
+  loungeDesignChair: {role: chair, rooms: [living_room]}
+  cabinetTelevision: {role: tv_stand, rooms: [living_room, bedroom]}
+  cabinetTelevisionDoors: {role: tv_stand, rooms: [living_room]}
+  cabinetBed: {role: wardrobe, rooms: [bedroom]}
+  cabinetBedDrawer: {role: dresser, rooms: [bedroom]}
+  cabinetBedDrawerTable: {role: nightstand, rooms: [bedroom]}
+  table: {role: dining_table, rooms: [kitchen, living_room]}
+  tableRound: {role: dining_table, rooms: [kitchen, living_room]}
+  tableCross: {role: dining_table, rooms: [kitchen]}
+  tableCloth: {role: dining_table, rooms: [kitchen]}
+  tableCoffee: {role: coffee_table, rooms: [living_room]}
+  tableCoffeeSquare: {role: coffee_table, rooms: [living_room]}
+  tableCoffeeGlass: {role: coffee_table, rooms: [living_room]}
+  tableCoffeeGlassSquare: {role: coffee_table, rooms: [living_room]}
+  sideTable: {role: nightstand, rooms: [bedroom, living_room]}
+  sideTableDrawers: {role: nightstand, rooms: [bedroom]}
+  kitchenCabinet: {role: counter_base, rooms: [kitchen]}
+  kitchenCabinetDrawer: {role: counter_base, rooms: [kitchen]}
+  kitchenBar: {role: counter_bar, rooms: [kitchen]}
+  kitchenBarEnd: {role: counter_end, rooms: [kitchen]}
+  kitchenStove: {role: stove, rooms: [kitchen]}
+  kitchenStoveElectric: {role: stove, rooms: [kitchen]}
+  kitchenSink: {role: sink, rooms: [kitchen]}
+  kitchenFridge: {role: fridge, rooms: [kitchen]}
+  kitchenFridgeLarge: {role: fridge, rooms: [kitchen]}
+  kitchenFridgeSmall: {role: fridge, rooms: [kitchen]}
+  kitchenFridgeBuiltIn: {role: fridge, rooms: [kitchen]}
+  kitchenMicrowave: {role: decor, rooms: [kitchen]}
+  kitchenCoffeeMachine: {role: decor, rooms: [kitchen]}
+  kitchenBlender: {role: decor, rooms: [kitchen]}
+  stoolBar: {role: bar_stool, rooms: [kitchen]}
+  stoolBarSquare: {role: bar_stool, rooms: [kitchen]}
+  bookcaseClosed: {role: bookshelf, rooms: [living_room, bedroom]}
+  bookcaseClosedWide: {role: bookshelf, rooms: [living_room]}
+  bookcaseClosedDoors: {role: bookshelf, rooms: [living_room]}
+  bookcaseOpen: {role: bookshelf, rooms: [living_room]}
+  bookcaseOpenLow: {role: bookshelf, rooms: [living_room]}
+  rugRectangle: {role: rug, rooms: [bedroom, living_room]}
+  rugRound: {role: rug, rooms: [living_room]}
+  rugSquare: {role: rug, rooms: [living_room]}
+  rugRounded: {role: rug, rooms: [living_room]}
+  rugDoormat: {role: rug, rooms: [living_room, kitchen]}
+
+prefix_rules:
+  - prefix: kitchenCabinet
+    role: counter_base
+    rooms: [kitchen]
+  - prefix: kitchen
+    role: decor
+    rooms: [kitchen]
+  - prefix: bed
+    role: bed
+    rooms: [bedroom]
+  - prefix: bath
+    role: decor
+    rooms: [bedroom]
+  - prefix: table
+    role: dining_table
+    rooms: [kitchen, living_room]
+  - prefix: lounge
+    role: sofa
+    rooms: [living_room]
+  - prefix: lamp
+    role: lamp
+    rooms: [bedroom, living_room, kitchen]
+  - prefix: plant
+    role: plant
+    rooms: [living_room, bedroom, kitchen]
+  - prefix: potted
+    role: plant
+    rooms: [living_room, bedroom]
+  - prefix: pillow
+    role: decor
+    rooms: [bedroom]
+  - prefix: rug
+    role: rug
+    rooms: [bedroom, living_room, kitchen]
+  - prefix: bookcase
+    role: bookshelf
+    rooms: [living_room, bedroom]
+  - prefix: cabinet
+    role: wardrobe
+    rooms: [bedroom, living_room]
+  - prefix: bench
+    role: chair
+    rooms: [living_room, kitchen]
+  - prefix: stool
+    role: bar_stool
+    rooms: [kitchen]
+  - prefix: television
+    role: tv_stand
+    rooms: [living_room]
+  - prefix: computer
+    role: decor
+    rooms: [bedroom]
+  - prefix: laptop
+    role: decor
+    rooms: [bedroom]
+  - prefix: speaker
+    role: decor
+    rooms: [living_room]
+  - prefix: radio
+    role: decor
+    rooms: [living_room, bedroom]
+  - prefix: trashcan
+    role: decor
+    rooms: [kitchen]
+  - prefix: toaster
+    role: decor
+    rooms: [kitchen]
+  - prefix: coatRack
+    role: decor
+    rooms: [bedroom, living_room]
+  - prefix: cardboard
+    role: decor
+    rooms: [bedroom]
+  - prefix: bear
+    role: decor
+    rooms: [bedroom]
+  - prefix: books
+    role: decor
+    rooms: [living_room, bedroom]
+
+default:
+  role: decor
+  rooms: [bedroom, living_room, kitchen]

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Co-Layout 3D Viewer</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="canvas-container"></div>
+    <aside id="panel">
+      <h1>Room editor</h1>
+      <label>
+        Room type
+        <select id="room-type">
+          <option value="bedroom">Bedroom</option>
+          <option value="living_room">Living room</option>
+          <option value="kitchen">Kitchen</option>
+        </select>
+      </label>
+      <p class="dims">
+        Size: <span id="width-label">4.0</span> m × <span id="length-label">3.5</span> m
+      </p>
+      <p class="hint">Gold = resize walls. Blue = door. Magenta = focal point.</p>
+      <label>
+        Preferences (LLM)
+        <textarea id="preferences" rows="3" placeholder="e.g. add desk and chair, remove wardrobe"></textarea>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" id="mock-llm" checked />
+        Use mock LLM (offline)
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" id="llm-only" />
+        LLM only (skip IP refine)
+      </label>
+      <p class="hint">When checked, furniture stays at LLM meter positions (grid snap only). Overlaps are not fixed.</p>
+      <div class="buttons">
+        <button type="button" id="btn-random">Random room</button>
+        <button type="button" id="btn-run" class="primary">Run pipeline</button>
+      </div>
+      <pre id="status">Ready.</pre>
+      <p class="hint"><a href="/labeler.html">Open orientation labeler</a> — set front facing per Kenney model.</p>
+    </aside>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

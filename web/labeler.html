@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kenney orientation labeler</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="/src/labeler/labeler.css" />
+  </head>
+  <body>
+    <div id="canvas-container"></div>
+    <aside id="labeler-panel">
+      <h1>Front vector labeler</h1>
+      <p class="hint">
+        Set <strong>front</strong> in 45° steps (solver +X when rot=0; gold axis = room +X).
+        Drag on the floor, use ±45° buttons, or press <kbd>Q</kbd> / <kbd>E</kbd> to rotate.
+      </p>
+      <p id="angle-readout" class="angle-readout">Front: —</p>
+      <p id="progress">Loading…</p>
+      <p id="model-info" class="model-info"></p>
+      <label>
+        Queue filter
+        <select id="filter">
+          <option value="unlabeled" selected>Unlabeled</option>
+          <option value="all">All</option>
+          <option value="skipped">Skipped</option>
+          <option value="labeled">Labeled</option>
+        </select>
+      </label>
+      <label>
+        Wall anchor
+        <select id="wall-anchor">
+          <option value="center">Center on footprint</option>
+          <option value="back_center">Back edge on wall</option>
+        </select>
+      </label>
+      <div class="buttons">
+        <div class="buttons-row">
+          <button type="button" id="btn-rot-ccw" class="secondary">−45° (Q)</button>
+          <button type="button" id="btn-rot-cw" class="secondary">+45° (E)</button>
+        </div>
+        <button type="button" id="btn-save" class="primary">Save &amp; Next (Enter)</button>
+        <div class="buttons-row">
+          <button type="button" id="btn-prev">Previous</button>
+          <button type="button" id="btn-skip">Skip (S)</button>
+        </div>
+        <button type="button" id="btn-clear">Clear label</button>
+      </div>
+      <p id="status" class="status">Ready.</p>
+      <p><a href="/">← Room viewer</a></p>
+    </aside>
+    <script type="module" src="/src/labeler/main.ts"></script>
+  </body>
+</html>

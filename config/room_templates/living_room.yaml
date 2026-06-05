@@ -1,0 +1,39 @@
+room_type: living_room
+furniture:
+  - id: sofa
+    category: sofa
+    width_m: 2.2
+    length_m: 0.9
+  - id: tv_stand
+    category: tv_stand
+    width_m: 1.6
+    length_m: 0.4
+  - id: coffee_table
+    category: coffee_table
+    width_m: 1.0
+    length_m: 0.6
+  - id: side_table
+    category: side_table
+    width_m: 0.5
+    length_m: 0.4
+  - id: accent_chair
+    category: chair
+    width_m: 0.7
+    length_m: 0.7
+constraints:
+  - type: against_wall
+    furniture: sofa
+    wall: south
+  - type: against_wall
+    furniture: tv_stand
+    wall: north
+  - type: facing
+    furniture_a: sofa
+    furniture_b: tv_stand
+  - type: adjacent
+    furniture_a: coffee_table
+    furniture_b: sofa
+weights:
+  rel: 0.5
+  bal: 0.0
+  walk: 0.7

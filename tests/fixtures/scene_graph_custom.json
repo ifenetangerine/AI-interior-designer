@@ -1,0 +1,15 @@
+{
+  "room_id": "bed_custom",
+  "room_type": "bedroom",
+  "furniture": [
+    {"id": "bed", "model_id": "bedDouble"},
+    {"id": "wardrobe", "model_id": "cabinetBed"},
+    {"id": "desk", "model_id": "desk"},
+    {"id": "chair", "model_id": "chairDesk"}
+  ],
+  "constraints": [
+    {"type": "against_wall", "furniture": "bed", "wall": "west"},
+    {"type": "against_wall", "furniture": "desk", "wall": "north"}
+  ],
+  "weights": {"rel": 1.0, "bal": 0.5, "walk": 0.1}
+}

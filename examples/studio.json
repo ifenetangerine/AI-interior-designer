@@ -1,0 +1,19 @@
+{
+  "modulor_cell_m": 0.25,
+  "rooms": [
+    {
+      "id": "bedroom_1",
+      "type": "bedroom",
+      "width_m": 4.0,
+      "length_m": 3.5,
+      "preferences": "quiet, queen bed, desk by window"
+    },
+    {
+      "id": "living_1",
+      "type": "living_room",
+      "width_m": 5.0,
+      "length_m": 4.0,
+      "preferences": "sofa facing TV, coffee table"
+    }
+  ]
+}

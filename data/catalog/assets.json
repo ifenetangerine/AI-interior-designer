@@ -1,0 +1,15 @@
+{
+  "assets": [
+    {"id": "bed_queen_01", "category": "bed", "width_m": 1.6, "depth_m": 2.0, "height_m": 0.5},
+    {"id": "bed_queen_02", "category": "bed", "width_m": 1.5, "depth_m": 2.0, "height_m": 0.55},
+    {"id": "wardrobe_01", "category": "wardrobe", "width_m": 1.2, "depth_m": 0.6, "height_m": 2.0},
+    {"id": "desk_01", "category": "desk", "width_m": 1.2, "depth_m": 0.6, "height_m": 0.75},
+    {"id": "chair_01", "category": "chair", "width_m": 0.5, "depth_m": 0.5, "height_m": 0.9},
+    {"id": "sofa_3seat_01", "category": "sofa", "width_m": 2.2, "depth_m": 0.9, "height_m": 0.85},
+    {"id": "tv_stand_01", "category": "tv_stand", "width_m": 1.6, "depth_m": 0.4, "height_m": 0.5},
+    {"id": "coffee_table_01", "category": "coffee_table", "width_m": 1.0, "depth_m": 0.6, "height_m": 0.45},
+    {"id": "counter_01", "category": "counter", "width_m": 2.4, "depth_m": 0.6, "height_m": 0.9},
+    {"id": "fridge_01", "category": "fridge", "width_m": 0.7, "depth_m": 0.7, "height_m": 1.8},
+    {"id": "dining_table_01", "category": "dining_table", "width_m": 1.2, "depth_m": 0.8, "height_m": 0.75}
+  ]
+}

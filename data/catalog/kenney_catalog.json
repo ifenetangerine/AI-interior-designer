@@ -1,0 +1,1767 @@
+{
+  "category_defaults": {
+    "bed": "bedDouble",
+    "chair": "chair",
+    "desk": "desk",
+    "sofa": "loungeSofa",
+    "wardrobe": "cabinetBed",
+    "tv_stand": "cabinetTelevision",
+    "coffee_table": "tableCoffee",
+    "counter": "kitchenCabinet",
+    "fridge": "kitchenFridge",
+    "dining_table": "table",
+    "nightstand": "sideTable",
+    "dresser": "cabinetBedDrawer",
+    "bookshelf": "bookcaseClosed",
+    "lamp": "lampSquareTable",
+    "plant": "pottedPlant",
+    "rug": "rugRectangle"
+  },
+  "category_yaw_deg": {
+    "chair": 180.0,
+    "desk": 0.0,
+    "sofa": 0.0,
+    "bed": 0.0,
+    "dining_table": 0.0,
+    "coffee_table": 0.0,
+    "counter": 0.0,
+    "fridge": 0.0
+  },
+  "asset_orientation": {
+    "bedDouble": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "chair": {
+      "yaw_deg": {
+        "0": 180,
+        "1": 270
+      }
+    },
+    "desk": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 90
+      }
+    },
+    "loungeSofa": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "table": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "tableCoffee": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "kitchenBar": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 90
+      }
+    },
+    "kitchenBarEnd": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 90
+      }
+    },
+    "kitchenCabinet": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 90
+      }
+    },
+    "kitchenCabinetDrawer": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 90
+      }
+    },
+    "kitchenStove": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 90
+      }
+    },
+    "kitchenStoveElectric": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 90
+      }
+    },
+    "kitchenSink": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 90
+      }
+    },
+    "kitchenFridge": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "kitchenFridgeLarge": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "kitchenFridgeSmall": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "sideTable": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "sideTableDrawers": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "bookcaseClosed": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "loungeChair": {
+      "yaw_deg": {
+        "0": 180,
+        "1": 270
+      }
+    },
+    "cabinetTelevision": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "lampRoundFloor": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "lampSquareTable": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "pottedPlant": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    }
+  },
+  "role_to_category": {
+    "bed": "bed",
+    "chair": "chair",
+    "desk": "desk",
+    "sofa": "sofa",
+    "wardrobe": "wardrobe",
+    "tv_stand": "tv_stand",
+    "coffee_table": "coffee_table",
+    "dining_table": "dining_table",
+    "side_table": "side_table",
+    "nightstand": "nightstand",
+    "dresser": "dresser",
+    "counter_base": "counter",
+    "counter_bar": "counter",
+    "counter_end": "counter",
+    "stove": "counter",
+    "sink": "counter",
+    "fridge": "fridge",
+    "bookshelf": "wardrobe",
+    "bar_stool": "chair",
+    "rug": "decor",
+    "lamp": "decor",
+    "plant": "decor",
+    "decor": "decor"
+  },
+  "assets": [
+    {
+      "id": "bathroomCabinet",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bathroomCabinet.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bathroomCabinet.mtl",
+      "width_m": 0.23,
+      "depth_m": 0.13,
+      "height_m": 0.39,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bathroomCabinetDrawer",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bathroomCabinetDrawer.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bathroomCabinetDrawer.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.32,
+      "height_m": 0.472,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bathroomMirror",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bathroomMirror.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bathroomMirror.mtl",
+      "width_m": 0.301,
+      "depth_m": 0.144,
+      "height_m": 0.435,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bathroomSink",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bathroomSink.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bathroomSink.mtl",
+      "width_m": 0.34,
+      "depth_m": 0.29,
+      "height_m": 0.56,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bathroomSinkSquare",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bathroomSinkSquare.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bathroomSinkSquare.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.3,
+      "height_m": 0.58,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bear",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bear.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bear.mtl",
+      "width_m": 0.39,
+      "depth_m": 0.247,
+      "height_m": 0.45,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bedBunk",
+      "role": "bed",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "bed",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bedBunk.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bedBunk.mtl",
+      "width_m": 0.571,
+      "depth_m": 1.095,
+      "height_m": 0.85,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bedDouble",
+      "role": "bed",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "bed",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bedDouble.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bedDouble.mtl",
+      "width_m": 0.956,
+      "depth_m": 1.125,
+      "height_m": 0.375,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bedSingle",
+      "role": "bed",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "bed",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bedSingle.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bedSingle.mtl",
+      "width_m": 0.571,
+      "depth_m": 1.125,
+      "height_m": 0.375,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bench",
+      "role": "chair",
+      "rooms": [
+        "living_room",
+        "kitchen"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bench.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bench.mtl",
+      "width_m": 0.4,
+      "depth_m": 0.2,
+      "height_m": 0.47,
+      "default_scale": 1.0
+    },
+    {
+      "id": "benchCushion",
+      "role": "chair",
+      "rooms": [
+        "living_room",
+        "kitchen"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/benchCushion.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/benchCushion.mtl",
+      "width_m": 0.4,
+      "depth_m": 0.2,
+      "height_m": 0.46,
+      "default_scale": 1.0
+    },
+    {
+      "id": "benchCushionLow",
+      "role": "chair",
+      "rooms": [
+        "living_room",
+        "kitchen"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/benchCushionLow.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/benchCushionLow.mtl",
+      "width_m": 0.42,
+      "depth_m": 0.22,
+      "height_m": 0.2,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bookcaseClosed",
+      "role": "bookshelf",
+      "rooms": [
+        "living_room",
+        "bedroom"
+      ],
+      "category": "wardrobe",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bookcaseClosed.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bookcaseClosed.mtl",
+      "width_m": 0.4,
+      "depth_m": 0.25,
+      "height_m": 0.85,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bookcaseClosedDoors",
+      "role": "bookshelf",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "wardrobe",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bookcaseClosedDoors.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bookcaseClosedDoors.mtl",
+      "width_m": 0.4,
+      "depth_m": 0.25,
+      "height_m": 0.85,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bookcaseClosedWide",
+      "role": "bookshelf",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "wardrobe",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bookcaseClosedWide.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bookcaseClosedWide.mtl",
+      "width_m": 0.8,
+      "depth_m": 0.25,
+      "height_m": 0.79,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bookcaseOpen",
+      "role": "bookshelf",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "wardrobe",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bookcaseOpen.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bookcaseOpen.mtl",
+      "width_m": 0.4,
+      "depth_m": 0.25,
+      "height_m": 0.88,
+      "default_scale": 1.0
+    },
+    {
+      "id": "bookcaseOpenLow",
+      "role": "bookshelf",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "wardrobe",
+      "obj": "kenney_furniture-kit/Models/OBJ format/bookcaseOpenLow.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/bookcaseOpenLow.mtl",
+      "width_m": 0.4,
+      "depth_m": 0.25,
+      "height_m": 0.4,
+      "default_scale": 1.0
+    },
+    {
+      "id": "books",
+      "role": "decor",
+      "rooms": [
+        "living_room",
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/books.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/books.mtl",
+      "width_m": 0.15,
+      "depth_m": 0.095,
+      "height_m": 0.104,
+      "default_scale": 1.0
+    },
+    {
+      "id": "cabinetBed",
+      "role": "wardrobe",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "wardrobe",
+      "obj": "kenney_furniture-kit/Models/OBJ format/cabinetBed.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/cabinetBed.mtl",
+      "width_m": 0.266,
+      "depth_m": 0.215,
+      "height_m": 0.233,
+      "default_scale": 1.0
+    },
+    {
+      "id": "cabinetBedDrawer",
+      "role": "dresser",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "dresser",
+      "obj": "kenney_furniture-kit/Models/OBJ format/cabinetBedDrawer.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/cabinetBedDrawer.mtl",
+      "width_m": 0.266,
+      "depth_m": 0.217,
+      "height_m": 0.263,
+      "default_scale": 1.0
+    },
+    {
+      "id": "cabinetBedDrawerTable",
+      "role": "nightstand",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "nightstand",
+      "obj": "kenney_furniture-kit/Models/OBJ format/cabinetBedDrawerTable.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/cabinetBedDrawerTable.mtl",
+      "width_m": 0.266,
+      "depth_m": 0.217,
+      "height_m": 0.263,
+      "default_scale": 1.0
+    },
+    {
+      "id": "cabinetTelevision",
+      "role": "tv_stand",
+      "rooms": [
+        "living_room",
+        "bedroom"
+      ],
+      "category": "tv_stand",
+      "obj": "kenney_furniture-kit/Models/OBJ format/cabinetTelevision.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/cabinetTelevision.mtl",
+      "width_m": 0.8,
+      "depth_m": 0.25,
+      "height_m": 0.31,
+      "default_scale": 1.0
+    },
+    {
+      "id": "cabinetTelevisionDoors",
+      "role": "tv_stand",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "tv_stand",
+      "obj": "kenney_furniture-kit/Models/OBJ format/cabinetTelevisionDoors.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/cabinetTelevisionDoors.mtl",
+      "width_m": 0.8,
+      "depth_m": 0.26,
+      "height_m": 0.31,
+      "default_scale": 1.0
+    },
+    {
+      "id": "cardboardBoxClosed",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/cardboardBoxClosed.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/cardboardBoxClosed.mtl",
+      "width_m": 0.212,
+      "depth_m": 0.213,
+      "height_m": 0.281,
+      "default_scale": 1.0
+    },
+    {
+      "id": "cardboardBoxOpen",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/cardboardBoxOpen.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/cardboardBoxOpen.mtl",
+      "width_m": 0.372,
+      "depth_m": 0.213,
+      "height_m": 0.281,
+      "default_scale": 1.0
+    },
+    {
+      "id": "chair",
+      "role": "chair",
+      "rooms": [
+        "bedroom",
+        "living_room",
+        "kitchen"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/chair.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/chair.mtl",
+      "width_m": 0.2,
+      "depth_m": 0.2,
+      "height_m": 0.47,
+      "default_scale": 1.0
+    },
+    {
+      "id": "chairCushion",
+      "role": "chair",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/chairCushion.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/chairCushion.mtl",
+      "width_m": 0.2,
+      "depth_m": 0.2,
+      "height_m": 0.46,
+      "default_scale": 1.0
+    },
+    {
+      "id": "chairDesk",
+      "role": "chair",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/chairDesk.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/chairDesk.mtl",
+      "width_m": 0.335,
+      "depth_m": 0.314,
+      "height_m": 0.608,
+      "default_scale": 1.0
+    },
+    {
+      "id": "chairModernCushion",
+      "role": "chair",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/chairModernCushion.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/chairModernCushion.mtl",
+      "width_m": 0.2,
+      "depth_m": 0.2,
+      "height_m": 0.46,
+      "default_scale": 1.0
+    },
+    {
+      "id": "chairModernFrameCushion",
+      "role": "chair",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/chairModernFrameCushion.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/chairModernFrameCushion.mtl",
+      "width_m": 0.2,
+      "depth_m": 0.2,
+      "height_m": 0.46,
+      "default_scale": 1.0
+    },
+    {
+      "id": "chairRounded",
+      "role": "chair",
+      "rooms": [
+        "living_room",
+        "kitchen"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/chairRounded.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/chairRounded.mtl",
+      "width_m": 0.2,
+      "depth_m": 0.2,
+      "height_m": 0.455,
+      "default_scale": 1.0
+    },
+    {
+      "id": "coatRack",
+      "role": "decor",
+      "rooms": [
+        "bedroom",
+        "living_room"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/coatRack.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/coatRack.mtl",
+      "width_m": 0.448,
+      "depth_m": 0.134,
+      "height_m": 0.28,
+      "default_scale": 1.0
+    },
+    {
+      "id": "coatRackStanding",
+      "role": "decor",
+      "rooms": [
+        "bedroom",
+        "living_room"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/coatRackStanding.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/coatRackStanding.mtl",
+      "width_m": 0.273,
+      "depth_m": 0.273,
+      "height_m": 0.77,
+      "default_scale": 1.0
+    },
+    {
+      "id": "computerKeyboard",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/computerKeyboard.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/computerKeyboard.mtl",
+      "width_m": 0.282,
+      "depth_m": 0.118,
+      "height_m": 0.028,
+      "default_scale": 1.0
+    },
+    {
+      "id": "computerMouse",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/computerMouse.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/computerMouse.mtl",
+      "width_m": 0.05,
+      "depth_m": 0.085,
+      "height_m": 0.024,
+      "default_scale": 1.0
+    },
+    {
+      "id": "computerScreen",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/computerScreen.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/computerScreen.mtl",
+      "width_m": 0.393,
+      "depth_m": 0.104,
+      "height_m": 0.294,
+      "default_scale": 1.0
+    },
+    {
+      "id": "desk",
+      "role": "desk",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "desk",
+      "obj": "kenney_furniture-kit/Models/OBJ format/desk.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/desk.mtl",
+      "width_m": 0.734,
+      "depth_m": 0.392,
+      "height_m": 0.384,
+      "default_scale": 1.0
+    },
+    {
+      "id": "deskCorner",
+      "role": "desk",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "desk",
+      "obj": "kenney_furniture-kit/Models/OBJ format/deskCorner.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/deskCorner.mtl",
+      "width_m": 0.974,
+      "depth_m": 0.974,
+      "height_m": 0.384,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenBar",
+      "role": "counter_bar",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenBar.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenBar.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.21,
+      "height_m": 0.42,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenBarEnd",
+      "role": "counter_end",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenBarEnd.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenBarEnd.mtl",
+      "width_m": 0.102,
+      "depth_m": 0.21,
+      "height_m": 0.42,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenBlender",
+      "role": "decor",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenBlender.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenBlender.mtl",
+      "width_m": 0.136,
+      "depth_m": 0.109,
+      "height_m": 0.228,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenCabinet",
+      "role": "counter_base",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenCabinet.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenCabinet.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.45,
+      "height_m": 0.45,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenCabinetCornerInner",
+      "role": "counter_base",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetCornerInner.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetCornerInner.mtl",
+      "width_m": 0.46,
+      "depth_m": 0.46,
+      "height_m": 0.45,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenCabinetCornerRound",
+      "role": "counter_base",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetCornerRound.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetCornerRound.mtl",
+      "width_m": 0.45,
+      "depth_m": 0.45,
+      "height_m": 0.45,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenCabinetDrawer",
+      "role": "counter_base",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetDrawer.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetDrawer.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.45,
+      "height_m": 0.45,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenCabinetUpper",
+      "role": "counter_base",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetUpper.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetUpper.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.22,
+      "height_m": 0.39,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenCabinetUpperCorner",
+      "role": "counter_base",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetUpperCorner.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetUpperCorner.mtl",
+      "width_m": 0.215,
+      "depth_m": 0.21,
+      "height_m": 0.39,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenCabinetUpperDouble",
+      "role": "counter_base",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetUpperDouble.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetUpperDouble.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.22,
+      "height_m": 0.39,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenCabinetUpperLow",
+      "role": "counter_base",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetUpperLow.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenCabinetUpperLow.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.22,
+      "height_m": 0.195,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenCoffeeMachine",
+      "role": "decor",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenCoffeeMachine.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenCoffeeMachine.mtl",
+      "width_m": 0.19,
+      "depth_m": 0.24,
+      "height_m": 0.177,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenFridge",
+      "role": "fridge",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "fridge",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenFridge.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenFridge.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.292,
+      "height_m": 0.92,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenFridgeBuiltIn",
+      "role": "fridge",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "fridge",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenFridgeBuiltIn.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenFridgeBuiltIn.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.45,
+      "height_m": 0.869,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenFridgeLarge",
+      "role": "fridge",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "fridge",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenFridgeLarge.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenFridgeLarge.mtl",
+      "width_m": 0.52,
+      "depth_m": 0.406,
+      "height_m": 0.92,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenFridgeSmall",
+      "role": "fridge",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "fridge",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenFridgeSmall.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenFridgeSmall.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.292,
+      "height_m": 0.6,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenMicrowave",
+      "role": "decor",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenMicrowave.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenMicrowave.mtl",
+      "width_m": 0.29,
+      "depth_m": 0.23,
+      "height_m": 0.18,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenSink",
+      "role": "sink",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenSink.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenSink.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.45,
+      "height_m": 0.49,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenStove",
+      "role": "stove",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenStove.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenStove.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.45,
+      "height_m": 0.45,
+      "default_scale": 1.0
+    },
+    {
+      "id": "kitchenStoveElectric",
+      "role": "stove",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "counter",
+      "obj": "kenney_furniture-kit/Models/OBJ format/kitchenStoveElectric.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/kitchenStoveElectric.mtl",
+      "width_m": 0.43,
+      "depth_m": 0.45,
+      "height_m": 0.45,
+      "default_scale": 1.0
+    },
+    {
+      "id": "lampRoundFloor",
+      "role": "lamp",
+      "rooms": [
+        "bedroom",
+        "living_room",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/lampRoundFloor.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/lampRoundFloor.mtl",
+      "width_m": 0.152,
+      "depth_m": 0.176,
+      "height_m": 0.86,
+      "default_scale": 1.0
+    },
+    {
+      "id": "lampRoundTable",
+      "role": "lamp",
+      "rooms": [
+        "bedroom",
+        "living_room",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/lampRoundTable.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/lampRoundTable.mtl",
+      "width_m": 0.152,
+      "depth_m": 0.176,
+      "height_m": 0.314,
+      "default_scale": 1.0
+    },
+    {
+      "id": "lampSquareCeiling",
+      "role": "lamp",
+      "rooms": [
+        "bedroom",
+        "living_room",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/lampSquareCeiling.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/lampSquareCeiling.mtl",
+      "width_m": 0.12,
+      "depth_m": 0.12,
+      "height_m": 0.23,
+      "default_scale": 1.0
+    },
+    {
+      "id": "lampSquareFloor",
+      "role": "lamp",
+      "rooms": [
+        "bedroom",
+        "living_room",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/lampSquareFloor.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/lampSquareFloor.mtl",
+      "width_m": 0.12,
+      "depth_m": 0.12,
+      "height_m": 0.86,
+      "default_scale": 1.0
+    },
+    {
+      "id": "lampSquareTable",
+      "role": "lamp",
+      "rooms": [
+        "bedroom",
+        "living_room",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/lampSquareTable.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/lampSquareTable.mtl",
+      "width_m": 0.12,
+      "depth_m": 0.12,
+      "height_m": 0.29,
+      "default_scale": 1.0
+    },
+    {
+      "id": "lampWall",
+      "role": "lamp",
+      "rooms": [
+        "bedroom",
+        "living_room",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/lampWall.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/lampWall.mtl",
+      "width_m": 0.227,
+      "depth_m": 0.15,
+      "height_m": 0.093,
+      "default_scale": 1.0
+    },
+    {
+      "id": "laptop",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/laptop.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/laptop.mtl",
+      "width_m": 0.264,
+      "depth_m": 0.24,
+      "height_m": 0.162,
+      "default_scale": 1.0
+    },
+    {
+      "id": "loungeChair",
+      "role": "chair",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/loungeChair.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/loungeChair.mtl",
+      "width_m": 0.49,
+      "depth_m": 0.41,
+      "height_m": 0.46,
+      "default_scale": 1.0
+    },
+    {
+      "id": "loungeChairRelax",
+      "role": "chair",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/loungeChairRelax.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/loungeChairRelax.mtl",
+      "width_m": 0.49,
+      "depth_m": 0.675,
+      "height_m": 0.63,
+      "default_scale": 1.0
+    },
+    {
+      "id": "loungeDesignChair",
+      "role": "chair",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/loungeDesignChair.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/loungeDesignChair.mtl",
+      "width_m": 0.73,
+      "depth_m": 0.41,
+      "height_m": 0.4,
+      "default_scale": 1.0
+    },
+    {
+      "id": "loungeDesignSofa",
+      "role": "sofa",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "sofa",
+      "obj": "kenney_furniture-kit/Models/OBJ format/loungeDesignSofa.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/loungeDesignSofa.mtl",
+      "width_m": 1.12,
+      "depth_m": 0.41,
+      "height_m": 0.4,
+      "default_scale": 1.0
+    },
+    {
+      "id": "loungeDesignSofaCorner",
+      "role": "sofa",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "sofa",
+      "obj": "kenney_furniture-kit/Models/OBJ format/loungeDesignSofaCorner.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/loungeDesignSofaCorner.mtl",
+      "width_m": 1.35,
+      "depth_m": 1.35,
+      "height_m": 0.4,
+      "default_scale": 1.0
+    },
+    {
+      "id": "loungeSofa",
+      "role": "sofa",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "sofa",
+      "obj": "kenney_furniture-kit/Models/OBJ format/loungeSofa.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/loungeSofa.mtl",
+      "width_m": 0.98,
+      "depth_m": 0.41,
+      "height_m": 0.46,
+      "default_scale": 1.0
+    },
+    {
+      "id": "loungeSofaCorner",
+      "role": "sofa",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "sofa",
+      "obj": "kenney_furniture-kit/Models/OBJ format/loungeSofaCorner.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/loungeSofaCorner.mtl",
+      "width_m": 0.98,
+      "depth_m": 0.98,
+      "height_m": 0.46,
+      "default_scale": 1.0
+    },
+    {
+      "id": "loungeSofaLong",
+      "role": "sofa",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "sofa",
+      "obj": "kenney_furniture-kit/Models/OBJ format/loungeSofaLong.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/loungeSofaLong.mtl",
+      "width_m": 0.98,
+      "depth_m": 0.82,
+      "height_m": 0.46,
+      "default_scale": 1.0
+    },
+    {
+      "id": "loungeSofaOttoman",
+      "role": "sofa",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "sofa",
+      "obj": "kenney_furniture-kit/Models/OBJ format/loungeSofaOttoman.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/loungeSofaOttoman.mtl",
+      "width_m": 0.44,
+      "depth_m": 0.45,
+      "height_m": 0.23,
+      "default_scale": 1.0
+    },
+    {
+      "id": "pillow",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/pillow.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/pillow.mtl",
+      "width_m": 0.23,
+      "depth_m": 0.088,
+      "height_m": 0.222,
+      "default_scale": 1.0
+    },
+    {
+      "id": "pillowBlue",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/pillowBlue.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/pillowBlue.mtl",
+      "width_m": 0.23,
+      "depth_m": 0.063,
+      "height_m": 0.129,
+      "default_scale": 1.0
+    },
+    {
+      "id": "pillowBlueLong",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/pillowBlueLong.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/pillowBlueLong.mtl",
+      "width_m": 0.517,
+      "depth_m": 0.088,
+      "height_m": 0.222,
+      "default_scale": 1.0
+    },
+    {
+      "id": "pillowLong",
+      "role": "decor",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/pillowLong.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/pillowLong.mtl",
+      "width_m": 0.387,
+      "depth_m": 0.088,
+      "height_m": 0.222,
+      "default_scale": 1.0
+    },
+    {
+      "id": "plantSmall1",
+      "role": "plant",
+      "rooms": [
+        "living_room",
+        "bedroom",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/plantSmall1.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/plantSmall1.mtl",
+      "width_m": 0.095,
+      "depth_m": 0.095,
+      "height_m": 0.14,
+      "default_scale": 1.0
+    },
+    {
+      "id": "plantSmall2",
+      "role": "plant",
+      "rooms": [
+        "living_room",
+        "bedroom",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/plantSmall2.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/plantSmall2.mtl",
+      "width_m": 0.095,
+      "depth_m": 0.095,
+      "height_m": 0.14,
+      "default_scale": 1.0
+    },
+    {
+      "id": "plantSmall3",
+      "role": "plant",
+      "rooms": [
+        "living_room",
+        "bedroom",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/plantSmall3.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/plantSmall3.mtl",
+      "width_m": 0.098,
+      "depth_m": 0.085,
+      "height_m": 0.145,
+      "default_scale": 1.0
+    },
+    {
+      "id": "pottedPlant",
+      "role": "plant",
+      "rooms": [
+        "living_room",
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/pottedPlant.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/pottedPlant.mtl",
+      "width_m": 0.212,
+      "depth_m": 0.241,
+      "height_m": 0.654,
+      "default_scale": 1.0
+    },
+    {
+      "id": "radio",
+      "role": "decor",
+      "rooms": [
+        "living_room",
+        "bedroom"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/radio.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/radio.mtl",
+      "width_m": 0.315,
+      "depth_m": 0.098,
+      "height_m": 0.228,
+      "default_scale": 1.0
+    },
+    {
+      "id": "rugDoormat",
+      "role": "rug",
+      "rooms": [
+        "living_room",
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/rugDoormat.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/rugDoormat.mtl",
+      "width_m": 0.429,
+      "depth_m": 0.237,
+      "height_m": 0.01,
+      "default_scale": 1.0
+    },
+    {
+      "id": "rugRectangle",
+      "role": "rug",
+      "rooms": [
+        "bedroom",
+        "living_room"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/rugRectangle.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/rugRectangle.mtl",
+      "width_m": 1.57,
+      "depth_m": 0.92,
+      "height_m": 0.01,
+      "default_scale": 1.0
+    },
+    {
+      "id": "rugRound",
+      "role": "rug",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/rugRound.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/rugRound.mtl",
+      "width_m": 0.92,
+      "depth_m": 0.92,
+      "height_m": 0.01,
+      "default_scale": 1.0
+    },
+    {
+      "id": "rugRounded",
+      "role": "rug",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/rugRounded.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/rugRounded.mtl",
+      "width_m": 1.57,
+      "depth_m": 0.92,
+      "height_m": 0.01,
+      "default_scale": 1.0
+    },
+    {
+      "id": "rugSquare",
+      "role": "rug",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/rugSquare.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/rugSquare.mtl",
+      "width_m": 0.904,
+      "depth_m": 0.92,
+      "height_m": 0.01,
+      "default_scale": 1.0
+    },
+    {
+      "id": "sideTable",
+      "role": "nightstand",
+      "rooms": [
+        "bedroom",
+        "living_room"
+      ],
+      "category": "nightstand",
+      "obj": "kenney_furniture-kit/Models/OBJ format/sideTable.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/sideTable.mtl",
+      "width_m": 0.534,
+      "depth_m": 0.22,
+      "height_m": 0.384,
+      "default_scale": 1.0
+    },
+    {
+      "id": "sideTableDrawers",
+      "role": "nightstand",
+      "rooms": [
+        "bedroom"
+      ],
+      "category": "nightstand",
+      "obj": "kenney_furniture-kit/Models/OBJ format/sideTableDrawers.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/sideTableDrawers.mtl",
+      "width_m": 0.534,
+      "depth_m": 0.222,
+      "height_m": 0.384,
+      "default_scale": 1.0
+    },
+    {
+      "id": "speaker",
+      "role": "decor",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/speaker.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/speaker.mtl",
+      "width_m": 0.148,
+      "depth_m": 0.148,
+      "height_m": 0.636,
+      "default_scale": 1.0
+    },
+    {
+      "id": "speakerSmall",
+      "role": "decor",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/speakerSmall.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/speakerSmall.mtl",
+      "width_m": 0.148,
+      "depth_m": 0.133,
+      "height_m": 0.298,
+      "default_scale": 1.0
+    },
+    {
+      "id": "stoolBar",
+      "role": "bar_stool",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/stoolBar.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/stoolBar.mtl",
+      "width_m": 0.265,
+      "depth_m": 0.23,
+      "height_m": 0.435,
+      "default_scale": 1.0
+    },
+    {
+      "id": "stoolBarSquare",
+      "role": "bar_stool",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "chair",
+      "obj": "kenney_furniture-kit/Models/OBJ format/stoolBarSquare.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/stoolBarSquare.mtl",
+      "width_m": 0.153,
+      "depth_m": 0.148,
+      "height_m": 0.405,
+      "default_scale": 1.0
+    },
+    {
+      "id": "table",
+      "role": "dining_table",
+      "rooms": [
+        "kitchen",
+        "living_room"
+      ],
+      "category": "dining_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/table.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/table.mtl",
+      "width_m": 0.841,
+      "depth_m": 0.447,
+      "height_m": 0.327,
+      "default_scale": 1.0
+    },
+    {
+      "id": "tableCloth",
+      "role": "dining_table",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "dining_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/tableCloth.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/tableCloth.mtl",
+      "width_m": 0.841,
+      "depth_m": 0.447,
+      "height_m": 0.327,
+      "default_scale": 1.0
+    },
+    {
+      "id": "tableCoffee",
+      "role": "coffee_table",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "coffee_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/tableCoffee.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/tableCoffee.mtl",
+      "width_m": 0.661,
+      "depth_m": 0.4,
+      "height_m": 0.23,
+      "default_scale": 1.0
+    },
+    {
+      "id": "tableCoffeeGlass",
+      "role": "coffee_table",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "coffee_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/tableCoffeeGlass.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/tableCoffeeGlass.mtl",
+      "width_m": 0.661,
+      "depth_m": 0.4,
+      "height_m": 0.23,
+      "default_scale": 1.0
+    },
+    {
+      "id": "tableCoffeeGlassSquare",
+      "role": "coffee_table",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "coffee_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/tableCoffeeGlassSquare.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/tableCoffeeGlassSquare.mtl",
+      "width_m": 0.4,
+      "depth_m": 0.4,
+      "height_m": 0.23,
+      "default_scale": 1.0
+    },
+    {
+      "id": "tableCoffeeSquare",
+      "role": "coffee_table",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "coffee_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/tableCoffeeSquare.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/tableCoffeeSquare.mtl",
+      "width_m": 0.4,
+      "depth_m": 0.4,
+      "height_m": 0.23,
+      "default_scale": 1.0
+    },
+    {
+      "id": "tableCross",
+      "role": "dining_table",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "dining_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/tableCross.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/tableCross.mtl",
+      "width_m": 0.852,
+      "depth_m": 0.447,
+      "height_m": 0.347,
+      "default_scale": 1.0
+    },
+    {
+      "id": "tableCrossCloth",
+      "role": "dining_table",
+      "rooms": [
+        "kitchen",
+        "living_room"
+      ],
+      "category": "dining_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/tableCrossCloth.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/tableCrossCloth.mtl",
+      "width_m": 0.852,
+      "depth_m": 0.447,
+      "height_m": 0.347,
+      "default_scale": 1.0
+    },
+    {
+      "id": "tableGlass",
+      "role": "dining_table",
+      "rooms": [
+        "kitchen",
+        "living_room"
+      ],
+      "category": "dining_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/tableGlass.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/tableGlass.mtl",
+      "width_m": 0.841,
+      "depth_m": 0.447,
+      "height_m": 0.327,
+      "default_scale": 1.0
+    },
+    {
+      "id": "tableRound",
+      "role": "dining_table",
+      "rooms": [
+        "kitchen",
+        "living_room"
+      ],
+      "category": "dining_table",
+      "obj": "kenney_furniture-kit/Models/OBJ format/tableRound.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/tableRound.mtl",
+      "width_m": 0.693,
+      "depth_m": 0.8,
+      "height_m": 0.367,
+      "default_scale": 1.0
+    },
+    {
+      "id": "televisionAntenna",
+      "role": "tv_stand",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "tv_stand",
+      "obj": "kenney_furniture-kit/Models/OBJ format/televisionAntenna.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/televisionAntenna.mtl",
+      "width_m": 0.265,
+      "depth_m": 0.08,
+      "height_m": 0.103,
+      "default_scale": 1.0
+    },
+    {
+      "id": "televisionModern",
+      "role": "tv_stand",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "tv_stand",
+      "obj": "kenney_furniture-kit/Models/OBJ format/televisionModern.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/televisionModern.mtl",
+      "width_m": 0.685,
+      "depth_m": 0.128,
+      "height_m": 0.455,
+      "default_scale": 1.0
+    },
+    {
+      "id": "televisionVintage",
+      "role": "tv_stand",
+      "rooms": [
+        "living_room"
+      ],
+      "category": "tv_stand",
+      "obj": "kenney_furniture-kit/Models/OBJ format/televisionVintage.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/televisionVintage.mtl",
+      "width_m": 0.41,
+      "depth_m": 0.27,
+      "height_m": 0.27,
+      "default_scale": 1.0
+    },
+    {
+      "id": "toaster",
+      "role": "decor",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/toaster.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/toaster.mtl",
+      "width_m": 0.188,
+      "depth_m": 0.1,
+      "height_m": 0.13,
+      "default_scale": 1.0
+    },
+    {
+      "id": "trashcan",
+      "role": "decor",
+      "rooms": [
+        "kitchen"
+      ],
+      "category": "decor",
+      "obj": "kenney_furniture-kit/Models/OBJ format/trashcan.obj",
+      "mtl": "kenney_furniture-kit/Models/OBJ format/trashcan.mtl",
+      "width_m": 0.208,
+      "depth_m": 0.234,
+      "height_m": 0.428,
+      "default_scale": 1.0
+    }
+  ]
+}
