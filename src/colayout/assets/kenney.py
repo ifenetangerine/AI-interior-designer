@@ -10,11 +10,13 @@ from pydantic import BaseModel, Field
 
 from colayout.assets.label_store import get_wall_anchor
 from colayout.assets.orientation import rotation_y_rad
-from colayout.catalog.kenney_index import height_for_model
+from colayout.catalog.kenney_index import height_for_model, role_for_model
 from colayout.schemas.placement import PlacedFurniture, RoomPlacementResult
 
 ROOT = Path(__file__).resolve().parents[3]
 CATALOG_PATH = ROOT / "data" / "catalog" / "kenney_catalog.json"
+
+RUG_Y_OFFSET_M = 0.005  # lift rugs off the floor plane to avoid z-fighting
 
 
 BACK_WALL_CATEGORIES = frozenset(
@@ -150,11 +152,20 @@ def match_kenney_assets(
         wall_anchor = get_wall_anchor(asset["id"], f.category)
 
         surface_y = 0.0
-        if f.stack_parent_id:
+        if f.stack_parent_id and f.stack_mode == "on_top":
             parent = by_fid.get(f.stack_parent_id)
             if parent:
                 parent_asset = _pick_model(parent, catalog, by_id, by_cat)
-                surface_y = height_for_model(parent_asset["id"], catalog)
+                # Parent meshes are scaled to fit their footprint; the surface
+                # height scales with them.
+                parent_scale = _scale_for_fit(parent, parent_asset)
+                surface_y = (
+                    height_for_model(parent_asset["id"], catalog)
+                    * parent_scale[1]
+                )
+        elif f.stack_mode == "under" or role_for_model(asset["id"]) == "rug":
+            # Lift rugs slightly off the floor plane to avoid z-fighting.
+            surface_y = RUG_Y_OFFSET_M
 
         out.append(
             KenneyPlacement(

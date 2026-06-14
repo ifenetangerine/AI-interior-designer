@@ -1,0 +1,165 @@
+# Role-based relations to room zone anchors.
+# kind → relation_kinds.ip_type; hard → CP-SAT hard vs objective penalty.
+
+version: 1
+
+relation_kinds:
+  under_centered:
+    ip_type: centered_under
+    default_weight: 12
+  on_surface:
+    ip_type: on_top_of
+    default_weight: 10
+  flank_left:
+    ip_type: flank
+    side: left
+    default_weight: 16
+  flank_right:
+    ip_type: flank
+    side: right
+    default_weight: 16
+  facing:
+    ip_type: facing
+    default_weight: 10
+  in_front_of:
+    ip_type: in_front_of
+    default_weight: 10
+  adjacent:
+    ip_type: adjacent
+    default_weight: 8
+  against_wall:
+    ip_type: against_wall
+    default_weight: 12
+  seats_around:
+    ip_type: seats_around
+    default_weight: 14
+  relative_offset:
+    ip_type: relative_position
+    default_weight: 8
+  adjacent_chain:
+    ip_type: adjacent_chain
+    default_weight: 16
+  symmetric_pair:
+    ip_type: symmetric_pair
+    default_weight: 12
+
+roles:
+  bed:
+    is_anchor: true
+    relations:
+      - {room_types: [bedroom], anchor_roles: [bed], kind: against_wall, wall: west, hard: false, priority: 1}
+
+  desk:
+    is_anchor: true
+    relations:
+      - {room_types: [bedroom], anchor_roles: [desk], kind: against_wall, wall: east, hard: false, priority: 1}
+
+  dresser:
+    is_anchor: true
+    relations:
+      - {room_types: [bedroom], anchor_roles: [dresser], kind: against_wall, wall: north, hard: false, priority: 1}
+
+  tv:
+    is_anchor: true
+    relations:
+      - {room_types: [living_room], anchor_roles: [tv], kind: against_wall, wall: north, hard: false, priority: 1}
+      - {room_types: [living_room], anchor_roles: [tv], kind: on_surface, target_child_roles: [nightstand], hard: false, priority: 2}
+
+  bookshelf:
+    is_anchor: true
+    relations:
+      - {room_types: [living_room], anchor_roles: [bookshelf], kind: against_wall, wall: north, hard: false, priority: 1}
+
+  storage_cabinet:
+    is_anchor: true
+    relations:
+      - {room_types: [living_room], anchor_roles: [storage_cabinet], kind: against_wall, wall: north, hard: false, priority: 1}
+
+  dining_table:
+    is_anchor: true
+    relations:
+      - {room_types: [kitchen], anchor_roles: [dining_table], kind: relative_offset, hard: false, priority: 1}
+
+  sink:
+    is_anchor: true
+    relations:
+      - {room_types: [kitchen], anchor_roles: [sink], kind: against_wall, wall: north, hard: false, priority: 1}
+
+  counter_bar:
+    is_anchor: true
+    relations:
+      - {room_types: [kitchen], anchor_roles: [counter_bar], kind: against_wall, wall: north, hard: false, priority: 1}
+      - {room_types: [kitchen], anchor_roles: [sink], kind: adjacent_chain, hard: false, priority: 2}
+
+  nightstand:
+    relations:
+      - {room_types: [bedroom], anchor_roles: [bed], kind: flank_left, hard: false, priority: 1}
+      - {room_types: [bedroom], anchor_roles: [bed], kind: symmetric_pair, hard: false, priority: 2, additive: true}
+      - {room_types: [living_room], anchor_roles: [tv], target_child_roles: [sofa], kind: adjacent, hard: false, weight: 10, priority: 3}
+
+  wardrobe:
+    relations:
+      - {room_types: [bedroom], anchor_roles: [bed], kind: against_wall, wall: north, hard: false, priority: 1}
+      - {room_types: [bedroom], anchor_roles: [bed], kind: adjacent, hard: false, priority: 2, additive: true}
+
+  rug:
+    relations:
+      - {room_types: [living_room], anchor_roles: [tv], via_descendant_of: coffee_table, kind: under_centered, hard: false, weight: 16, priority: 1}
+      - {room_types: [bedroom], anchor_roles: [bed], kind: under_centered, hard: false, weight: 16, priority: 1}
+
+  lamp:
+    relations:
+      - {room_types: [bedroom], anchor_roles: [bed, desk, dresser], target_child_roles: [nightstand, desk, dresser], kind: on_surface, surface_kind: table, hard: false, priority: 1}
+      - {room_types: [living_room], anchor_roles: [tv, bookshelf, storage_cabinet], target_child_roles: [sofa, chair], kind: adjacent, surface_kind: floor, hard: false, priority: 2}
+      - {room_types: [bedroom], anchor_roles: [bed, desk], target_child_roles: [nightstand, desk], kind: adjacent, surface_kind: floor, hard: false, priority: 3}
+      - {room_types: [kitchen], anchor_roles: [dining_table], kind: adjacent, surface_kind: floor, hard: false, priority: 4}
+
+  plant:
+    relations:
+      - {room_types: [living_room], anchor_roles: [bookshelf, storage_cabinet], kind: adjacent, hard: false, priority: 1}
+      - {room_types: [bedroom], anchor_roles: [dresser, desk], kind: adjacent, hard: false, priority: 1}
+      - {room_types: [kitchen], anchor_roles: [dining_table], kind: adjacent, hard: false, priority: 1}
+
+  decor:
+    relations:
+      - {room_types: [kitchen], anchor_roles: [sink], target_child_roles: [counter_base], kind: on_surface, hard: false, priority: 2, additive: true}
+      - {room_types: ["*"], anchor_roles: [bed, tv, dining_table, bookshelf, desk, dresser, sink, storage_cabinet], kind: adjacent, hard: false, priority: 5}
+
+  chair:
+    relations:
+      - {room_types: [bedroom], anchor_roles: [desk], kind: in_front_of, distance_m: 0.7, hard: false, priority: 1}
+      - {room_types: [kitchen], anchor_roles: [dining_table], kind: seats_around, hard: false, priority: 1}
+      - {room_types: [living_room], anchor_roles: [tv], kind: facing, hard: false, priority: 1, additive: true}
+      - {room_types: [living_room], anchor_roles: [tv], target_child_roles: [coffee_table], kind: adjacent, hard: false, weight: 6, priority: 2}
+      - {room_types: [living_room], anchor_roles: [bookshelf], kind: adjacent, hard: false, priority: 3}
+
+  bar_stool:
+    relations:
+      - {room_types: [kitchen], anchor_roles: [counter_bar], kind: in_front_of, distance_m: 0.6, hard: false, priority: 1, additive: true}
+      - {room_types: [kitchen], anchor_roles: [counter_bar], kind: symmetric_pair, hard: false, priority: 2}
+
+  sofa:
+    relations:
+      - {room_types: [living_room], anchor_roles: [tv], kind: facing, hard: false, priority: 1}
+      - {room_types: [living_room], anchor_roles: [tv], kind: against_wall, wall: south, hard: false, priority: 2}
+
+  coffee_table:
+    relations:
+      - {room_types: [living_room], anchor_roles: [tv], via_descendant_of: sofa, target_child_roles: [sofa], kind: in_front_of, distance_m: 0.5, hard: false, weight: 14, priority: 1}
+
+  counter_end:
+    relations:
+      - {room_types: [kitchen], anchor_roles: [sink], kind: adjacent_chain, hard: false, priority: 1}
+
+  counter_base:
+    relations:
+      - {room_types: [kitchen], anchor_roles: [sink], kind: adjacent_chain, hard: false, priority: 1}
+
+  stove:
+    relations:
+      - {room_types: [kitchen], anchor_roles: [sink], kind: adjacent_chain, hard: false, priority: 1}
+
+  fridge:
+    relations:
+      - {room_types: [kitchen], anchor_roles: [sink], kind: against_wall, wall: north, hard: false, priority: 1}
+      - {room_types: [kitchen], anchor_roles: [sink], kind: adjacent, hard: false, priority: 2}

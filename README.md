@@ -38,7 +38,7 @@ python scripts/build_kenney_catalog.py
 
 For each room, the LLM (default path):
 
-1. Receives a **room-filtered Kenney catalog** (model ids, roles, footprints) in the prompt
+1. Receives the **full Kenney catalog** (model ids, roles, footprints) in the prompt
 2. Outputs a **layout draft** with `placements[]`: `placement_order`, `center_x_m`, `center_z_m`, `orientation` (0|1)
 3. Passes validation (allowed models, bounds, piece counts, ~65% max floor coverage)
 4. IP refine nudges pieces only to fix overlap while staying near LLM hints
@@ -135,6 +135,38 @@ In the browser:
 Production UI build (optional): `cd web && npm run build`, then open `http://localhost:8000/app/`.
 
 **Orange boxes** mean the Kenney OBJ failed to load (not the real models). The viewer loads from `kenney_furniture-kit` via `/kenney/*.obj`. Both servers must be running (API on 8000, Vite on 5173) so the dev proxy can fetch models. Check the browser console and the status panel for load errors.
+
+### Golden layout editor + preference training
+
+The 3D viewer has three tabs: **Pipeline**, **Golden editor**, and **Preference**.
+
+**Golden editor** — author few-shot reference layouts with live 3D Kenney models:
+
+1. Set room type and aspect ratio (presets or wall drag).
+2. Open **Catalog** — drag a model onto the floor, or click then click the floor.
+3. Click furniture in 3D to select; drag to move; **R** or ↻ to rotate.
+4. Toggle **Anchor** and set **zone** per piece; edit `relative_to` / `on_surface_of`.
+5. Give each layout a **unique Golden ID** (e.g. `bedroom_4x3_5_v2`) — same ID overwrites the previous file.
+6. Check **Use as LLM few-shot example** — all saved layouts with this checked (matching room type) feed the planner.
+7. **Validate** / **Save golden** → `data/golden_layouts/` (unlimited files; **Load existing** lists all).
+
+**LLM planner** (OpenAI path) — sequential placement with suggested anchors:
+
+1. Few-shot goldens injected into the prompt when available.
+2. Step 1: LLM places zone anchors (`composition_role: anchor`).
+3. Step 2+: expand each anchor zone with linked children.
+4. Anchor roles in YAML are **suggestions**, not hard-coded `placement_order` slots.
+
+**Preference training** — hierarchical θ (~25 params/room: globals + kind bundles + metric targets):
+
+1. Select a saved golden layout.
+2. **Generate A/B pair** — block-perturbed θ (global / kind / metric); hints disabled.
+3. Toggle **Show A / Show B**, then **Pick A**, **Pick B**, or **Tie**.
+4. Phase A nudges `theta_current` (`θ += 0.15 × (θ_winner − θ_loser)`).
+5. After 100 comparisons, Phase B fits `R(features)` on expanded layout metrics.
+6. **Export learned YAML** writes `config/preference_theta.learned.yaml` and scales `config/furniture_anchor_relations.learned.yaml`.
+
+State: `data/preference/theta_state.json`, `data/preference/comparisons.jsonl`.
 
 ## Tests
 

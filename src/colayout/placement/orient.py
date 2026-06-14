@@ -19,6 +19,7 @@ INTO_ROOM: dict[str, tuple[float, float]] = {
 
 TABLE_CATEGORIES = frozenset({"desk", "dining_table", "coffee_table", "counter_bar"})
 CHAIR_CATEGORIES = frozenset({"chair", "bar_stool"})
+SEATING_CATEGORIES = frozenset({"sofa", "chair"})
 FLANK_FACE_CATEGORIES = frozenset({"nightstand", "side_table"})
 WALL_FACE_CATEGORIES = frozenset(
     {
@@ -29,6 +30,8 @@ WALL_FACE_CATEGORIES = frozenset(
         "fridge",
         "counter",
         "tv_stand",
+        "tv",
+        "bookshelf",
         "sink",
         "stove",
     }
@@ -107,6 +110,7 @@ def apply_facing_orientations(
     catalog = catalog or load_kenney_catalog()
     by_id = _by_id(placement.furniture)
     updates: dict[str, int] = {}
+    desk_faces_chair: set[str] = set()
 
     for c in graph.constraints:
         if c.type in (ConstraintType.FACING, ConstraintType.IN_FRONT_OF):
@@ -116,18 +120,30 @@ def apply_facing_orientations(
             dst = by_id.get(c.furniture_b)
             if not src or not dst:
                 continue
-            if src.category in CHAIR_CATEGORIES or dst.category in TABLE_CATEGORIES:
-                face_from, face_to = src, dst
+            if src.category in CHAIR_CATEGORIES and dst.category in TABLE_CATEGORIES:
+                chair, table = src, dst
+            elif dst.category in CHAIR_CATEGORIES and src.category in TABLE_CATEGORIES:
+                chair, table = dst, src
+            elif src.category in CHAIR_CATEGORIES or dst.category in TABLE_CATEGORIES:
+                chair, table = src, dst
             elif dst.category in CHAIR_CATEGORIES:
-                face_from, face_to = dst, src
+                chair, table = dst, src
             else:
-                face_from, face_to = src, dst
-            updates[face_from.id] = best_orientation(
-                face_from.model_id,
-                face_from.category,
-                _toward(face_from, face_to),
+                chair, table = src, dst
+            updates[chair.id] = best_orientation(
+                chair.model_id,
+                chair.category,
+                _toward(chair, table),
                 catalog,
             )
+            if chair.category in CHAIR_CATEGORIES and table.category in TABLE_CATEGORIES:
+                updates[table.id] = best_orientation(
+                    table.model_id,
+                    table.category,
+                    _toward(table, chair),
+                    catalog,
+                )
+                desk_faces_chair.add(table.id)
 
         elif c.type == ConstraintType.FLANK:
             if not c.furniture_a or not c.furniture_b:
@@ -158,40 +174,37 @@ def apply_facing_orientations(
                     catalog,
                 )
 
+    # TVs face the main seating piece (sofa, else nearest chair).
+    tvs = [f for f in placement.furniture if f.category in ("tv", "tv_stand")]
+    seats = [f for f in placement.furniture if f.category == "sofa"] or [
+        f for f in placement.furniture if f.category == "chair"
+    ]
+    tv_faces_seat: set[str] = set()
+    if seats:
+        for tv in tvs:
+            seat = min(
+                seats,
+                key=lambda s: abs(s.centroid_i - tv.centroid_i)
+                + abs(s.centroid_j - tv.centroid_j),
+            )
+            updates[tv.id] = best_orientation(
+                tv.model_id, tv.category, _toward(tv, seat), catalog
+            )
+            tv_faces_seat.add(tv.id)
+
     facing_locked: set[str] = set()
     for c in graph.constraints:
         if c.type in (ConstraintType.FACING, ConstraintType.IN_FRONT_OF):
             if c.furniture_a:
                 facing_locked.add(c.furniture_a)
 
-    arch = graph.architecture
-    if (
-        arch
-        and arch.focal_center_x_m is not None
-        and arch.focal_center_z_m is not None
-    ):
-        cell_m = placement.modulor_cell_m
-        fx = arch.focal_center_x_m
-        fz = arch.focal_center_z_m
-        for item in placement.furniture:
-            if item.id in facing_locked:
-                continue
-            if item.category not in ("sofa", "tv_stand"):
-                continue
-            cx = item.centroid_i * cell_m
-            cz = item.centroid_j * cell_m
-            updates[item.id] = best_orientation(
-                item.model_id,
-                item.category,
-                (fx - cx, fz - cz),
-                catalog,
-            )
-
     for c in graph.constraints:
         if c.type != ConstraintType.AGAINST_WALL or not c.furniture or not c.wall:
             continue
         item = by_id.get(c.furniture)
         if not item or item.category == "bed":
+            continue
+        if item.id in desk_faces_chair or item.id in tv_faces_seat:
             continue
         if item.category not in WALL_FACE_CATEGORIES:
             continue
@@ -200,6 +213,26 @@ def apply_facing_orientations(
             updates[item.id] = best_orientation(
                 item.model_id, item.category, target, catalog
             )
+
+    # Pedestals face the same way as the piece stacked on them (e.g. the
+    # console under the TV turns with the screen).
+    for c in graph.constraints:
+        if c.type != ConstraintType.ON_TOP_OF or not c.furniture_a or not c.furniture_b:
+            continue
+        child = by_id.get(c.furniture_a)
+        parent = by_id.get(c.furniture_b)
+        if not child or not parent:
+            continue
+        # Only follow children that got an explicit facing decision (e.g. a
+        # TV aimed at the sofa). Orientation-agnostic decor like lamps must
+        # not override the pedestal's own facing.
+        child_orient = updates.get(child.id)
+        if child_orient is None:
+            continue
+        cf = _world_front(child.model_id, child.category, child_orient, catalog)
+        updates[parent.id] = best_orientation(
+            parent.model_id, parent.category, cf, catalog
+        )
 
     if not updates:
         return placement

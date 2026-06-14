@@ -1,0 +1,84 @@
+{
+  "room_types": {
+    "living_room": {
+      "theta_current": {
+        "global.balance": 0.29956484924815685,
+        "global.proportion": 0.2,
+        "global.rhythm": 0.1,
+        "global.walk": 0.7,
+        "global.rel": 1.0,
+        "living_room.kind.adjacent.weight": 8.0,
+        "living_room.kind.in_front_of.weight": 11.163997897990676,
+        "living_room.kind.facing.weight": 10.0,
+        "living_room.kind.on_top_of.weight": 10.481928914929087,
+        "living_room.kind.centered_under.weight": 12.0,
+        "living_room.kind.against_wall.weight": 12.0,
+        "living_room.kind.symmetric_pair.weight": 11.07135310037043,
+        "living_room.kind.relative_position.weight": 8.0,
+        "metric.adjacent_gap_m": 0.0,
+        "metric.symmetry_strength": 12.437498536124268,
+        "metric.on_surface_strength": 10.0,
+        "metric.orphan_radius_m": 2.0,
+        "metric.orphan_weight": 4.0,
+        "metric.door_clearance_min_m": 0.9,
+        "metric.sofa_coffee_dist_m": 0.4,
+        "metric.sofa_tv_dist_m": 3.2349186773037517,
+        "metric.wall_inset_seating_m": 0.0
+      },
+      "comparison_count": 2
+    },
+    "bedroom": {
+      "theta_current": {
+        "global.balance": 0.3342565494135705,
+        "global.proportion": 0.174193647196615,
+        "global.rhythm": 0.06672324853980022,
+        "global.walk": 0.6845970692094397,
+        "global.rel": 1.0,
+        "bedroom.kind.adjacent.weight": 6.120094776731794,
+        "bedroom.kind.in_front_of.weight": 4.617611547847563,
+        "bedroom.kind.facing.weight": 10.974303932594728,
+        "bedroom.kind.on_top_of.weight": 8.40207064736444,
+        "bedroom.kind.centered_under.weight": 8.573801442678711,
+        "bedroom.kind.against_wall.weight": 11.965337708922597,
+        "bedroom.kind.symmetric_pair.weight": 11.111661100638218,
+        "bedroom.kind.relative_position.weight": 6.604642897019254,
+        "metric.adjacent_gap_m": 0.0012907458695466912,
+        "metric.symmetry_strength": 15.180193848282023,
+        "metric.on_surface_strength": 10.0,
+        "metric.orphan_radius_m": 2.04280862909115,
+        "metric.orphan_weight": 4.967499999999999,
+        "metric.door_clearance_min_m": 0.8494370205901826,
+        "metric.chair_desk_dist_m": 0.6200722456360838,
+        "metric.wall_inset_sleep_m": 0.047443425957105476,
+        "metric.wall_inset_storage_m": 0.0
+      },
+      "comparison_count": 23
+    },
+    "kitchen": {
+      "theta_current": {
+        "global.balance": 0.3,
+        "global.proportion": 0.2225,
+        "global.rhythm": 0.09052998494767933,
+        "global.walk": 0.6549999999999999,
+        "global.rel": 1.0,
+        "kitchen.kind.adjacent.weight": 8.060010305405276,
+        "kitchen.kind.in_front_of.weight": 10.0,
+        "kitchen.kind.facing.weight": 10.0,
+        "kitchen.kind.on_top_of.weight": 10.0,
+        "kitchen.kind.centered_under.weight": 12.901726305489078,
+        "kitchen.kind.against_wall.weight": 12.0,
+        "kitchen.kind.symmetric_pair.weight": 11.033953647460148,
+        "kitchen.kind.relative_position.weight": 9.035,
+        "metric.adjacent_gap_m": 0.0,
+        "metric.symmetry_strength": 13.035,
+        "metric.on_surface_strength": 10.764435212117741,
+        "metric.orphan_radius_m": 1.9800084779752674,
+        "metric.orphan_weight": 4.0,
+        "metric.door_clearance_min_m": 0.9,
+        "metric.bar_stool_dist_m": 0.6,
+        "metric.wall_inset_storage_m": 0.0
+      },
+      "comparison_count": 3
+    }
+  }
+}

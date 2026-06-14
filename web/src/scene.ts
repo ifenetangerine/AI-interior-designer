@@ -7,9 +7,14 @@ export interface SceneContext {
   camera: THREE.PerspectiveCamera;
   controls: OrbitControls;
   furnitureGroup: THREE.Group;
+  start: () => void;
+  stop: () => void;
 }
 
-export function createScene(container: HTMLElement): SceneContext {
+export function createScene(
+  container: HTMLElement,
+  options?: { animate?: boolean }
+): SceneContext {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x1a1a22);
 
@@ -53,14 +58,30 @@ export function createScene(container: HTMLElement): SceneContext {
   };
   window.addEventListener("resize", onResize);
 
-  function animate() {
-    requestAnimationFrame(animate);
+  let running = options?.animate !== false;
+  let frameId = 0;
+
+  function animate(): void {
+    if (!running) return;
+    frameId = requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
   }
-  animate();
 
-  return { renderer, scene, camera, controls, furnitureGroup };
+  const start = (): void => {
+    if (running) return;
+    running = true;
+    animate();
+  };
+
+  const stop = (): void => {
+    running = false;
+    cancelAnimationFrame(frameId);
+  };
+
+  if (running) animate();
+
+  return { renderer, scene, camera, controls, furnitureGroup, start, stop };
 }
 
 export function setOrbitTarget(
@@ -75,4 +96,51 @@ export function setOrbitTarget(
   const dist = Math.max(width_m, length_m) * 1.4 + 2;
   camera.position.set(tx + dist * 0.6, dist * 0.7, tz + dist * 0.6);
   controls.update();
+}
+
+const WALL_HEIGHT = 2.4;
+
+/** Simple room floor + walls for preference A/B panes. */
+export function setRoomShell(
+  group: THREE.Group,
+  width_m: number,
+  length_m: number
+): void {
+  while (group.children.length) {
+    const child = group.children[0];
+    group.remove(child);
+    if (child instanceof THREE.Mesh) {
+      child.geometry.dispose();
+      const m = child.material;
+      if (Array.isArray(m)) m.forEach((x) => x.dispose());
+      else m.dispose();
+    }
+  }
+
+  const floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(width_m, length_m),
+    new THREE.MeshStandardMaterial({ color: 0x2e2e3a })
+  );
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.set(width_m / 2, 0, length_m / 2);
+  floor.receiveShadow = true;
+  group.add(floor);
+
+  const wallMat = new THREE.MeshStandardMaterial({
+    color: 0x4a4a58,
+    transparent: true,
+    opacity: 0.35,
+  });
+  const t = 0.08;
+  const walls: [number, number, number, number, number, number][] = [
+    [width_m / 2, WALL_HEIGHT / 2, -t / 2, width_m, WALL_HEIGHT, t],
+    [width_m / 2, WALL_HEIGHT / 2, length_m + t / 2, width_m, WALL_HEIGHT, t],
+    [-t / 2, WALL_HEIGHT / 2, length_m / 2, t, WALL_HEIGHT, length_m],
+    [width_m + t / 2, WALL_HEIGHT / 2, length_m / 2, t, WALL_HEIGHT, length_m],
+  ];
+  for (const [x, y, z, w, h, d] of walls) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), wallMat);
+    m.position.set(x, y, z);
+    group.add(m);
+  }
 }

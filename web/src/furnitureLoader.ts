@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import type { KenneyPlacement } from "./api";
+import { localFurnitureId } from "./goldenManipulator";
 import { loadKenneyModel } from "./kenneyLoad";
 
 const CLAMP_EPS = 0.02;
@@ -7,6 +8,8 @@ const CLAMP_EPS = 0.02;
 export interface LoadPlacementsOptions {
   room_width_m?: number;
   room_length_m?: number;
+  /** When true, discard this load (another preview superseded it). */
+  isStale?: () => boolean;
 }
 
 function alignToFootprint(model: THREE.Object3D, p: KenneyPlacement): void {
@@ -75,61 +78,109 @@ export function clampModelToBounds(
   }
 }
 
+function disposeObject3D(root: THREE.Object3D): void {
+  root.traverse((o) => {
+    if (o instanceof THREE.Mesh) {
+      o.geometry?.dispose();
+      const m = o.material;
+      if (Array.isArray(m)) m.forEach((x) => x.dispose());
+      else m?.dispose();
+    }
+  });
+}
+
+function clearGroup(group: THREE.Group): void {
+  while (group.children.length) {
+    const child = group.children[0];
+    group.remove(child);
+    disposeObject3D(child);
+  }
+}
+
+function placementDrawOrder(p: KenneyPlacement): number {
+  const id = p.model_id.toLowerCase();
+  if (id.includes("rug")) return 0;
+  if (id.includes("lamp")) return 2;
+  return 1;
+}
+
+export async function buildPlacementMesh(
+  p: KenneyPlacement,
+  roomW: number,
+  roomL: number
+): Promise<THREE.Object3D> {
+  try {
+    const model = await loadKenneyModel(p.obj_url, p.mtl_url);
+    alignToFootprint(model, p);
+    applyWallAnchor(model, p.footprint_m, p.wall_anchor ?? undefined, roomW, roomL);
+    clampModelToBounds(model, p.footprint_m, roomW, roomL);
+    model.userData = {
+      furniture_id: localFurnitureId(p.furniture_id),
+      category: p.category,
+    };
+    return model;
+  } catch (e) {
+    console.error("Kenney load failed", p, e);
+    const [x0, z0, x1, z1] = p.footprint_m;
+    const fw = new THREE.Mesh(
+      new THREE.BoxGeometry(x1 - x0, 0.35, z1 - z0),
+      new THREE.MeshStandardMaterial({
+        color: 0xff6644,
+        transparent: true,
+        opacity: 0.7,
+      })
+    );
+    fw.position.set((x0 + x1) / 2, 0.175, (z0 + z1) / 2);
+    fw.userData = {
+      furniture_id: localFurnitureId(p.furniture_id),
+      category: p.category,
+    };
+    return fw;
+  }
+}
+
 export async function loadPlacements(
   group: THREE.Group,
   placements: KenneyPlacement[],
   onProgress?: (msg: string) => void,
   options?: LoadPlacementsOptions
-): Promise<void> {
+): Promise<boolean> {
   const roomW = options?.room_width_m ?? 20;
   const roomL = options?.room_length_m ?? 20;
-
-  while (group.children.length) {
-    const child = group.children[0];
-    group.remove(child);
-    child.traverse((o) => {
-      if (o instanceof THREE.Mesh) {
-        o.geometry?.dispose();
-        const m = o.material;
-        if (Array.isArray(m)) m.forEach((x) => x.dispose());
-        else m?.dispose();
-      }
-    });
-  }
+  const stale = options?.isStale ?? (() => false);
 
   let loaded = 0;
   let failed = 0;
+  const meshes: THREE.Object3D[] = [];
 
-  for (const p of placements) {
+  const ordered = [...placements].sort(
+    (a, b) => placementDrawOrder(a) - placementDrawOrder(b)
+  );
+
+  for (const p of ordered) {
+    if (stale()) return false;
     onProgress?.(`Loading ${p.model_id}…`);
     try {
-      const model = await loadKenneyModel(p.obj_url, p.mtl_url);
-      alignToFootprint(model, p);
-      applyWallAnchor(model, p.footprint_m, p.wall_anchor, roomW, roomL);
-      clampModelToBounds(model, p.footprint_m, roomW, roomL);
-      model.userData = { furniture_id: p.furniture_id, category: p.category };
-      group.add(model);
+      const model = await buildPlacementMesh(p, roomW, roomL);
+      if (stale()) return false;
+      meshes.push(model);
       loaded++;
     } catch (e) {
       failed++;
       const msg = e instanceof Error ? e.message : String(e);
       onProgress?.(`Failed ${p.model_id}: ${msg}`);
-      console.error("Kenney load failed", p, e);
-      const [x0, z0, x1, z1] = p.footprint_m;
-      const fw = new THREE.Mesh(
-        new THREE.BoxGeometry(x1 - x0, 0.35, z1 - z0),
-        new THREE.MeshStandardMaterial({
-          color: 0xff6644,
-          transparent: true,
-          opacity: 0.7,
-        })
-      );
-      fw.position.set((x0 + x1) / 2, 0.175, (z0 + z1) / 2);
-      group.add(fw);
     }
+  }
+
+  if (stale()) return false;
+
+  clearGroup(group);
+  for (const mesh of meshes) {
+    group.add(mesh);
   }
 
   onProgress?.(
     `Meshes: ${loaded} Kenney models, ${failed} fallbacks (orange = load error).`
   );
+  return true;
 }

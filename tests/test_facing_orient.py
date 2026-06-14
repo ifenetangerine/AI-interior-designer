@@ -39,12 +39,15 @@ def test_llm_refine_desk_chair_and_sofa_orientations():
     by_id = {f.id: f for f in bundle.placement.furniture}
     desk = by_id["desk"]
     chair = by_id["desk_chair"]
-    fx, fz = _world_front(chair.model_id, chair.category, chair.orientation, catalog)
+    cfx, cfz = _world_front(chair.model_id, chair.category, chair.orientation, catalog)
+    dfx, dfz = _world_front(desk.model_id, desk.category, desk.orientation, catalog)
     tx = desk.centroid_i - chair.centroid_i
     tz = desk.centroid_j - chair.centroid_j
     mag = math.hypot(tx, tz)
     assert mag > 0.1
-    assert fx * (tx / mag) + fz * (tz / mag) > 0.85
+    ux, uz = tx / mag, tz / mag
+    assert cfx * ux + cfz * uz > 0.85
+    assert dfx * (-ux) + dfz * (-uz) > 0.85
 
 
 def test_nightstand_faces_into_room_west_wall_bedroom():

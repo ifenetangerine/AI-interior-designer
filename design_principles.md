@@ -29,7 +29,7 @@ furniture, not only select it. Output one ordered `placements[]` list:
 | Room | Anchor (order 1) | Implied layout |
 |------|------------------|----------------|
 | bedroom | bed on west wall | nightstands flank bed; desk + chair on east wall |
-| living_room | main sofa on south wall | coffee table in front; TV opposite; accent seating around |
+| living_room | TV on north/focal wall | sofa facing screen; coffee table; accent seating around TV axis |
 | kitchen | dining table (floats) | chairs around table; order 2 sink on north wall with counter run, stove, fridge |
 
 The IP solver enforces **hard** constraints only: no overlap, wall hugging,

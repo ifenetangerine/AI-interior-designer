@@ -8,6 +8,7 @@ from colayout.catalog.kenney_index import (
     load_catalog,
     role_for_model,
 )
+from colayout.llm.anchor_structure import ensure_anchor_children
 from colayout.llm.mock_layouts import load_mock_layout
 from colayout.llm.room_program import (
     DECOR_BY_TIER,
@@ -106,6 +107,8 @@ def expand_layout_draft_for_tier(
             break
 
     if not to_add:
+        draft, anchor_msgs = ensure_anchor_children(draft, room)
+        messages.extend(anchor_msgs)
         return draft, messages
 
     new_placements = list(draft.placements)
@@ -149,4 +152,7 @@ def expand_layout_draft_for_tier(
         next_order += 1
         messages.append(f"(info) auto-added {role} as '{fid}' for {tier} {room.type}")
 
-    return draft.model_copy(update={"placements": new_placements}), messages
+    draft = draft.model_copy(update={"placements": new_placements})
+    draft, anchor_msgs = ensure_anchor_children(draft, room)
+    messages.extend(anchor_msgs)
+    return draft, messages

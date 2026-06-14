@@ -30,7 +30,7 @@ PRINCIPLES: tuple[PrincipleEntry, ...] = (
     ),
     PrincipleEntry(
         "Emphasis",
-        "Orient seating toward the room focal point. Place TV or art on the focal wall.",
+        "Orient seating toward the TV anchor. Place the TV on the viewing wall.",
     ),
     PrincipleEntry(
         "Balance",
@@ -80,11 +80,12 @@ def placement_guidance_for_room(room: RoomSpec) -> str:
     w, l = room.width_m, room.length_m
     lines = [
         principles_guidance_block(),
-        anchor_placement_guidance(room.type),
+        anchor_placement_guidance(room),
         required_furniture_prompt(room.type),
         "Surface stacking:",
         "- Table lamps: set on_surface_of to nightstand/side_table/coffee_table id; same center as surface.",
-        "- Rugs: on_surface_of coffee_table or sofa (under seating zone).",
+        "- Rugs only: on_surface_of coffee_table or sofa (under seating zone; same center as parent).",
+        "- Never on_surface_of for coffee_table, side_table, dining_table, or desk — floor furniture; use relative_to and distinct centers.",
         "Wall anchoring:",
         "- Storage and built-ins: back against a wall.",
         f"- Room size: {w:.1f} m × {l:.1f} m (tier {tier}).",
@@ -99,7 +100,7 @@ def placement_guidance_for_room(room: RoomSpec) -> str:
         )
     elif room.type == "living_room":
         lines.append(
-            "- Sofa south facing focal/TV; coffee table between; fill seating zone at standard tier."
+            "- Sofa facing TV anchor; coffee table between; fill seating zone at standard tier."
         )
     elif room.type == "kitchen":
         lines.append(

@@ -1,4 +1,768 @@
 {
-  "labels": {},
+  "labels": {
+    "bathroomCabinetDrawer": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "bathroomMirror": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "bathroomSink": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "bathroomSinkSquare": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "bear": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "bedBunk": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "bedDouble": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "bedSingle": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "bench": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "benchCushion": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "benchCushionLow": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "bookcaseClosed": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00",
+      "wall_anchor": "back_center"
+    },
+    "bookcaseClosedDoors": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00",
+      "wall_anchor": "back_center"
+    },
+    "bookcaseClosedWide": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00",
+      "wall_anchor": "back_center"
+    },
+    "bookcaseOpen": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00",
+      "wall_anchor": "back_center"
+    },
+    "bookcaseOpenLow": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00",
+      "wall_anchor": "back_center"
+    },
+    "books": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "cabinetBed": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "cabinetBedDrawer": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "cabinetBedDrawerTable": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "cabinetTelevision": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00",
+      "wall_anchor": "back_center"
+    },
+    "cabinetTelevisionDoors": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00",
+      "wall_anchor": "back_center"
+    },
+    "cardboardBoxClosed": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "cardboardBoxOpen": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "chair": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "chairCushion": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "chairDesk": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "chairModernCushion": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "chairModernFrameCushion": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "chairRounded": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "coatRack": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "coatRackStanding": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "computerKeyboard": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "computerMouse": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "computerScreen": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "desk": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "deskCorner": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenBar": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenBarEnd": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenBlender": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenCabinet": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenCabinetCornerInner": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenCabinetCornerRound": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenCabinetDrawer": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenCabinetUpper": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenCabinetUpperCorner": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenCabinetUpperDouble": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenCabinetUpperLow": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenCoffeeMachine": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenFridge": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenFridgeBuiltIn": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenFridgeLarge": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenFridgeSmall": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenMicrowave": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenSink": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenStove": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "kitchenStoveElectric": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "lampRoundFloor": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "lampRoundTable": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "lampSquareCeiling": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "lampSquareFloor": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "lampSquareTable": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "lampWall": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "laptop": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "loungeChair": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "loungeChairRelax": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "loungeDesignChair": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "loungeDesignSofa": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "loungeDesignSofaCorner": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "loungeSofa": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "loungeSofaCorner": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "loungeSofaLong": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "loungeSofaOttoman": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "pillow": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "pillowBlue": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "pillowBlueLong": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "pillowLong": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "plantSmall1": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "plantSmall2": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "plantSmall3": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "pottedPlant": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "radio": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "rugDoormat": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "rugRectangle": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "rugRound": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "rugRounded": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "rugSquare": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "sideTable": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "sideTableDrawers": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "speaker": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "speakerSmall": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "stoolBar": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "stoolBarSquare": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "table": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "tableCloth": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "tableCoffee": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "tableCoffeeGlass": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "tableCoffeeGlassSquare": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "tableCoffeeSquare": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "tableCross": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "tableCrossCloth": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "tableGlass": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "tableRound": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "televisionAntenna": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "televisionModern": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "televisionVintage": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "toaster": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    },
+    "trashcan": {
+      "front_dir": [
+        0.0,
+        -1.0
+      ],
+      "labeled_at": "2026-06-10T05:21:32.202168+00:00"
+    }
+  },
   "skipped": []
 }

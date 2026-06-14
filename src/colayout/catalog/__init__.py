@@ -7,13 +7,19 @@ from colayout.catalog.kenney_index import (
     placement_category,
     role_for_model,
 )
+from colayout.catalog.resolve_model import (
+    catalog_roles_prompt_json,
+    resolve_model_from_intent,
+)
 
 __all__ = [
     "load_catalog",
     "catalog_for_room",
     "catalog_prompt_json",
+    "catalog_roles_prompt_json",
     "footprint_for_model",
     "role_for_model",
     "placement_category",
     "is_allowed_in_room",
+    "resolve_model_from_intent",
 ]

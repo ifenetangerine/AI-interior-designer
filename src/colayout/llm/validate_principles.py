@@ -10,6 +10,11 @@ from colayout.design.principle_registry import (
     COFFEE_SOFA_MAX_M,
     COFFEE_SOFA_MIN_M,
 )
+from colayout.llm.anchor_structure import (
+    check_anchor_structure,
+    check_orphan_placements,
+    check_relative_position_sanity,
+)
 from colayout.llm.room_program import anchor_category, constraint_referenced_ids
 from colayout.schemas.floor import RoomSpec
 from colayout.schemas.layout_draft import FurniturePlacementDraft
@@ -120,6 +125,9 @@ def validate_design_principles(
 ) -> list[str]:
     warnings: list[str] = []
     for fn in (
+        lambda: check_anchor_structure(placements, room),
+        lambda: check_orphan_placements(placements, room),
+        lambda: check_relative_position_sanity(placements),
         lambda: check_lateral_balance(placements, room),
         lambda: check_sofa_coffee_proportion(placements),
         lambda: check_rhythm_spacing(placements),

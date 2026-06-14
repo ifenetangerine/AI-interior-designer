@@ -1,10 +1,21 @@
 """LLM refine pipeline: soft IP pass with hints."""
 
+from unittest.mock import patch
+
 from colayout.grid.discretize import discretize_room
-from colayout.ip.solver import SolveConfig, solve_room_placement
-from colayout.llm.draft_to_hints import draft_to_hints, draft_to_scene_graph
+from colayout.ip.solver import (
+    SolveConfig,
+    placement_satisfies_hard_constraints,
+    solve_room_placement,
+)
+from colayout.llm.draft_to_hints import (
+    draft_to_hints,
+    draft_to_scene_graph,
+    placement_result_from_draft,
+)
 from colayout.llm.provider import MockLLMProvider
 from colayout.pipeline.place import place_room
+from colayout.placement.orient import apply_facing_orientations
 from colayout.schemas.floor import RoomSpec
 from colayout.schemas.layout_draft import FurniturePlacementDraft, RoomLayoutDraft
 
@@ -89,6 +100,54 @@ def test_mock_llm_refine_pipeline():
     result = place_room(room, MockLLMProvider(), modulor_cell_m=0.5)
     assert result is not None
     assert len(result.furniture) >= 2
+
+
+def _single_bed_draft(room_id: str) -> RoomLayoutDraft:
+    return RoomLayoutDraft(
+        room_id=room_id,
+        room_type="bedroom",
+        placements=[
+            FurniturePlacementDraft(
+                id="bed",
+                model_id="bedDouble",
+                placement_order=1,
+                center_x_m=0.56,
+                center_z_m=1.75,
+                orientation=1,
+            ),
+        ],
+    )
+
+
+def test_placement_satisfies_hard_constraints_for_feasible_llm_layout():
+    room = RoomSpec(id="r1", type="bedroom", width_m=4.0, length_m=3.5)
+    draft = _single_bed_draft("r1")
+    grid = discretize_room(room, 0.5)
+    graph = draft_to_scene_graph(draft, room)
+    placement = apply_facing_orientations(
+        placement_result_from_draft(draft, grid), graph
+    )
+    assert placement_satisfies_hard_constraints(
+        placement, graph, grid, soft_constraints=True
+    )
+
+
+def test_llm_refine_always_runs_ip():
+    """IP refine must run even for feasible drafts (objective polish)."""
+    from colayout.pipeline.place import place_room_with_graph
+
+    room = RoomSpec(id="bed1", type="bedroom", width_m=4.0, length_m=3.5)
+    with patch(
+        "colayout.pipeline.place.solve_room_placement",
+        wraps=solve_room_placement,
+    ) as solver:
+        bundle = place_room_with_graph(
+            room, MockLLMProvider(), modulor_cell_m=0.5,
+            placement_mode="llm_refine",
+        )
+    assert bundle is not None
+    assert solver.called
+    assert not any("IP refine skipped" in w for w in (bundle.warnings or []))
 
 
 def test_llm_refine_nightstands_and_desk_chair():

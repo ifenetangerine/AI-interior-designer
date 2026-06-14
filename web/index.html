@@ -7,40 +7,155 @@
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <div id="canvas-container"></div>
-    <aside id="panel">
-      <h1>Room editor</h1>
-      <label>
-        Room type
-        <select id="room-type">
-          <option value="bedroom">Bedroom</option>
-          <option value="living_room">Living room</option>
-          <option value="kitchen">Kitchen</option>
-        </select>
-      </label>
-      <p class="dims">
-        Size: <span id="width-label">4.0</span> m × <span id="length-label">3.5</span> m
-      </p>
-      <p class="hint">Gold = resize walls. Blue = door. Magenta = focal point.</p>
-      <label>
-        Preferences (LLM)
-        <textarea id="preferences" rows="3" placeholder="e.g. add desk and chair, remove wardrobe"></textarea>
-      </label>
-      <label class="checkbox">
-        <input type="checkbox" id="mock-llm" checked />
-        Use mock LLM (offline)
-      </label>
-      <label class="checkbox">
-        <input type="checkbox" id="llm-only" />
-        LLM only (skip IP refine)
-      </label>
-      <p class="hint">When checked, furniture stays at LLM meter positions (grid snap only). Overlaps are not fixed.</p>
-      <div class="buttons">
-        <button type="button" id="btn-random">Random room</button>
-        <button type="button" id="btn-run" class="primary">Run pipeline</button>
+    <aside id="catalog-panel" aria-hidden="true">
+      <div class="catalog-header">
+        <h2>Catalog</h2>
+        <button type="button" id="catalog-close" title="Close catalog">×</button>
       </div>
+      <p class="catalog-hint">Models allowed for the selected room type. Click to place (Golden tab).</p>
+      <label class="catalog-search">
+        Filter
+        <input type="search" id="catalog-filter" placeholder="id, role, category…" />
+      </label>
+      <p class="catalog-count-line"><span id="catalog-count">0 models</span></p>
+      <div id="catalog-list"></div>
+    </aside>
+    <div id="canvas-container"></div>
+    <div id="pref-view" hidden>
+      <div class="pref-split">
+        <div class="pref-pane">
+          <span class="pref-pane-label pick-a">A</span>
+          <div id="pref-canvas-a" class="pref-canvas"></div>
+        </div>
+        <div class="pref-pane">
+          <span class="pref-pane-label pick-b">B</span>
+          <div id="pref-canvas-b" class="pref-canvas"></div>
+        </div>
+      </div>
+    </div>
+    <aside id="panel">
+      <nav class="tab-nav" role="tablist">
+        <button type="button" class="tab-btn active" data-tab="pipeline" role="tab">Pipeline</button>
+        <button type="button" class="tab-btn" data-tab="golden" role="tab">Golden editor</button>
+        <button type="button" class="tab-btn" data-tab="preference" role="tab">Preference</button>
+      </nav>
+
+      <section id="tab-pipeline" class="tab-panel active" role="tabpanel">
+        <h1>Room editor</h1>
+        <label>
+          Room type
+          <select id="room-type">
+            <option value="bedroom">Bedroom</option>
+            <option value="living_room">Living room</option>
+            <option value="kitchen">Kitchen</option>
+          </select>
+        </label>
+        <p class="dims">
+          Size: <span id="width-label">4.0</span> m × <span id="length-label">3.5</span> m
+        </p>
+        <p class="hint">Gold = resize walls. Blue = door.</p>
+        <label>
+          Preferences (LLM)
+          <textarea id="preferences" rows="3" placeholder="e.g. add desk and chair, remove wardrobe"></textarea>
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="mock-llm" checked />
+          Use mock LLM (offline)
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="llm-only" />
+          LLM only (skip IP refine)
+        </label>
+        <p class="hint">LLM only: furniture stays at LLM meter positions (grid snap only). Overlaps are not fixed.</p>
+        <label class="checkbox">
+          <input type="checkbox" id="anchor-debug" checked />
+          Show anchor / child debug panel
+        </label>
+        <div class="buttons">
+          <button type="button" id="btn-catalog">Furniture catalog</button>
+          <button type="button" id="btn-random">Random room</button>
+          <button type="button" id="btn-run" class="primary">Run pipeline</button>
+        </div>
+        <section id="anchor-debug-panel" class="anchor-debug-panel hidden" aria-label="Anchor debug">
+          <h2>Anchor debug</h2>
+          <div id="anchor-debug-content"></div>
+        </section>
+      </section>
+
+      <section id="tab-golden" class="tab-panel" role="tabpanel" hidden>
+        <h1>Golden layout editor</h1>
+        <label>
+          Room type
+          <select id="golden-room-type">
+            <option value="bedroom">Bedroom</option>
+            <option value="living_room">Living room</option>
+            <option value="kitchen">Kitchen</option>
+          </select>
+        </label>
+        <p class="dims">
+          Size: <span id="golden-width-label">4.0</span> m × <span id="golden-length-label">3.5</span> m
+        </p>
+        <div class="preset-row">
+          <span class="preset-label">Presets:</span>
+          <button type="button" class="preset-btn" data-w="4" data-l="3.5">4×3.5</button>
+          <button type="button" class="preset-btn" data-w="5" data-l="4.5">5×4.5</button>
+          <button type="button" class="preset-btn" data-w="5.5" data-l="4.5">5.5×4.5</button>
+          <button type="button" class="preset-btn" data-w="3.5" data-l="3">3.5×3</button>
+          <button type="button" class="preset-btn" data-w="4.5" data-l="4">4.5×4</button>
+        </div>
+        <p class="hint">Drag pieces to move. Select a piece, then drag the small corner arc or press R to rotate in 90° steps. Validate checks bounds and stack links — it will not add furniture or run the IP solver.</p>
+        <label>
+          Golden ID
+          <input type="text" id="golden-id" placeholder="bedroom_4x3_5" />
+          <span class="muted">Unique per layout — reusing an ID overwrites that file.</span>
+        </label>
+        <label>
+          Label
+          <input type="text" id="golden-label" placeholder="Bedroom 4×3.5 golden" />
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="golden-few-shot" checked />
+          Use as LLM few-shot example
+        </label>
+        <label>
+          Load existing
+          <select id="golden-load-select"><option value="">— new —</option></select>
+        </label>
+        <p id="golden-storage-hint" class="muted">Saved layouts: <code>data/golden_layouts/</code> (one <code>.json</code> file per Golden ID)</p>
+        <div class="buttons">
+          <button type="button" id="btn-golden-catalog">Catalog</button>
+          <button type="button" id="btn-golden-add">Add row</button>
+          <button type="button" id="btn-golden-preview">Preview 3D</button>
+          <button type="button" id="btn-golden-validate">Validate</button>
+          <button type="button" id="btn-golden-save" class="primary">Save golden</button>
+        </div>
+        <div id="golden-table-wrap" class="table-wrap"></div>
+      </section>
+
+      <section id="tab-preference" class="tab-panel" role="tabpanel" hidden>
+        <h1>Preference training</h1>
+        <label>
+          Room type
+          <select id="pref-room-type">
+            <option value="bedroom">Bedroom</option>
+            <option value="living_room">Living room</option>
+            <option value="kitchen">Kitchen</option>
+          </select>
+        </label>
+        <p id="pref-room-info" class="hint">Layout: —</p>
+        <p id="pref-phase-info" class="hint">Phase A — 0 / 100 comparisons</p>
+        <p class="hint">A and B appear side by side. Pick a winner — the next pair loads automatically.</p>
+        <div class="buttons pref-pick-row">
+          <button type="button" id="btn-pref-pick-a" class="pick-a">Pick A</button>
+          <button type="button" id="btn-pref-pick-b" class="pick-b">Pick B</button>
+          <button type="button" id="btn-pref-tie">Tie</button>
+        </div>
+        <button type="button" id="btn-pref-export">Export learned YAML</button>
+        <pre id="pref-theta-deltas" class="pref-deltas"></pre>
+      </section>
+
       <pre id="status">Ready.</pre>
-      <p class="hint"><a href="/labeler.html">Open orientation labeler</a> — set front facing per Kenney model.</p>
+      <p class="hint"><a href="/labeler.html">Open orientation labeler</a></p>
     </aside>
     <script type="module" src="/src/main.ts"></script>
   </body>

@@ -5,17 +5,17 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 
 from colayout.grid.discretize import discretize_room
-from colayout.ip.solver import SolveConfig, solve_room_placement
+from colayout.ip.solver import (
+    SolveConfig,
+    solve_room_placement,
+)
 from colayout.llm.draft_to_hints import (
     draft_to_hints,
     draft_to_scene_graph,
     placement_result_from_draft,
 )
 from colayout.llm.provider import LLMProvider
-from colayout.llm.validate_placement import (
-    is_blocking_placement_error,
-    validate_layout_draft,
-)
+from colayout.llm.validate_placement import validate_layout_draft
 from colayout.placement.orient import apply_facing_orientations
 from colayout.placement_mode import is_llm_only_mode, resolve_placement_mode
 from colayout.schemas.floor import FloorPlanInput, RoomSpec
@@ -64,14 +64,6 @@ def _place_room_llm_only(
     draft = llm.generate_layout_draft(room)
     draft, val_errors = validate_layout_draft(draft, room)
     warnings = _llm_generation_warnings(llm) + val_errors
-    blocking = [e for e in val_errors if is_blocking_placement_error(e)]
-    if blocking:
-        logger.warning(
-            "Room %s layout draft blocking errors: %s",
-            room.id,
-            "; ".join(blocking),
-        )
-        return None
     if val_errors:
         logger.info(
             "Room %s llm_only warnings: %s", room.id, "; ".join(val_errors)
@@ -98,19 +90,16 @@ def _place_room_llm_refine(
     draft = llm.generate_layout_draft(room)
     draft, val_errors = validate_layout_draft(draft, room)
     warnings = _llm_generation_warnings(llm) + list(val_errors)
-    blocking = [e for e in val_errors if is_blocking_placement_error(e)]
-    if blocking:
-        logger.warning(
-            "Room %s layout draft blocking errors: %s",
-            room.id,
-            "; ".join(blocking),
-        )
-        return None
 
     grid = discretize_room(room, modulor_cell_m)
-    hints = draft_to_hints(draft, grid)
     graph = draft_to_scene_graph(draft, room)
+    llm_placement = apply_facing_orientations(
+        placement_result_from_draft(draft, grid), graph
+    )
 
+    # Always run IP refine: even feasible LLM drafts benefit from objective
+    # polish (balance, proportion, symmetry). Hints keep good drafts stable.
+    hints = draft_to_hints(draft, grid)
     refine_limit = min(time_limit_s, 15.0)
     placement = solve_room_placement(
         graph,
@@ -140,9 +129,7 @@ def _place_room_llm_refine(
         warnings.append(
             "(warning) IP refine failed; showing LLM draft positions"
         )
-        placement = apply_facing_orientations(
-            placement_result_from_draft(draft, grid), graph
-        )
+        placement = llm_placement
         return RoomPlacementBundle(
             placement=placement,
             scene_graph=graph,
@@ -170,8 +157,13 @@ def _place_room_ip_full(
     coarse_scale: int,
     time_limit_s: float,
 ) -> RoomPlacementBundle | None:
-    graph = llm.generate_scene_graph(room)
+    """Full IP solve from the draft pipeline (config soft rules promoted to hard)."""
+    draft = llm.generate_layout_draft(room)
+    draft, val_errors = validate_layout_draft(draft, room)
+    warnings = _llm_generation_warnings(llm) + list(val_errors)
+
     grid = discretize_room(room, modulor_cell_m)
+    graph = draft_to_scene_graph(draft, room, refine_mode=False)
     placement = solve_room_coarse_to_fine(
         graph,
         grid,
@@ -181,7 +173,12 @@ def _place_room_ip_full(
     if placement is None:
         return None
     placement = apply_facing_orientations(placement, graph)
-    return RoomPlacementBundle(placement=placement, scene_graph=graph)
+    return RoomPlacementBundle(
+        placement=placement,
+        scene_graph=graph,
+        layout_draft=draft,
+        warnings=warnings or None,
+    )
 
 
 def place_room(

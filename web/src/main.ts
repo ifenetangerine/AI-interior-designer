@@ -1,13 +1,38 @@
-import { runPipeline } from "./api";
+import { runPipeline, type AnchorDebugPayload } from "./api";
+import {
+  clearAnchorDebugPanel,
+  renderAnchorDebugPanel,
+} from "./anchorDebugPanel";
+import { bindCatalogPanel, wireCatalogPanel } from "./catalogPanel";
+import { GoldenEditor } from "./goldenEditor";
 import { loadPlacements } from "./furnitureLoader";
 import { clearPlacementOverlay, showPlacementFootprints } from "./placementOverlay";
+import { PreferenceTrainerPanel } from "./preferenceTrainer";
+import { DualPreferenceView } from "./preferenceView";
 import { RoomEditor, defaultArchitecture, randomRoom } from "./roomEditor";
 import { createScene, setOrbitTarget } from "./scene";
+import { initTabs, type TabId } from "./tabs";
 import { bindUI, setRunning, setStatus, updateDimLabels } from "./ui";
 
 const container = document.getElementById("canvas-container")!;
 const ui = bindUI();
+const catalogUi = bindCatalogPanel();
 const ctx = createScene(container);
+
+const catalog = wireCatalogPanel(
+  catalogUi,
+  () => {
+    const goldenTab = document.getElementById("tab-golden");
+    if (goldenTab && !goldenTab.hidden) {
+      return (document.getElementById("golden-room-type") as HTMLSelectElement)
+        .value;
+    }
+    return ui.roomType.value;
+  },
+  (open) => document.body.classList.toggle("catalog-open", open)
+);
+
+ui.roomType.addEventListener("change", () => catalog.refresh());
 
 let roomState = {
   width_m: 4,
@@ -30,6 +55,66 @@ const editor = new RoomEditor(
 
 updateDimLabels(ui, roomState);
 
+const goldenEditor = new GoldenEditor({
+  ui,
+  editor,
+  furnitureGroup: ctx.furnitureGroup,
+  scene: ctx.scene,
+  camera: ctx.camera,
+  domElement: ctx.renderer.domElement,
+  controls: ctx.controls,
+  catalog,
+  getRoomState: () => roomState,
+  setRoomState: (s) => {
+    roomState = s;
+  },
+});
+
+const prefView = new DualPreferenceView(
+  "pref-view",
+  "pref-canvas-a",
+  "pref-canvas-b"
+);
+
+const preferencePanel = new PreferenceTrainerPanel({
+  ui,
+  prefView,
+});
+
+let lastAnchorDebug: AnchorDebugPayload | null = null;
+let activeTab: TabId = "pipeline";
+
+function updateAnchorDebugPanel(): void {
+  if (ui.anchorDebug.checked && lastAnchorDebug) {
+    renderAnchorDebugPanel(ui.anchorDebugContent, lastAnchorDebug);
+    ui.anchorDebugPanel.classList.remove("hidden");
+  } else {
+    clearAnchorDebugPanel(ui.anchorDebugContent);
+    ui.anchorDebugPanel.classList.add("hidden");
+  }
+}
+
+ui.anchorDebug.addEventListener("change", updateAnchorDebugPanel);
+
+initTabs((tab) => {
+  activeTab = tab;
+  goldenEditor.deactivate();
+  preferencePanel.deactivate();
+  if (tab === "preference") {
+    ctx.stop();
+    preferencePanel.activate();
+  } else {
+    ctx.start();
+    if (tab === "golden") {
+      goldenEditor.activate();
+      const rt = (document.getElementById("golden-room-type") as HTMLSelectElement)
+        .value;
+      (document.getElementById("golden-room-type") as HTMLSelectElement).value =
+        rt || ui.roomType.value;
+    }
+  }
+});
+
 ui.btnRandom.addEventListener("click", () => {
   const r = randomRoom();
   ui.roomType.value = r.type;
@@ -39,8 +124,12 @@ ui.btnRandom.addEventListener("click", () => {
 });
 
 ui.btnRun.addEventListener("click", async () => {
+  if (activeTab !== "pipeline") return;
   setRunning(ui, true);
   clearPlacementOverlay(ctx.scene);
+  lastAnchorDebug = null;
+  clearAnchorDebugPanel(ui.anchorDebugContent);
+  ui.anchorDebugPanel.classList.add("hidden");
   const llmOnly = ui.llmOnly.checked;
   setStatus(
     ui,
@@ -75,6 +164,8 @@ ui.btnRun.addEventListener("click", async () => {
       `OK (${mode}) — ${n} pieces placed.\nFurniture: ${layout.furniture?.map((f) => f.id).join(", ")}${noteLine}`
     );
     showPlacementFootprints(ctx.scene, res.placements);
+    lastAnchorDebug = res.anchor_debug ?? null;
+    updateAnchorDebugPanel();
     await loadPlacements(
       ctx.furnitureGroup,
       res.placements,

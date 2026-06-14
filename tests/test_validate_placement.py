@@ -35,7 +35,7 @@ def _bedroom_draft(**kwargs) -> RoomLayoutDraft:
     return RoomLayoutDraft(**defaults)
 
 
-def test_validate_catalog_filter():
+def test_validate_accepts_cross_room_models():
     room = RoomSpec(id="r1", type="bedroom", width_m=4.0, length_m=3.5)
     draft = _bedroom_draft(
         placements=[
@@ -50,8 +50,29 @@ def test_validate_catalog_filter():
         ]
     )
     sanitized, errors = validate_layout_draft(draft, room)
+    stove = next((p for p in sanitized.placements if p.id == "stove"), None)
+    assert stove is not None
+    assert stove.model_id == "kitchenStove"
+    assert not any("unknown model_id" in e for e in errors)
+
+
+def test_validate_rejects_unknown_model():
+    room = RoomSpec(id="r1", type="bedroom", width_m=4.0, length_m=3.5)
+    draft = _bedroom_draft(
+        placements=[
+            FurniturePlacementDraft(
+                id="x",
+                model_id="notARealKenneyModel",
+                placement_order=1,
+                center_x_m=1.0,
+                center_z_m=1.0,
+                orientation=0,
+            ),
+        ]
+    )
+    sanitized, errors = validate_layout_draft(draft, room)
     assert len(sanitized.placements) == 0
-    assert any("not allowed" in e for e in errors)
+    assert any("unknown model_id" in e for e in errors)
 
 
 def test_validate_bounds_and_order():
@@ -103,6 +124,7 @@ def test_validate_bounds_and_order():
     sanitized, errors = validate_layout_draft(draft, room)
     assert len(sanitized.placements) == 5
     assert sanitized.placements[0].placement_order == 1
+    assert not any("auto-added child" in e for e in errors)
     blocking = [e for e in errors if is_blocking_placement_error(e)]
     assert not blocking, blocking
 

@@ -12,9 +12,6 @@ export interface RoomArchitecture {
   door_wall: WallSide;
   door_offset_m: number;
   door_width_m: number;
-  focal_wall: WallSide | null;
-  focal_center_x_m: number | null;
-  focal_center_z_m: number | null;
 }
 
 export interface RoomState {
@@ -23,29 +20,17 @@ export interface RoomState {
   architecture: RoomArchitecture;
 }
 
-type DragId = "east" | "north" | "door" | "focal";
+type DragId = "east" | "north" | "door";
 
 export function defaultArchitecture(
   width_m: number,
-  length_m: number,
-  roomType = "living_room"
+  _length_m: number,
+  _roomType = "living_room"
 ): RoomArchitecture {
-  const focal_wall: WallSide =
-    roomType === "bedroom" ? "west" : "north";
-  let focal_x = width_m / 2;
-  let focal_z = length_m / 2;
-  if (focal_wall === "north") focal_z = length_m;
-  else if (focal_wall === "south") focal_z = 0;
-  else if (focal_wall === "west") focal_x = 0;
-  else if (focal_wall === "east") focal_x = width_m;
-
   return {
     door_wall: "south",
     door_offset_m: Math.max(0, width_m / 2 - 0.45),
     door_width_m: 0.9,
-    focal_wall,
-    focal_center_x_m: focal_x,
-    focal_center_z_m: focal_z,
   };
 }
 
@@ -131,6 +116,12 @@ export class RoomEditor {
     };
   }
 
+  /** Raycast the visible room floor; returns world XZ in room meters. */
+  raycastFloor(raycaster: THREE.Raycaster): THREE.Vector3 | null {
+    const hits = raycaster.intersectObject(this.floor, false);
+    return hits.length > 0 ? hits[0].point : null;
+  }
+
   setDimensions(width_m: number, length_m: number): void {
     this.width_m = THREE.MathUtils.clamp(width_m, MIN_DIM, MAX_DIM);
     this.length_m = THREE.MathUtils.clamp(length_m, MIN_DIM, MAX_DIM);
@@ -186,10 +177,6 @@ export class RoomEditor {
       color: 0x44aaff,
       emissive: 0x113355,
     });
-    const focalMat = new THREE.MeshStandardMaterial({
-      color: 0xff66cc,
-      emissive: 0x551133,
-    });
 
     const addHandle = (id: DragId, px: number, pz: number, mat: THREE.Material) => {
       const h = new THREE.Mesh(
@@ -206,10 +193,6 @@ export class RoomEditor {
 
     const [dx, dz] = doorCenter(this.architecture, w, d);
     addHandle("door", dx, dz, doorMat);
-
-    const fx = this.architecture.focal_center_x_m ?? w / 2;
-    const fz = this.architecture.focal_center_z_m ?? d / 2;
-    addHandle("focal", fx, fz, focalMat);
   }
 
   private _bindPointer(): void {
@@ -249,20 +232,6 @@ export class RoomEditor {
         const z = THREE.MathUtils.clamp(this.intersect.z - half, 0, d - this.architecture.door_width_m);
         this.architecture.door_offset_m = z;
       }
-    } else if (this.dragging === "focal") {
-      const x = THREE.MathUtils.clamp(this.intersect.x, 0, w);
-      const z = THREE.MathUtils.clamp(this.intersect.z, 0, d);
-      this.architecture.focal_center_x_m = x;
-      this.architecture.focal_center_z_m = z;
-      const distNorth = d - z;
-      const distSouth = z;
-      const distWest = x;
-      const distEast = w - x;
-      const min = Math.min(distNorth, distSouth, distWest, distEast);
-      if (min === distNorth) this.architecture.focal_wall = "north";
-      else if (min === distSouth) this.architecture.focal_wall = "south";
-      else if (min === distWest) this.architecture.focal_wall = "west";
-      else this.architecture.focal_wall = "east";
     }
     this._rebuild();
     this.onChange(this.getState());

@@ -23,6 +23,9 @@ role_to_category:
   sofa: sofa
   wardrobe: wardrobe
   tv_stand: tv_stand
+  tv: tv
+  tv_console: side_table
+  storage_cabinet: bookshelf
   coffee_table: coffee_table
   dining_table: dining_table
   side_table: side_table
@@ -62,8 +65,8 @@ overrides:
   loungeChair: {role: chair, rooms: [living_room]}
   loungeChairRelax: {role: chair, rooms: [living_room]}
   loungeDesignChair: {role: chair, rooms: [living_room]}
-  cabinetTelevision: {role: tv_stand, rooms: [living_room, bedroom]}
-  cabinetTelevisionDoors: {role: tv_stand, rooms: [living_room]}
+  cabinetTelevision: {role: storage_cabinet, rooms: [living_room, bedroom]}
+  cabinetTelevisionDoors: {role: storage_cabinet, rooms: [living_room, bedroom]}
   cabinetBed: {role: wardrobe, rooms: [bedroom]}
   cabinetBedDrawer: {role: dresser, rooms: [bedroom]}
   cabinetBedDrawerTable: {role: nightstand, rooms: [bedroom]}
@@ -95,7 +98,7 @@ overrides:
   stoolBarSquare: {role: bar_stool, rooms: [kitchen]}
   bookcaseClosed: {role: bookshelf, rooms: [living_room, bedroom]}
   bookcaseClosedWide: {role: bookshelf, rooms: [living_room]}
-  bookcaseClosedDoors: {role: bookshelf, rooms: [living_room]}
+  bookcaseClosedDoors: {role: storage_cabinet, rooms: [living_room, bedroom]}
   bookcaseOpen: {role: bookshelf, rooms: [living_room]}
   bookcaseOpenLow: {role: bookshelf, rooms: [living_room]}
   rugRectangle: {role: rug, rooms: [bedroom, living_room]}
@@ -103,6 +106,43 @@ overrides:
   rugSquare: {role: rug, rooms: [living_room]}
   rugRounded: {role: rug, rooms: [living_room]}
   rugDoormat: {role: rug, rooms: [living_room, kitchen]}
+  bench: {role: chair, rooms: [living_room, bedroom, kitchen]}
+  benchCushion: {role: chair, rooms: [living_room, bedroom]}
+  benchCushionLow: {role: chair, rooms: [living_room]}
+  coatRack: {role: decor, rooms: [bedroom, living_room]}
+  coatRackStanding: {role: decor, rooms: [bedroom, living_room]}
+  lampRoundFloor: {role: lamp, rooms: [bedroom, living_room, kitchen]}
+  lampSquareFloor: {role: lamp, rooms: [bedroom, living_room, kitchen]}
+  lampSquareTable: {role: lamp, rooms: [bedroom, living_room]}
+  lampRoundTable: {role: lamp, rooms: [bedroom, living_room]}
+  lampWall: {role: lamp, rooms: [bedroom, living_room]}
+  televisionModern: {role: tv, rooms: [living_room, bedroom]}
+  televisionVintage: {role: tv, rooms: [living_room]}
+  televisionAntenna: {role: tv, rooms: [living_room]}
+  cabinetBedDrawer: {role: dresser, rooms: [bedroom]}
+  cabinetBedDrawerTable: {role: nightstand, rooms: [bedroom]}
+  loungeSofaOttoman: {role: sofa, rooms: [living_room]}
+  loungeChairRelax: {role: chair, rooms: [living_room]}
+  loungeDesignChair: {role: chair, rooms: [living_room]}
+  tableCrossCloth: {role: dining_table, rooms: [kitchen, living_room]}
+  tableRoundCloth: {role: dining_table, rooms: [kitchen, living_room]}
+  kitchenExtractor: {role: decor, rooms: [kitchen]}
+  kitchenBlender: {role: decor, rooms: [kitchen]}
+  kitchenCoffeeMachine: {role: decor, rooms: [kitchen]}
+  kitchenMicrowave: {role: decor, rooms: [kitchen]}
+  plantSmall: {role: plant, rooms: [bedroom, living_room, kitchen]}
+  plantLarge: {role: plant, rooms: [living_room, bedroom]}
+  pottedPlant: {role: plant, rooms: [bedroom, living_room, kitchen]}
+  radio: {role: decor, rooms: [bedroom, living_room]}
+  speaker: {role: decor, rooms: [living_room, bedroom]}
+  speakerSmall: {role: decor, rooms: [living_room, bedroom]}
+  computerScreen: {role: decor, rooms: [bedroom]}
+  computerKeyboard: {role: decor, rooms: [bedroom]}
+  computerMouse: {role: decor, rooms: [bedroom]}
+  laptop: {role: decor, rooms: [bedroom]}
+  stool: {role: chair, rooms: [kitchen, living_room]}
+  stoolBar: {role: bar_stool, rooms: [kitchen]}
+  stoolBarSquare: {role: bar_stool, rooms: [kitchen]}
 
 prefix_rules:
   - prefix: kitchenCabinet
@@ -151,8 +191,8 @@ prefix_rules:
     role: bar_stool
     rooms: [kitchen]
   - prefix: television
-    role: tv_stand
-    rooms: [living_room]
+    role: tv
+    rooms: [living_room, bedroom]
   - prefix: computer
     role: decor
     rooms: [bedroom]

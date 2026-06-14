@@ -26,5 +26,6 @@ class PipelineRunResponse(BaseModel):
     layout: dict
     placements: list[dict]
     layout_draft: dict | None = None
+    anchor_debug: dict | None = None
     placement_mode: str = "llm_refine"
     errors: list[str] = Field(default_factory=list)

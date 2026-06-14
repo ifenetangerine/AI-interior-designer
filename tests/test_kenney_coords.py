@@ -118,9 +118,8 @@ def test_bed_rot1_yaw_180():
         cell_map=[[None] * 14 for _ in range(16)],
     )
     results = match_kenney_assets(placement)
-    assert math.isclose(
-        results[0].rotation_y_rad, math.radians(270.0), abs_tol=1e-6
-    )
+    yaw = results[0].rotation_y_rad % (2 * math.pi)
+    assert math.isclose(yaw, math.radians(270.0), abs_tol=1e-6)
 
 
 def test_chair_yaw_offset_applied():
@@ -150,4 +149,5 @@ def test_chair_yaw_offset_applied():
         cell_map=[[None] * 7 for _ in range(8)],
     )
     results = match_kenney_assets(placement)
-    assert math.isclose(results[0].rotation_y_rad, math.radians(180.0), abs_tol=1e-6)
+    yaw = results[0].rotation_y_rad % (2 * math.pi)
+    assert math.isclose(yaw, math.radians(180.0), abs_tol=1e-6)

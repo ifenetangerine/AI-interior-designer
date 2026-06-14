@@ -62,6 +62,11 @@ def run_pipeline(req: PipelineRunRequest) -> PipelineRunResponse:
     layout_draft = (
         bundle.layout_draft.model_dump() if bundle.layout_draft else None
     )
+    anchor_debug = None
+    if bundle.layout_draft is not None:
+        from colayout.llm.anchor_structure import build_anchor_debug
+
+        anchor_debug = build_anchor_debug(bundle.layout_draft.placements, room)
     errors = list(bundle.warnings or [])
     return PipelineRunResponse(
         status="ok",
@@ -69,6 +74,7 @@ def run_pipeline(req: PipelineRunRequest) -> PipelineRunResponse:
         layout=bundle.placement.model_dump(),
         placements=[p.model_dump() for p in placements],
         layout_draft=layout_draft,
+        anchor_debug=anchor_debug,
         placement_mode=mode,
         errors=errors,
     )

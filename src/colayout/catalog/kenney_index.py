@@ -1,4 +1,4 @@
-"""Kenney catalog index: roles, room filters, footprints for LLM and validation."""
+"""Kenney catalog index: roles, footprints, and prompt groupings for LLM and validation."""
 
 from __future__ import annotations
 
@@ -28,12 +28,28 @@ CHAIN_ORDER = {
 
 ANCHOR_ROLE_BY_ROOM: dict[str, str] = {
     "bedroom": "bed",
-    "living_room": "sofa",
+    "living_room": "tv",
     "kitchen": "dining_table",
     "dining": "dining_table",
 }
 
-STACKABLE_CHILD_ROLES = frozenset({"lamp", "plant", "rug", "decor"})
+STACKABLE_CHILD_ROLES = frozenset({"lamp", "plant", "rug", "decor", "tv"})
+
+ON_TOP_SURFACE_PARENT_CATEGORIES = frozenset(
+    {"nightstand", "side_table", "coffee_table", "desk", "dining_table"}
+)
+TV_CONSOLE_PARENT_CATEGORIES = frozenset(
+    {
+        "side_table",
+        "nightstand",
+        "tv_stand",
+        "bookshelf",
+        "dining_table",
+        "coffee_table",
+        "desk",
+    }
+)
+RUG_UNDER_PARENT_CATEGORIES = frozenset({"coffee_table", "sofa"})
 
 SURFACE_KIND_BY_MODEL: dict[str, str] = {
     "lampRoundFloor": "floor",
@@ -129,24 +145,40 @@ def is_stackable_child_role(role: str) -> bool:
     return role in STACKABLE_CHILD_ROLES
 
 
+def is_valid_surface_stack(
+    child_model_id: str,
+    parent_model_id: str,
+    catalog: dict | None = None,
+) -> bool:
+    """Whether child may stack on parent via on_surface_of / UNDER / ON_TOP_OF."""
+    child_role = role_for_model(child_model_id, catalog)
+    parent_role = role_for_model(parent_model_id, catalog)
+    parent_cat = placement_category(parent_model_id, catalog)
+    if child_role == "tv":
+        return parent_cat in TV_CONSOLE_PARENT_CATEGORIES
+    if parent_role == "counter_base":
+        return child_role in ("decor", "plant", "lamp")
+    if not is_stackable_child_role(child_role):
+        return False
+    if child_role == "rug":
+        return parent_cat in RUG_UNDER_PARENT_CATEGORIES
+    return parent_cat in ON_TOP_SURFACE_PARENT_CATEGORIES
+
+
 def is_allowed_in_room(
     model_id: str, room_type: str, catalog: dict | None = None
 ) -> bool:
-    a = asset_by_id(model_id, catalog)
-    if not a:
-        return False
-    rooms = a.get("rooms") or []
-    return room_type in rooms
+    """True when model_id exists in the catalog (room_type ignored — full selection)."""
+    _ = room_type
+    return asset_by_id(model_id, catalog) is not None
 
 
 def catalog_for_room(room_type: str, catalog: dict | None = None) -> list[dict]:
-    """Compact rows for LLM prompt: placeable models for this room type."""
+    """Compact rows for LLM prompt: all placeable catalog models (room_type unused)."""
+    _ = room_type
     cat = catalog or load_catalog()
     rows: list[dict] = []
     for a in cat.get("assets", []):
-        rooms = a.get("rooms") or []
-        if room_type not in rooms:
-            continue
         role = a.get("role", "decor")
         if role == "excluded":
             continue

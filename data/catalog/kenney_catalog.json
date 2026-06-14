@@ -6,16 +6,16 @@
     "sofa": "loungeSofa",
     "wardrobe": "cabinetBed",
     "tv_stand": "cabinetTelevision",
+    "tv": "televisionModern",
+    "tv_console": "sideTable",
+    "storage_cabinet": "bookcaseClosedDoors",
     "coffee_table": "tableCoffee",
     "counter": "kitchenCabinet",
     "fridge": "kitchenFridge",
     "dining_table": "table",
     "nightstand": "sideTable",
     "dresser": "cabinetBedDrawer",
-    "bookshelf": "bookcaseClosed",
-    "lamp": "lampSquareTable",
-    "plant": "pottedPlant",
-    "rug": "rugRectangle"
+    "bookshelf": "bookcaseClosed"
   },
   "category_yaw_deg": {
     "chair": 180.0,
@@ -59,6 +59,54 @@
       }
     },
     "tableCoffee": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "cabinetTelevision": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "sideTable": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "sideTableDrawers": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "bookcaseClosed": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 180
+      }
+    },
+    "loungeChair": {
+      "yaw_deg": {
+        "0": 180,
+        "1": 270
+      }
+    },
+    "lampRoundFloor": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "lampSquareTable": {
+      "yaw_deg": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "pottedPlant": {
       "yaw_deg": {
         "0": 0,
         "1": 0
@@ -123,54 +171,6 @@
         "0": 0,
         "1": 0
       }
-    },
-    "sideTable": {
-      "yaw_deg": {
-        "0": 0,
-        "1": 180
-      }
-    },
-    "sideTableDrawers": {
-      "yaw_deg": {
-        "0": 0,
-        "1": 180
-      }
-    },
-    "bookcaseClosed": {
-      "yaw_deg": {
-        "0": 0,
-        "1": 180
-      }
-    },
-    "loungeChair": {
-      "yaw_deg": {
-        "0": 180,
-        "1": 270
-      }
-    },
-    "cabinetTelevision": {
-      "yaw_deg": {
-        "0": 0,
-        "1": 180
-      }
-    },
-    "lampRoundFloor": {
-      "yaw_deg": {
-        "0": 0,
-        "1": 0
-      }
-    },
-    "lampSquareTable": {
-      "yaw_deg": {
-        "0": 0,
-        "1": 0
-      }
-    },
-    "pottedPlant": {
-      "yaw_deg": {
-        "0": 0,
-        "1": 0
-      }
     }
   },
   "role_to_category": {
@@ -180,6 +180,9 @@
     "sofa": "sofa",
     "wardrobe": "wardrobe",
     "tv_stand": "tv_stand",
+    "tv": "tv",
+    "tv_console": "side_table",
+    "storage_cabinet": "bookshelf",
     "coffee_table": "coffee_table",
     "dining_table": "dining_table",
     "side_table": "side_table",
@@ -330,6 +333,7 @@
       "role": "chair",
       "rooms": [
         "living_room",
+        "bedroom",
         "kitchen"
       ],
       "category": "chair",
@@ -345,7 +349,7 @@
       "role": "chair",
       "rooms": [
         "living_room",
-        "kitchen"
+        "bedroom"
       ],
       "category": "chair",
       "obj": "kenney_furniture-kit/Models/OBJ format/benchCushion.obj",
@@ -359,8 +363,7 @@
       "id": "benchCushionLow",
       "role": "chair",
       "rooms": [
-        "living_room",
-        "kitchen"
+        "living_room"
       ],
       "category": "chair",
       "obj": "kenney_furniture-kit/Models/OBJ format/benchCushionLow.obj",
@@ -387,11 +390,12 @@
     },
     {
       "id": "bookcaseClosedDoors",
-      "role": "bookshelf",
+      "role": "storage_cabinet",
       "rooms": [
-        "living_room"
+        "living_room",
+        "bedroom"
       ],
-      "category": "wardrobe",
+      "category": "bookshelf",
       "obj": "kenney_furniture-kit/Models/OBJ format/bookcaseClosedDoors.obj",
       "mtl": "kenney_furniture-kit/Models/OBJ format/bookcaseClosedDoors.mtl",
       "width_m": 0.4,
@@ -500,12 +504,12 @@
     },
     {
       "id": "cabinetTelevision",
-      "role": "tv_stand",
+      "role": "storage_cabinet",
       "rooms": [
         "living_room",
         "bedroom"
       ],
-      "category": "tv_stand",
+      "category": "bookshelf",
       "obj": "kenney_furniture-kit/Models/OBJ format/cabinetTelevision.obj",
       "mtl": "kenney_furniture-kit/Models/OBJ format/cabinetTelevision.mtl",
       "width_m": 0.8,
@@ -515,11 +519,12 @@
     },
     {
       "id": "cabinetTelevisionDoors",
-      "role": "tv_stand",
+      "role": "storage_cabinet",
       "rooms": [
-        "living_room"
+        "living_room",
+        "bedroom"
       ],
-      "category": "tv_stand",
+      "category": "bookshelf",
       "obj": "kenney_furniture-kit/Models/OBJ format/cabinetTelevisionDoors.obj",
       "mtl": "kenney_furniture-kit/Models/OBJ format/cabinetTelevisionDoors.mtl",
       "width_m": 0.8,
@@ -1043,8 +1048,7 @@
       "role": "lamp",
       "rooms": [
         "bedroom",
-        "living_room",
-        "kitchen"
+        "living_room"
       ],
       "category": "decor",
       "obj": "kenney_furniture-kit/Models/OBJ format/lampRoundTable.obj",
@@ -1091,8 +1095,7 @@
       "role": "lamp",
       "rooms": [
         "bedroom",
-        "living_room",
-        "kitchen"
+        "living_room"
       ],
       "category": "decor",
       "obj": "kenney_furniture-kit/Models/OBJ format/lampSquareTable.obj",
@@ -1107,8 +1110,7 @@
       "role": "lamp",
       "rooms": [
         "bedroom",
-        "living_room",
-        "kitchen"
+        "living_room"
       ],
       "category": "decor",
       "obj": "kenney_furniture-kit/Models/OBJ format/lampWall.obj",
@@ -1366,8 +1368,9 @@
       "id": "pottedPlant",
       "role": "plant",
       "rooms": [
+        "bedroom",
         "living_room",
-        "bedroom"
+        "kitchen"
       ],
       "category": "decor",
       "obj": "kenney_furniture-kit/Models/OBJ format/pottedPlant.obj",
@@ -1381,8 +1384,8 @@
       "id": "radio",
       "role": "decor",
       "rooms": [
-        "living_room",
-        "bedroom"
+        "bedroom",
+        "living_room"
       ],
       "category": "decor",
       "obj": "kenney_furniture-kit/Models/OBJ format/radio.obj",
@@ -1497,7 +1500,8 @@
       "id": "speaker",
       "role": "decor",
       "rooms": [
-        "living_room"
+        "living_room",
+        "bedroom"
       ],
       "category": "decor",
       "obj": "kenney_furniture-kit/Models/OBJ format/speaker.obj",
@@ -1511,7 +1515,8 @@
       "id": "speakerSmall",
       "role": "decor",
       "rooms": [
-        "living_room"
+        "living_room",
+        "bedroom"
       ],
       "category": "decor",
       "obj": "kenney_furniture-kit/Models/OBJ format/speakerSmall.obj",
@@ -1695,11 +1700,11 @@
     },
     {
       "id": "televisionAntenna",
-      "role": "tv_stand",
+      "role": "tv",
       "rooms": [
         "living_room"
       ],
-      "category": "tv_stand",
+      "category": "tv",
       "obj": "kenney_furniture-kit/Models/OBJ format/televisionAntenna.obj",
       "mtl": "kenney_furniture-kit/Models/OBJ format/televisionAntenna.mtl",
       "width_m": 0.265,
@@ -1709,11 +1714,12 @@
     },
     {
       "id": "televisionModern",
-      "role": "tv_stand",
+      "role": "tv",
       "rooms": [
-        "living_room"
+        "living_room",
+        "bedroom"
       ],
-      "category": "tv_stand",
+      "category": "tv",
       "obj": "kenney_furniture-kit/Models/OBJ format/televisionModern.obj",
       "mtl": "kenney_furniture-kit/Models/OBJ format/televisionModern.mtl",
       "width_m": 0.685,
@@ -1723,11 +1729,11 @@
     },
     {
       "id": "televisionVintage",
-      "role": "tv_stand",
+      "role": "tv",
       "rooms": [
         "living_room"
       ],
-      "category": "tv_stand",
+      "category": "tv",
       "obj": "kenney_furniture-kit/Models/OBJ format/televisionVintage.obj",
       "mtl": "kenney_furniture-kit/Models/OBJ format/televisionVintage.mtl",
       "width_m": 0.41,

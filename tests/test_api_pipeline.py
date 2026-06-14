@@ -56,6 +56,8 @@ def test_pipeline_run_llm_only():
     assert data["placement_mode"] == "llm_only"
     assert len(data["placements"]) >= 1
     assert data["layout_draft"] is not None
+    assert data["anchor_debug"] is not None
+    assert len(data["anchor_debug"]["anchors"]) >= 1
 
 
 def test_catalog():

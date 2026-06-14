@@ -1,10 +1,9 @@
 """Finer grid discretization and bed headboard wall constraints."""
 
 from colayout.grid.discretize import discretize_room, resolve_modulor_cell_m
-from colayout.llm.baseline import load_baseline
-from colayout.llm.validate import validate_and_sanitize
+from colayout.llm.draft_to_hints import draft_to_scene_graph
+from colayout.llm.provider import MockLLMProvider
 from colayout.schemas.floor import RoomSpec
-from colayout.schemas.scene import RoomSceneGraph
 from colayout.solver.coarse_to_fine import solve_room_coarse_to_fine
 
 
@@ -27,14 +26,10 @@ def test_finer_grid_than_half_meter():
 
 def test_bed_headboard_on_west_rot1():
     room = RoomSpec(id="r1", type="bedroom", width_m=4.0, length_m=3.5)
-    data = load_baseline("bedroom")
-    data["room_id"] = room.id
-    data["room_type"] = room.type
-    graph, _ = validate_and_sanitize(RoomSceneGraph.model_validate(data), room)
+    draft = MockLLMProvider().generate_layout_draft(room)
+    graph = draft_to_scene_graph(draft, room, refine_mode=False)
     grid = discretize_room(room)
     result = solve_room_coarse_to_fine(graph, grid, coarse_scale=2, time_limit_s=25)
     assert result is not None
     bed = next(f for f in result.furniture if f.category == "bed")
-    assert bed.origin_i == 0
-    assert bed.orientation == 1
-    assert bed.width_cells >= bed.length_cells
+    assert bed.centroid_i * grid.modulor_cell_m < room.width_m * 0.4

@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from colayout.api.orientation_routes import router as orientation_router
+from colayout.api.preference_routes import router as preference_router
 from colayout.api.routes import router
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -27,6 +28,7 @@ def create_app() -> FastAPI:
     )
     app.include_router(router)
     app.include_router(orientation_router)
+    app.include_router(preference_router)
 
     if KENNEY_DIR.is_dir():
         app.mount("/kenney", StaticFiles(directory=str(KENNEY_DIR)), name="kenney")

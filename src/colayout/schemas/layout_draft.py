@@ -11,7 +11,7 @@ class FurniturePlacementDraft(BaseModel):
     placement_order: int = Field(ge=1)
     center_x_m: float = Field(ge=0)
     center_z_m: float = Field(ge=0)
-    orientation: int = Field(default=0, ge=0, le=1)
+    orientation: int = Field(default=0, ge=0, le=3)
     relative_to: str | None = None
     on_surface_of: str | None = None
     composition_role: Literal["anchor", "support", "accent", "decor"] | None = None

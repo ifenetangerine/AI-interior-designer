@@ -1,4 +1,8 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field
+
+StackMode = Literal["on_top", "under"]
 
 
 class PlacedFurniture(BaseModel):
@@ -15,6 +19,7 @@ class PlacedFurniture(BaseModel):
     centroid_i: float
     centroid_j: float
     stack_parent_id: str | None = None
+    stack_mode: StackMode | None = None
 
 
 class RoomPlacementResult(BaseModel):

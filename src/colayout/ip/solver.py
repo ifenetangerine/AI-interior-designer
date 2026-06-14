@@ -10,10 +10,14 @@ from ortools.sat.python import cp_model
 from colayout.grid.discretize import MAX_GRID_DIM, GridSpec, furniture_cells
 from colayout.ip import constraints as ip_constraints
 from colayout.ip import objectives as ip_objectives
-from colayout.schemas.placement import PlacedFurniture, RoomPlacementResult
-from colayout.schemas.scene import RoomSceneGraph
+from colayout.schemas.placement import PlacedFurniture, RoomPlacementResult, StackMode
+from colayout.schemas.scene import ConstraintType, RoomSceneGraph
 
-from colayout.ip.constraints import floor_occupancy_exempt_ids, stack_parent_map
+from colayout.ip.constraints import (
+    floor_occupancy_exempt_ids,
+    stack_parent_map,
+    stack_relation_map,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +26,7 @@ class SolveConfig:
     time_limit_s: float = 30.0
     hints: dict[str, tuple[int, int, int]] | None = None  # id -> (ox, oy, orientation 0|1)
     soft_constraints: bool = False
+    hint_scale: float = 1.0
 
 
 @dataclass
@@ -46,20 +51,16 @@ class _FurnitureVars:
     centroid_j: cp_model.IntVar
 
 
-def solve_room_placement(
+def _build_furniture_vars(
+    model: cp_model.CpModel,
     graph: RoomSceneGraph,
     grid: GridSpec,
-    config: SolveConfig | None = None,
-) -> RoomPlacementResult | None:
-    config = config or SolveConfig()
+) -> tuple[list[_FurnitureVars], list[cp_model.IntervalVar], list[cp_model.IntervalVar]]:
     w_grid, l_grid = grid.width_cells, grid.length_cells
-
-    model = cp_model.CpModel()
     fv_list: list[_FurnitureVars] = []
     x_intervals: list[cp_model.IntervalVar] = []
     y_intervals: list[cp_model.IntervalVar] = []
     floor_exempt = floor_occupancy_exempt_ids(graph.constraints)
-    parents = stack_parent_map(graph.constraints)
 
     for item in graph.furniture:
         wc, lc = furniture_cells(item, grid.modulor_cell_m)
@@ -114,18 +115,60 @@ def solve_room_placement(
         )
         fv_list.append(fv)
 
-    if len(fv_list) > 1:
+    return fv_list, x_intervals, y_intervals
+
+
+def placement_satisfies_hard_constraints(
+    placement: RoomPlacementResult,
+    graph: RoomSceneGraph,
+    grid: GridSpec,
+    *,
+    soft_constraints: bool = True,
+) -> bool:
+    """True when a fixed placement meets overlap + hard semantic constraints (refine mode)."""
+    w_grid, l_grid = grid.width_cells, grid.length_cells
+    by_id = {f.id: f for f in placement.furniture}
+    if {item.id for item in graph.furniture} != set(by_id):
+        return False
+
+    model = cp_model.CpModel()
+    fv_list, x_intervals, y_intervals = _build_furniture_vars(model, graph, grid)
+    for fv in fv_list:
+        placed = by_id.get(fv.item_id)
+        if not placed:
+            return False
+        rot = 1 if placed.orientation in (1, 3) else 0
+        model.Add(fv.ox == placed.origin_i)
+        model.Add(fv.oy == placed.origin_j)
+        model.Add(fv.rot == rot)
+
+    if len(x_intervals) > 1:
         model.AddNoOverlap2D(x_intervals, y_intervals)
 
-    ip_constraints.add_semantic_interval(
-        model,
-        fv_list,
-        graph.constraints,
-        w_grid,
-        l_grid,
-        config.soft_constraints,
-        grid.modulor_cell_m,
-    )
+    ip_constraints.add_hard_constraints(model, fv_list, graph.constraints)
+
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = 2.0
+    status = solver.Solve(model)
+    return status in (cp_model.OPTIMAL, cp_model.FEASIBLE)
+
+
+def solve_room_placement(
+    graph: RoomSceneGraph,
+    grid: GridSpec,
+    config: SolveConfig | None = None,
+) -> RoomPlacementResult | None:
+    config = config or SolveConfig()
+    w_grid, l_grid = grid.width_cells, grid.length_cells
+    stack_relations = stack_relation_map(graph.constraints)
+
+    model = cp_model.CpModel()
+    fv_list, x_intervals, y_intervals = _build_furniture_vars(model, graph, grid)
+
+    if len(x_intervals) > 1:
+        model.AddNoOverlap2D(x_intervals, y_intervals)
+
+    ip_constraints.add_hard_constraints(model, fv_list, graph.constraints)
 
     if config.hints:
         for fv in fv_list:
@@ -140,6 +183,10 @@ def solve_room_placement(
         model, fv_list, graph, w_grid, l_grid, grid.modulor_cell_m
     )
     if config.hints and config.soft_constraints:
+        anchor_child_ids: set[str] = set()
+        for c in graph.constraints:
+            if c.type == ConstraintType.RELATIVE_POSITION and c.furniture_b:
+                anchor_child_ids.add(c.furniture_b)
         for fv in fv_list:
             hint = config.hints.get(fv.item_id)
             if not hint:
@@ -149,7 +196,10 @@ def solve_room_placement(
             dj = model.NewIntVar(0, max(w_grid, l_grid), "")
             model.AddAbsEquality(di, fv.ox - ox_h)
             model.AddAbsEquality(dj, fv.oy - oy_h)
-            obj_terms.extend([8 * di, 8 * dj])
+            base = 16 if fv.item_id in anchor_child_ids else 8
+            weight = int(max(0, base * config.hint_scale))
+            if weight:
+                obj_terms.extend([weight * di, weight * dj])
     if obj_terms:
         model.Minimize(sum(obj_terms))
 
@@ -161,7 +211,7 @@ def solve_room_placement(
         logger.error("Solver status: %s", solver.StatusName(status))
         return None
 
-    return _extract_result(solver, fv_list, graph, grid, parents)
+    return _extract_result(solver, fv_list, graph, grid, stack_relations)
 
 
 def placement_to_hints(result: RoomPlacementResult) -> dict[str, tuple[int, int, int]]:
@@ -176,7 +226,7 @@ def _extract_result(
     fv_list: list[_FurnitureVars],
     graph: RoomSceneGraph,
     grid: GridSpec,
-    stack_parents: dict[str, str] | None = None,
+    stack_relations: dict[str, tuple[str, str]] | None = None,
 ) -> RoomPlacementResult:
     w_grid, l_grid = grid.width_cells, grid.length_cells
     cell_map: list[list[str | None]] = [[None] * l_grid for _ in range(w_grid)]
@@ -194,7 +244,7 @@ def _extract_result(
         cj = solver.Value(fv.centroid_j) / 100.0
         centroids[fv.item_id] = (ci, cj)
 
-        if fv.item_id not in (stack_parents or {}):
+        if fv.item_id not in (stack_relations or {}):
             for i in range(ox, ox + sx):
                 for j in range(oy, oy + sy):
                     cell_map[i][j] = fv.item_id
@@ -207,7 +257,9 @@ def _extract_result(
         rot = solver.Value(fv.rot)
         orientation = 1 if rot else 0
         ci, cj = centroids[fv.item_id]
-        parent_id = (stack_parents or {}).get(fv.item_id)
+        rel = (stack_relations or {}).get(fv.item_id)
+        parent_id = rel[0] if rel else None
+        stack_mode: StackMode | None = rel[1] if rel else None  # type: ignore[assignment]
         if parent_id and parent_id in centroids:
             ci, cj = centroids[parent_id]
 
@@ -226,6 +278,7 @@ def _extract_result(
                 centroid_i=ci,
                 centroid_j=cj,
                 stack_parent_id=parent_id,
+                stack_mode=stack_mode,  # type: ignore[arg-type]
             )
         )
 
