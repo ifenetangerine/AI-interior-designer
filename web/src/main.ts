@@ -1,8 +1,4 @@
-import { runPipeline, type AnchorDebugPayload } from "./api";
-import {
-  clearAnchorDebugPanel,
-  renderAnchorDebugPanel,
-} from "./anchorDebugPanel";
+import { runPipeline } from "./api";
 import { bindCatalogPanel, wireCatalogPanel } from "./catalogPanel";
 import { GoldenEditor } from "./goldenEditor";
 import { loadPlacements } from "./furnitureLoader";
@@ -81,20 +77,7 @@ const preferencePanel = new PreferenceTrainerPanel({
   prefView,
 });
 
-let lastAnchorDebug: AnchorDebugPayload | null = null;
 let activeTab: TabId = "pipeline";
-
-function updateAnchorDebugPanel(): void {
-  if (ui.anchorDebug.checked && lastAnchorDebug) {
-    renderAnchorDebugPanel(ui.anchorDebugContent, lastAnchorDebug);
-    ui.anchorDebugPanel.classList.remove("hidden");
-  } else {
-    clearAnchorDebugPanel(ui.anchorDebugContent);
-    ui.anchorDebugPanel.classList.add("hidden");
-  }
-}
-
-ui.anchorDebug.addEventListener("change", updateAnchorDebugPanel);
 
 initTabs((tab) => {
   activeTab = tab;
@@ -127,9 +110,6 @@ ui.btnRun.addEventListener("click", async () => {
   if (activeTab !== "pipeline") return;
   setRunning(ui, true);
   clearPlacementOverlay(ctx.scene);
-  lastAnchorDebug = null;
-  clearAnchorDebugPanel(ui.anchorDebugContent);
-  ui.anchorDebugPanel.classList.add("hidden");
   const llmOnly = ui.llmOnly.checked;
   setStatus(
     ui,
@@ -164,8 +144,6 @@ ui.btnRun.addEventListener("click", async () => {
       `OK (${mode}) — ${n} pieces placed.\nFurniture: ${layout.furniture?.map((f) => f.id).join(", ")}${noteLine}`
     );
     showPlacementFootprints(ctx.scene, res.placements);
-    lastAnchorDebug = res.anchor_debug ?? null;
-    updateAnchorDebugPanel();
     await loadPlacements(
       ctx.furnitureGroup,
       res.placements,

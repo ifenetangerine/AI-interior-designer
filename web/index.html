@@ -67,19 +67,11 @@
           LLM only (skip IP refine)
         </label>
         <p class="hint">LLM only: furniture stays at LLM meter positions (grid snap only). Overlaps are not fixed.</p>
-        <label class="checkbox">
-          <input type="checkbox" id="anchor-debug" checked />
-          Show anchor / child debug panel
-        </label>
         <div class="buttons">
           <button type="button" id="btn-catalog">Furniture catalog</button>
           <button type="button" id="btn-random">Random room</button>
           <button type="button" id="btn-run" class="primary">Run pipeline</button>
         </div>
-        <section id="anchor-debug-panel" class="anchor-debug-panel hidden" aria-label="Anchor debug">
-          <h2>Anchor debug</h2>
-          <div id="anchor-debug-content"></div>
-        </section>
       </section>
 
       <section id="tab-golden" class="tab-panel" role="tabpanel" hidden>
@@ -144,7 +136,7 @@
         </label>
         <p id="pref-room-info" class="hint">Layout: —</p>
         <p id="pref-phase-info" class="hint">Phase A — 0 / 100 comparisons</p>
-        <p class="hint">A and B appear side by side. Pick a winner — the next pair loads automatically.</p>
+        <p class="hint">A and B appear side by side. Pick a winner — the next pair loads automatically. After 7 picks on one layout, a new random room is generated via LLM.</p>
         <div class="buttons pref-pick-row">
           <button type="button" id="btn-pref-pick-a" class="pick-a">Pick A</button>
           <button type="button" id="btn-pref-pick-b" class="pick-b">Pick B</button>

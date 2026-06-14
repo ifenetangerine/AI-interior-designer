@@ -8,6 +8,8 @@ import {
 import type { DualPreferenceView } from "./preferenceView";
 import { setStatus, type UIElements } from "./ui";
 
+const PICKS_PER_DESIGN = 7;
+
 export interface PreferenceTrainerDeps {
   ui: UIElements;
   prefView: DualPreferenceView;
@@ -17,7 +19,6 @@ export class PreferenceTrainerPanel {
   private pair: PreferencePairResponse | null = null;
   private picking = false;
   private generating = false;
-  private activeDesignId: string | null = null;
 
   constructor(private deps: PreferenceTrainerDeps) {
     this.bindDom();
@@ -70,7 +71,6 @@ export class PreferenceTrainerPanel {
 
   private async onRoomTypeChange(): Promise<void> {
     const roomType = this.currentRoomType();
-    this.activeDesignId = null;
     await this.refreshState(roomType);
     await this.generatePair();
   }
@@ -93,29 +93,33 @@ export class PreferenceTrainerPanel {
     this.setPickButtonsEnabled(false);
     this.pair = null;
     this.deps.prefView.clear();
-    const designHint = this.activeDesignId ?? "cached layout";
     setStatus(
       this.deps.ui,
-      `IP-solving A/B on ${designHint} (same frozen LLM draft, ~10–20s)…`
+      "Loading next A/B pair (LLM + IP solve may take ~10–20s)…"
     );
     try {
-      this.pair = await generatePreferencePair(roomType, {
-        designId: this.activeDesignId ?? undefined,
-        timeLimitS: 8,
-      });
-      const { width_m, length_m, design_id } = this.pair;
-      this.activeDesignId = design_id;
+      this.pair = await generatePreferencePair(roomType, { timeLimitS: 8 });
+      const {
+        width_m,
+        length_m,
+        design_id,
+        picks_on_design,
+        fresh_llm,
+      } = this.pair;
       this.deps.prefView.setRoomDimensions(width_m, length_m);
       await this.deps.prefView.showPair(
         this.pair.placements_A,
         this.pair.placements_B
       );
+      const pickNum = picks_on_design + 1;
       this.el<HTMLParagraphElement>("pref-room-info").textContent =
-        `${design_id} — ${width_m}×${length_m} m (frozen LLM draft, θ variants only)`;
+        `${width_m}×${length_m} m — pick ${pickNum}/${PICKS_PER_DESIGN} on this layout`;
       await this.refreshState(roomType);
       setStatus(
         this.deps.ui,
-        `Compare A (left) vs B (right), then pick a winner.`
+        fresh_llm
+          ? `New room from LLM (${design_id}). Compare A (left) vs B (right).`
+          : `Compare A (left) vs B (right), then pick a winner.`
       );
       this.setPickButtonsEnabled(true);
     } catch (e) {
@@ -141,12 +145,15 @@ export class PreferenceTrainerPanel {
         features_A: this.pair.features_A,
         features_B: this.pair.features_B,
       });
-      this.activeDesignId = designId;
       this.pair = null;
       await this.refreshState(roomType);
+      const rotateSoon =
+        res.picks_until_rotation === 0
+          ? " Next pair will use a new random room."
+          : "";
       setStatus(
         this.deps.ui,
-        `Recorded ${winner}. Loading next θ pair on ${designId}… (${res.comparison_count} / 100)`
+        `Recorded ${winner}. (${res.comparison_count} / 100)${rotateSoon}`
       );
       await this.generatePair();
     } catch (e) {
@@ -162,7 +169,7 @@ export class PreferenceTrainerPanel {
     const res = await exportLearnedYaml(roomType);
     setStatus(
       this.deps.ui,
-      `Exported ${res.updated_rules} rules to ${res.theta_path}`
+      `Exported θ → ${res.theta_path} and constraints → ${res.constraints_path}`
     );
   }
 }

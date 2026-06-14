@@ -90,44 +90,12 @@ export async function clearOrientationLabel(modelId: string): Promise<void> {
   if (!res.ok) throw new Error(await res.text());
 }
 
-export interface AnchorDebugChild {
-  id: string;
-  model_id: string;
-  role: string;
-  center_x_m: number;
-  center_z_m: number;
-  relative_to: string | null;
-  composition_role: string | null;
-  note: string | null;
-}
-
-export interface AnchorDebugAnchor {
-  id: string;
-  model_id: string;
-  role: string;
-  zone: string | null;
-  composition_role: string | null;
-  center_x_m: number;
-  center_z_m: number;
-  min_children: number;
-  child_count: number;
-  children: AnchorDebugChild[];
-}
-
-export interface AnchorDebugPayload {
-  room_type: string;
-  tier: string;
-  anchor_count: number;
-  anchors: AnchorDebugAnchor[];
-}
-
 export interface PipelineRunResponse {
   status: string;
   scene_graph: Record<string, unknown>;
   layout: Record<string, unknown>;
   placements: KenneyPlacement[];
   layout_draft?: Record<string, unknown> | null;
-  anchor_debug?: AnchorDebugPayload | null;
   placement_mode?: string;
   errors: string[];
 }
@@ -317,14 +285,16 @@ export interface PreferencePairResponse {
   placements_B: KenneyPlacement[];
   comparison_count: number;
   phase: string;
+  picks_on_design: number;
+  picks_until_rotation: number;
+  fresh_llm: boolean;
 }
 
 export async function generatePreferencePair(
   roomType: string,
-  options?: { designId?: string; timeLimitS?: number }
+  options?: { timeLimitS?: number }
 ): Promise<PreferencePairResponse> {
   const body: Record<string, string | number> = { room_type: roomType };
-  if (options?.designId) body.design_id = options.designId;
   if (options?.timeLimitS != null) body.time_limit_s = options.timeLimitS;
   const res = await fetch("/api/preference/pair", {
     method: "POST",
@@ -347,6 +317,8 @@ export async function submitPreferenceCompare(body: {
   comparison_count: number;
   phase: string;
   top_deltas: { key: string; delta: number }[];
+  picks_on_design: number;
+  picks_until_rotation: number;
 }> {
   const res = await fetch("/api/preference/compare", {
     method: "POST",
@@ -361,6 +333,11 @@ export async function getPreferenceState(roomType: string): Promise<{
   comparison_count: number;
   phase: string;
   top_deltas: { key: string; delta: number }[];
+  design_id: string | null;
+  width_m: number | null;
+  length_m: number | null;
+  picks_on_design: number;
+  picks_until_rotation: number;
 }> {
   const res = await fetch(
     `/api/preference/state?room_type=${encodeURIComponent(roomType)}`
@@ -371,8 +348,7 @@ export async function getPreferenceState(roomType: string): Promise<{
 
 export async function exportLearnedYaml(roomType: string): Promise<{
   theta_path: string;
-  relations_path: string;
-  updated_rules: number;
+  constraints_path: string;
 }> {
   const res = await fetch("/api/preference/export-yaml", {
     method: "POST",
