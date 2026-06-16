@@ -1,4 +1,4 @@
-"""Cached LLM-only layout drafts for preference training (few-shot from goldens)."""
+"""Cached LLM-only layout drafts for preference training and few-shot examples."""
 
 from __future__ import annotations
 
@@ -140,7 +140,7 @@ def generate_and_cache_design(
     use_mock: bool = False,
     modulor_cell_m: float = 0.25,
 ) -> dict[str, Any]:
-    """Run llm_only planner with golden few-shot for a random room."""
+    """Run llm_only planner with cached LLM-design few-shot for a random room."""
     provider = llm or get_llm_provider(use_mock=use_mock)
     few_shot_ids = few_shot_golden_ids(room.type)
     draft = provider.generate_layout_draft(room)

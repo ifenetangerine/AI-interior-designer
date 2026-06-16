@@ -58,8 +58,17 @@ def add_hard_constraints(
     model: cp_model.CpModel,
     fv_list: list,
     constraints: list[FurnitureConstraint],
+    *,
+    w_grid: int | None = None,
+    l_grid: int | None = None,
 ) -> None:
-    """Physics-only hard constraints: stack children on parent origin."""
+    """Physics hard constraints: stack colocation and kitchen counter wall contact."""
+    wall_by_id = {
+        c.furniture: c.wall
+        for c in constraints
+        if c.type == ConstraintType.AGAINST_WALL and c.furniture and c.wall
+    }
+
     for c in constraints:
         if c.type not in (ConstraintType.ON_TOP_OF, ConstraintType.UNDER):
             continue
@@ -69,3 +78,21 @@ def add_hard_constraints(
             model.Add(child.ox == parent.ox)
             model.Add(child.oy == parent.oy)
             model.Add(child.rot == parent.rot)
+
+    if w_grid is None or l_grid is None:
+        return
+
+    for fv in fv_list:
+        if fv.category != "counter":
+            continue
+        wall = wall_by_id.get(fv.item_id)
+        if not wall or wall == "any":
+            continue
+        if wall == "north":
+            model.Add(fv.end_y == l_grid)
+        elif wall == "south":
+            model.Add(fv.oy == 0)
+        elif wall == "west":
+            model.Add(fv.ox == 0)
+        elif wall == "east":
+            model.Add(fv.end_x == w_grid)

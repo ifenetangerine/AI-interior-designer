@@ -50,6 +50,17 @@ def test_llm_refine_desk_chair_and_sofa_orientations():
     assert dfx * (-ux) + dfz * (-uz) > 0.85
 
 
+def test_bed_west_wall_foot_faces_into_room():
+    room = RoomSpec(id="r1", type="bedroom", width_m=4.0, length_m=3.5)
+    bundle = place_room_with_graph(
+        room, MockLLMProvider(), modulor_cell_m=0.25, placement_mode="llm_refine"
+    )
+    catalog = load_kenney_catalog()
+    bed = next(f for f in bundle.placement.furniture if f.id == "bed")
+    fx, fz = _world_front(bed.model_id, bed.category, bed.orientation, catalog)
+    assert fx > 0.85, "bed foot should face east into room when headboard is on west wall"
+
+
 def test_nightstand_faces_into_room_west_wall_bedroom():
     from colayout.pipeline.place import place_room_with_graph
 

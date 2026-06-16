@@ -13,6 +13,7 @@ from colayout.llm.placement_messages import (
     build_placement_user_message,
     parse_llm_json,
 )
+from colayout.llm.top_up_placement import maybe_top_up_layout_draft
 from colayout.llm.validate_placement import validate_layout_draft
 from colayout.schemas.floor import RoomSpec
 from colayout.schemas.layout_draft import RoomLayoutDraft
@@ -29,6 +30,7 @@ logger = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parents[3]
 PLACEMENT_PROMPT_PATH = ROOT / "config" / "prompts" / "room_placement.txt"
+TOP_UP_PROMPT_PATH = ROOT / "config" / "prompts" / "room_top_up.txt"
 MAX_ATTEMPTS = 2
 
 
@@ -46,17 +48,23 @@ class LLMProvider(ABC):
 class MockLLMProvider(LLMProvider):
     """Deterministic catalog kit for tests and offline runs."""
 
+    def __init__(self) -> None:
+        self.last_generation_warnings: list[str] = []
+
     def generate_layout_draft(
         self,
         room: RoomSpec,
         *,
         exclude_golden_ids: frozenset[str] | None = None,
     ) -> RoomLayoutDraft:
+        del exclude_golden_ids
+        self.last_generation_warnings = []
         data = load_mock_layout(room)
         data["room_id"] = room.id
         data["room_type"] = room.type
         draft = RoomLayoutDraft.model_validate(data)
-        sanitized, _ = validate_layout_draft(draft, room)
+        sanitized, val_msgs = validate_layout_draft(draft, room)
+        self.last_generation_warnings.extend(val_msgs)
         return sanitized
 
 
@@ -70,6 +78,7 @@ class OpenAILLMProvider(LLMProvider):
         self._client = OpenAI(api_key=api_key)
         self._model = model or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
         self._placement_system = PLACEMENT_PROMPT_PATH.read_text(encoding="utf-8")
+        self._top_up_system = TOP_UP_PROMPT_PATH.read_text(encoding="utf-8")
         self.last_generation_warnings: list[str] = []
 
     def generate_layout_draft(
@@ -121,7 +130,9 @@ class OpenAILLMProvider(LLMProvider):
                         room.id,
                         "; ".join(val_msgs),
                     )
-                return sanitized
+                topped_up, top_msgs = self._run_top_up_if_needed(room, sanitized)
+                self.last_generation_warnings.extend(top_msgs)
+                return topped_up
             except (json.JSONDecodeError, ValidationError) as e:
                 last_errors = [str(e)]
                 logger.warning(
@@ -169,6 +180,28 @@ class OpenAILLMProvider(LLMProvider):
                 }
             )
         return messages
+
+    def _run_top_up_if_needed(
+        self,
+        room: RoomSpec,
+        draft: RoomLayoutDraft,
+    ) -> tuple[RoomLayoutDraft, list[str]]:
+        def llm_complete(messages: list[dict]) -> str:
+            resp = self._client.chat.completions.create(
+                model=self._model,
+                messages=messages,
+                temperature=0.2,
+                response_format={"type": "json_object"},
+            )
+            return resp.choices[0].message.content or "{}"
+
+        return maybe_top_up_layout_draft(
+            room,
+            draft,
+            llm_complete=llm_complete,
+            system_prompt=self._top_up_system,
+            parse_json=parse_llm_json,
+        )
 
 
 def _placement_fallback(room: RoomSpec) -> RoomLayoutDraft:

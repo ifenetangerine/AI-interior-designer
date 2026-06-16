@@ -10,6 +10,7 @@ from colayout.llm.few_shot import format_few_shot_block
 from colayout.llm.room_program import (
     anchor_category,
     density_tier,
+    floor_coverage_ratio_bounds,
     furniture_count_bounds,
     room_area_m2,
 )
@@ -32,6 +33,7 @@ def build_placement_user_message(
     area = room_area_m2(room)
     tier = density_tier(area)
     min_p, max_p = furniture_count_bounds(room.type, tier)
+    fcr_min_m2, fcr_max_m2 = floor_coverage_ratio_bounds(area)
     few_shot = format_few_shot_block(room, exclude_ids=exclude_golden_ids)
     parts = [
         f"Room id: {room.id}",
@@ -39,6 +41,8 @@ def build_placement_user_message(
         f"Width (m): {room.width_m}",
         f"Length (m): {room.length_m}",
         f"Floor area: {area:.1f} m²",
+        f"Target floor coverage (FCR): {fcr_min_m2:.1f}–{fcr_max_m2:.1f} m² "
+        f"(35–45% of floor area; sum of furniture footprint areas)",
         f"Density tier: {tier}",
         f"Target furniture count: {min_p}–{max_p} pieces",
         f"Primary anchor role: {anchor_category(room.type)}",
@@ -57,7 +61,8 @@ def build_placement_user_message(
             "Kenney catalog (pick model_id from this list):",
             catalog_prompt_json(room.type),
             "---",
-            "Return the full layout JSON with explicit center_x_m, center_z_m, orientation.",
+            "Return the full layout JSON with explicit center_x_m, center_z_m, orientation. "
+            "Keep total furniture footprint area within the FCR target range.",
         ]
     )
     return "\n".join(parts)

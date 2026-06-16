@@ -18,11 +18,13 @@ from colayout.llm.provider import LLMProvider
 from colayout.llm.validate_placement import validate_layout_draft
 from colayout.placement.orient import apply_facing_orientations
 from colayout.placement_mode import is_llm_only_mode, resolve_placement_mode
+from colayout.preference.theta import apply_theta, load_room_theta
 from colayout.schemas.floor import FloorPlanInput, RoomSpec
 from colayout.schemas.layout_draft import RoomLayoutDraft
 from colayout.schemas.placement import FloorPlacementResult, RoomPlacementResult
 from colayout.schemas.scene import RoomSceneGraph
 from colayout.solver.coarse_to_fine import solve_room_coarse_to_fine
+from colayout.solver.hybrid_pipeline import refine_after_ip
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +56,16 @@ def place_room_with_graph(
 def _llm_generation_warnings(llm: LLMProvider) -> list[str]:
     raw = getattr(llm, "last_generation_warnings", None)
     return list(raw) if raw else []
+
+
+def _scene_graph_with_theta(
+    draft: RoomLayoutDraft,
+    room: RoomSpec,
+    *,
+    refine_mode: bool = True,
+) -> RoomSceneGraph:
+    graph = draft_to_scene_graph(draft, room, refine_mode=refine_mode)
+    return apply_theta(graph, load_room_theta(room.type))
 
 
 def _place_room_llm_only(
@@ -92,7 +104,7 @@ def _place_room_llm_refine(
     warnings = _llm_generation_warnings(llm) + list(val_errors)
 
     grid = discretize_room(room, modulor_cell_m)
-    graph = draft_to_scene_graph(draft, room)
+    graph = _scene_graph_with_theta(draft, room)
     llm_placement = apply_facing_orientations(
         placement_result_from_draft(draft, grid), graph
     )
@@ -141,6 +153,7 @@ def _place_room_llm_refine(
         logger.info(
             "Room %s refine warnings: %s", room.id, "; ".join(val_errors)
         )
+    placement = refine_after_ip(placement, draft, room, graph, grid)
     placement = apply_facing_orientations(placement, graph)
     return RoomPlacementBundle(
         placement=placement,
@@ -163,7 +176,7 @@ def _place_room_ip_full(
     warnings = _llm_generation_warnings(llm) + list(val_errors)
 
     grid = discretize_room(room, modulor_cell_m)
-    graph = draft_to_scene_graph(draft, room, refine_mode=False)
+    graph = _scene_graph_with_theta(draft, room, refine_mode=False)
     placement = solve_room_coarse_to_fine(
         graph,
         grid,

@@ -21,6 +21,8 @@ PRINCIPLES_PATH = ROOT / "design_principles.md"
 
 COMPACT_AREA_M2 = 12.0
 SPACIOUS_AREA_M2 = 25.0
+FCR_MIN = 0.35
+FCR_MAX = 0.45
 
 PIECE_BOUNDS: dict[str, dict[DensityTier, tuple[int, int]]] = {
     "bedroom": {
@@ -153,6 +155,11 @@ def staging_prompt(room_type: str, tier: DensityTier) -> str:
 
 def room_area_m2(room: RoomSpec) -> float:
     return room.width_m * room.length_m
+
+
+def floor_coverage_ratio_bounds(area_m2: float) -> tuple[float, float]:
+    """Target combined furniture footprint area for LLM layouts (35–45% FCR)."""
+    return area_m2 * FCR_MIN, area_m2 * FCR_MAX
 
 
 def density_tier(area_m2: float) -> DensityTier:

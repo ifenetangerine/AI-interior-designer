@@ -265,6 +265,14 @@ def _kind_weight_for_constraint(
     return theta.get(kkey)
 
 
+def load_room_theta(room_type: str) -> dict[str, float]:
+    """Load clamped relational θ for a room type from theta_state.json."""
+    from colayout.preference.store import get_room_theta_state
+
+    raw = get_room_theta_state(room_type)
+    return clamp_theta(raw.get("theta_current", {}), room_type)
+
+
 def apply_theta(graph: RoomSceneGraph, theta: dict[str, float]) -> RoomSceneGraph:
     """Apply kind-bundle weights, metric targets, and global objectives."""
     room_type = graph.room_type

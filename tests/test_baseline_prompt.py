@@ -29,6 +29,8 @@ def test_build_placement_message_includes_catalog_json():
     assert "Kenney catalog" in msg
     assert "add desk and chair" in msg
     assert "Floor area:" in msg
+    assert "Target floor coverage (FCR):" in msg
+    assert "35–45%" in msg
     assert "bedDouble" in msg
     chunk = msg.split("Kenney catalog (pick model_id from this list):\n")[1]
     catalog_json = chunk.split("\n---\n")[0]

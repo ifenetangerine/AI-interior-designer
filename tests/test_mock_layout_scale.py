@@ -5,6 +5,24 @@ from colayout.pipeline.place import place_room_with_graph
 from colayout.schemas.floor import RoomSpec
 
 
+def test_kitchen_counters_touch_north_wall_after_refine():
+    room = RoomSpec(id="k1", type="kitchen", width_m=6.0, length_m=5.0)
+    bundle = place_room_with_graph(
+        room, MockLLMProvider(), 0.25, placement_mode="llm_refine"
+    )
+    assert bundle is not None
+    cell = bundle.placement.modulor_cell_m
+    counters = [
+        f
+        for f in bundle.placement.furniture
+        if f.category == "counter" and f.stack_parent_id is None
+    ]
+    assert counters
+    for counter in counters:
+        north_edge_z = (counter.origin_j + counter.length_cells) * cell
+        assert north_edge_z >= room.length_m - cell * 0.5
+
+
 def test_kitchen_counters_near_north_wall_on_large_room():
     room = RoomSpec(id="k1", type="kitchen", width_m=6.0, length_m=5.0)
     bundle = place_room_with_graph(

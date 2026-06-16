@@ -1,11 +1,10 @@
-"""Format golden layouts as few-shot examples for the LLM planner."""
+"""Format cached LLM designs as few-shot examples for the planner."""
 
 from __future__ import annotations
 
 import json
 from typing import Any
 
-from colayout.preference.store import list_golden_layouts, load_golden_layout
 from colayout.schemas.floor import RoomSpec
 
 _MAX_PLACEMENTS_IN_EXAMPLE = 24
@@ -16,12 +15,22 @@ def few_shot_golden_ids(
     *,
     exclude_ids: set[str] | frozenset[str] | None = None,
 ) -> list[str]:
-    """Golden layout ids marked few_shot for a room type, newest first."""
+    """Cached LLM design ids for a room type, newest first."""
+    from colayout.preference.llm_designs import list_cached_llm_designs
+
     skip = exclude_ids or set()
-    rows = list_golden_layouts(room_type)
-    shot = [r for r in rows if r.get("few_shot") and r["id"] not in skip]
-    shot.sort(key=lambda r: r.get("updated_at") or "", reverse=True)
-    return [r["id"] for r in shot]
+    rows = list_cached_llm_designs(room_type)
+    rows.sort(key=lambda r: r.get("generated_at") or "", reverse=True)
+    return [r["design_id"] for r in rows if r["design_id"] not in skip]
+
+
+def few_shot_design_ids(
+    room_type: str,
+    *,
+    exclude_ids: set[str] | frozenset[str] | None = None,
+) -> list[str]:
+    """Alias for :func:`few_shot_golden_ids`."""
+    return few_shot_golden_ids(room_type, exclude_ids=exclude_ids)
 
 
 def _trim_placement(p: dict[str, Any]) -> dict[str, Any]:
@@ -53,7 +62,7 @@ def _example_payload(record: dict[str, Any]) -> dict[str, Any]:
         key=lambda p: p.get("placement_order", 0),
     )[:_MAX_PLACEMENTS_IN_EXAMPLE]
     return {
-        "label": record.get("label") or record.get("id"),
+        "label": record.get("design_id") or record.get("label") or record.get("id"),
         "room_type": record.get("room_type"),
         "width_m": record.get("width_m"),
         "length_m": record.get("length_m"),
@@ -66,13 +75,13 @@ def load_few_shot_examples(
     *,
     exclude_ids: set[str] | frozenset[str] | None = None,
 ) -> list[dict[str, Any]]:
+    from colayout.preference.llm_designs import load_cached_llm_design
+
     examples: list[dict[str, Any]] = []
-    for gid in few_shot_golden_ids(room_type, exclude_ids=exclude_ids):
-        try:
-            record = load_golden_layout(gid)
-        except FileNotFoundError:
-            continue
-        examples.append(_example_payload(record))
+    for design_id in few_shot_golden_ids(room_type, exclude_ids=exclude_ids):
+        record = load_cached_llm_design(design_id)
+        if record:
+            examples.append(_example_payload(record))
     return examples
 
 
@@ -81,7 +90,7 @@ def format_few_shot_block(
     *,
     exclude_ids: set[str] | frozenset[str] | None = None,
 ) -> str:
-    """Prompt section with golden few-shot layout examples (empty if none)."""
+    """Prompt section with cached LLM design examples (empty if none)."""
     examples = load_few_shot_examples(room.type, exclude_ids=exclude_ids)
     if not examples:
         return ""

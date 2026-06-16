@@ -1,0 +1,25 @@
+version: 1
+room_type: bedroom
+theta:
+  global.balance: 0.3343
+  global.proportion: 0.1742
+  global.rhythm: 0.0667
+  global.walk: 0.6846
+  global.rel: 1.0
+  bedroom.kind.adjacent.weight: 6.1201
+  bedroom.kind.in_front_of.weight: 4.6176
+  bedroom.kind.facing.weight: 10.9743
+  bedroom.kind.on_top_of.weight: 8.4021
+  bedroom.kind.centered_under.weight: 8.5738
+  bedroom.kind.against_wall.weight: 11.9653
+  bedroom.kind.symmetric_pair.weight: 11.1117
+  bedroom.kind.relative_position.weight: 6.6046
+  metric.adjacent_gap_m: 0.0013
+  metric.symmetry_strength: 15.1802
+  metric.on_surface_strength: 10.0
+  metric.orphan_radius_m: 2.0428
+  metric.orphan_weight: 4.9675
+  metric.door_clearance_min_m: 0.8494
+  metric.chair_desk_dist_m: 0.6201
+  metric.wall_inset_sleep_m: 0.0474
+  metric.wall_inset_storage_m: 0.0

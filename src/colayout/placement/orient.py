@@ -202,9 +202,16 @@ def apply_facing_orientations(
         if c.type != ConstraintType.AGAINST_WALL or not c.furniture or not c.wall:
             continue
         item = by_id.get(c.furniture)
-        if not item or item.category == "bed":
+        if not item:
             continue
         if item.id in desk_faces_chair or item.id in tv_faces_seat:
+            continue
+        if item.category == "bed":
+            target = INTO_ROOM.get(c.wall)
+            if target:
+                updates[item.id] = best_orientation(
+                    item.model_id, item.category, target, catalog
+                )
             continue
         if item.category not in WALL_FACE_CATEGORIES:
             continue

@@ -15,6 +15,7 @@ from colayout.schemas.floor import RoomSpec
 from colayout.schemas.layout_draft import FurniturePlacementDraft, RoomLayoutDraft
 
 WALL_MARGIN_M = 0.06
+COUNTER_WALL_MARGIN_M = 0.02
 
 WALL_HUG_ROLES = frozenset(
     {
@@ -44,15 +45,17 @@ def _snap_center_to_wall(
     wall: str,
     room_w: float,
     room_l: float,
+    *,
+    margin_m: float = WALL_MARGIN_M,
 ) -> tuple[float, float]:
     if wall == "west":
-        cx = fw / 2 + WALL_MARGIN_M
+        cx = fw / 2 + margin_m
     elif wall == "east":
-        cx = room_w - fw / 2 - WALL_MARGIN_M
+        cx = room_w - fw / 2 - margin_m
     elif wall == "south":
-        cz = fl / 2 + WALL_MARGIN_M
+        cz = fl / 2 + margin_m
     elif wall == "north":
-        cz = room_l - fl / 2 - WALL_MARGIN_M
+        cz = room_l - fl / 2 - margin_m
     return cx, cz
 
 
@@ -105,6 +108,8 @@ def _wall_for_placement(
 
 def _follows_parent_offset(p: FurniturePlacementDraft, room: RoomSpec) -> bool:
     """Children that should keep their offset from relative_to after parent moves."""
+    if p.on_surface_of and role_for_model(p.model_id) == "tv":
+        return True
     if not p.relative_to:
         return False
     role = role_for_model(p.model_id)
@@ -138,13 +143,23 @@ def _snap_single(
         )
 
     role = role_for_model(updated.model_id)
+    cat = placement_category(updated.model_id)
     if role in ("bed", "sofa") or (
         updated.placement_order == 1 and role == anchor_category(room.type)
     ):
         updated = updated.model_copy(
             update={"orientation": _orientation_for_wall(wall)}
         )
+    elif role in COUNTER_SEGMENT_ROLES or cat == "counter":
+        updated = updated.model_copy(
+            update={"orientation": _orientation_for_wall(wall)}
+        )
 
+    margin = (
+        COUNTER_WALL_MARGIN_M
+        if role in COUNTER_SEGMENT_ROLES or cat == "counter"
+        else WALL_MARGIN_M
+    )
     cx, cz = _snap_center_to_wall(
         updated.center_x_m,
         updated.center_z_m,
@@ -153,6 +168,7 @@ def _snap_single(
         wall,
         room.width_m,
         room.length_m,
+        margin_m=margin,
     )
     cx, cz = _clamp_center(cx, cz, fw, fl, room.width_m, room.length_m)
     return updated.model_copy(
@@ -170,6 +186,7 @@ def snap_placements_to_walls(
     """Snap wall-hug pieces; children with relative_to follow parent offsets."""
     placements = sorted(draft.placements, key=lambda p: p.placement_order)
     original = {p.id: (p.center_x_m, p.center_z_m) for p in placements}
+    by_id = {p.id: p for p in placements}
     snapped: dict[str, FurniturePlacementDraft] = {}
 
     for p in placements:
@@ -180,6 +197,17 @@ def snap_placements_to_walls(
     for p in placements:
         if p.id in snapped:
             continue
+        if p.on_surface_of and role_for_model(p.model_id) == "tv":
+            parent = snapped.get(p.on_surface_of) or by_id.get(p.on_surface_of)
+            if parent:
+                snapped[p.id] = p.model_copy(
+                    update={
+                        "center_x_m": round(parent.center_x_m, 3),
+                        "center_z_m": round(parent.center_z_m, 3),
+                        "on_surface_of": p.on_surface_of,
+                    }
+                )
+                continue
         parent_id = p.relative_to
         if not parent_id or not _follows_parent_offset(p, room):
             snapped[p.id] = _snap_single(p, room)

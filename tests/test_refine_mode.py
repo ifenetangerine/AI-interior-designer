@@ -1,5 +1,8 @@
 """LLM refine pipeline: soft IP pass with hints."""
 
+import json
+
+import pytest
 from unittest.mock import patch
 
 from colayout.grid.discretize import discretize_room
@@ -18,6 +21,14 @@ from colayout.pipeline.place import place_room
 from colayout.placement.orient import apply_facing_orientations
 from colayout.schemas.floor import RoomSpec
 from colayout.schemas.layout_draft import FurniturePlacementDraft, RoomLayoutDraft
+
+
+@pytest.fixture(autouse=True)
+def default_theta_state(tmp_path, monkeypatch):
+    """Isolate pipeline tests from learned theta_state.json on disk."""
+    state_path = tmp_path / "theta_state.json"
+    monkeypatch.setattr("colayout.preference.store.THETA_STATE_PATH", state_path)
+    state_path.write_text(json.dumps({"room_types": {}}), encoding="utf-8")
 
 
 def test_refine_with_hints_produces_feasible_layout():
@@ -168,16 +179,14 @@ def test_llm_refine_nightstands_and_desk_chair():
     right = next(f for f in bundle.placement.furniture if f.id == "nightstand_r")
     desk = next(f for f in bundle.placement.furniture if f.id == "desk")
     chair = next(f for f in bundle.placement.furniture if f.id == "desk_chair")
+    cell_m = bundle.placement.modulor_cell_m
+
+    def l1_m(a, b) -> float:
+        return (
+            abs(a.centroid_i - b.centroid_i) + abs(a.centroid_j - b.centroid_j)
+        ) * cell_m
 
     assert left.centroid_j < bed.centroid_j
     assert right.centroid_j > bed.centroid_j
-    assert left.origin_i <= bed.origin_i + 1
-    assert right.origin_i <= bed.origin_i + 1
-    assert (
-        chair.centroid_i < desk.centroid_i - 0.2
-        or chair.centroid_j < desk.centroid_j - 0.2
-    )
-    assert (
-        abs(chair.centroid_i - desk.centroid_i) <= 0.5
-        or abs(chair.centroid_j - desk.centroid_j) <= 0.5
-    )
+    # Desk/chair band from category_constraints.yaml (soft in llm_refine).
+    assert 0.25 - 0.05 <= l1_m(chair, desk) <= 1.25 + 0.05

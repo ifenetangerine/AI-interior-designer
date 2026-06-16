@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from ortools.sat.python import cp_model
 
-from colayout.design.principle_registry import COFFEE_SOFA_MAX_M, COFFEE_SOFA_MIN_M
+from colayout.ip.category_distance import add_category_pair_soft_penalties
 from colayout.ip.constraints import _offset_to_centi
 from colayout.llm.room_program import anchor_category
 from colayout.schemas.scene import ConstraintType, RoomSceneGraph, ThetaMetrics
@@ -34,10 +34,11 @@ def build_objective_interval(
     w_grid: int,
     l_grid: int,
     cell_m: float = 0.25,
+    *,
+    soft_pair_penalties: bool = False,
 ) -> list[cp_model.IntVar]:
     w = graph.weights
     terms: list[cp_model.IntVar] = []
-    id_to_cat = {fv.item_id: fv.category for fv in fv_list}
 
     if w.bal > 0.01 and fv_list:
         mid_i = w_grid * 50
@@ -72,8 +73,17 @@ def build_objective_interval(
     _add_anchor_child_cluster_penalties(model, fv_list, graph, cell_m, terms)
     _add_orphan_penalties(model, fv_list, graph, cell_m, terms)
     _add_lateral_balance(model, fv_list, w, w_grid, terms)
-    _add_proportion_terms(model, fv_list, id_to_cat, w, graph, cell_m, terms)
-    _add_viewing_distance_terms(model, fv_list, id_to_cat, w, graph, cell_m, terms)
+    if soft_pair_penalties:
+        add_category_pair_soft_penalties(
+            model,
+            fv_list,
+            graph,
+            cell_m,
+            terms,
+            room_width_m=w_grid * cell_m,
+            room_length_m=l_grid * cell_m,
+            weight_scale=5.0,
+        )
     _add_rhythm_terms(model, fv_list, graph, w_grid, l_grid, terms)
     _add_door_clearance_penalty(
         model, fv_list, graph, w_grid, l_grid, cell_m, terms
@@ -114,84 +124,6 @@ def _add_lateral_balance(
     imbalance = model.NewIntVar(0, 500000, "")
     model.AddAbsEquality(imbalance, left_sum - right_sum)
     terms.append(int(w.balance * 3) * imbalance)
-
-
-def _add_proportion_terms(
-    model: cp_model.CpModel,
-    fv_list: list,
-    id_to_cat: dict[str, str],
-    w: "ObjectiveWeights",
-    graph: RoomSceneGraph,
-    cell_m: float,
-    terms: list[cp_model.IntVar],
-) -> None:
-    if w.proportion <= 0.01:
-        return
-    sofas = [f for f in fv_list if id_to_cat.get(f.item_id) == "sofa"]
-    coffees = [f for f in fv_list if id_to_cat.get(f.item_id) == "coffee_table"]
-    if not sofas or not coffees:
-        return
-    sofa, coffee = sofas[0], coffees[0]
-    m = _metrics(graph)
-    if m.sofa_coffee_dist_m is not None:
-        center = m.sofa_coffee_dist_m
-        band = 0.05
-        min_d = _offset_to_centi(max(0.1, center - band), cell_m)
-        max_d = _offset_to_centi(center + band, cell_m)
-    else:
-        min_d = _offset_to_centi(COFFEE_SOFA_MIN_M, cell_m)
-        max_d = _offset_to_centi(COFFEE_SOFA_MAX_M, cell_m)
-    # True 2D (L1) distance, not just the j axis: the pair can approach along
-    # either axis depending on which wall the sofa backs.
-    abs_i = model.NewIntVar(0, 20000, "")
-    abs_j = model.NewIntVar(0, 20000, "")
-    model.AddAbsEquality(abs_i, coffee.centroid_i - sofa.centroid_i)
-    model.AddAbsEquality(abs_j, coffee.centroid_j - sofa.centroid_j)
-    abs_d = model.NewIntVar(0, 40000, "")
-    model.Add(abs_d == abs_i + abs_j)
-    shortfall = model.NewIntVar(0, 40000, "")
-    excess = model.NewIntVar(0, 40000, "")
-    model.Add(shortfall >= min_d - abs_d)
-    model.Add(excess >= abs_d - max_d)
-    terms.append(int(w.proportion * 5) * shortfall)
-    terms.append(int(w.proportion * 5) * excess)
-
-
-def _add_viewing_distance_terms(
-    model: cp_model.CpModel,
-    fv_list: list,
-    id_to_cat: dict[str, str],
-    w: "ObjectiveWeights",
-    graph: RoomSceneGraph,
-    cell_m: float,
-    terms: list[cp_model.IntVar],
-) -> None:
-    if w.proportion <= 0.01:
-        return
-    target_m = (_metrics(graph).sofa_tv_dist_m or 3.0)
-    band = 0.5
-    min_d = _offset_to_centi(max(1.0, target_m - band), cell_m)
-    max_d = _offset_to_centi(target_m + band, cell_m)
-    sofas = [f for f in fv_list if id_to_cat.get(f.item_id) == "sofa"]
-    tvs = [
-        f
-        for f in fv_list
-        if id_to_cat.get(f.item_id) in ("tv", "tv_stand")
-    ]
-    if not sofas or not tvs:
-        return
-    abs_i = model.NewIntVar(0, 20000, "")
-    abs_j = model.NewIntVar(0, 20000, "")
-    model.AddAbsEquality(abs_i, sofas[0].centroid_i - tvs[0].centroid_i)
-    model.AddAbsEquality(abs_j, sofas[0].centroid_j - tvs[0].centroid_j)
-    abs_d = model.NewIntVar(0, 40000, "")
-    model.Add(abs_d == abs_i + abs_j)
-    shortfall = model.NewIntVar(0, 40000, "")
-    excess = model.NewIntVar(0, 40000, "")
-    model.Add(shortfall >= min_d - abs_d)
-    model.Add(excess >= abs_d - max_d)
-    terms.append(int(w.proportion * 4) * shortfall)
-    terms.append(int(w.proportion * 4) * excess)
 
 
 def _add_rhythm_terms(

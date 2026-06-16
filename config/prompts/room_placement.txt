@@ -27,7 +27,9 @@ Coordinates: southwest origin (0,0); x east, z north; orientation 0 or 1.
 ## How to design
 
 - **Primary guide:** follow the few-shot reference layouts in the user message for piece count, anchor structure, relative_to chains, symmetry, and staging. Scale positions to this room's width and length.
+- **Floor coverage (FCR):** the sum of each placed piece's footprint area (width × depth from the catalog, using its orientation) must fall within **35–45%** of the room floor area. Avoid sparse under-furnishing and overcrowding.
 - **Anchors (advisory):** tag focal zone roots with composition_role "anchor" and relative_to null — e.g. bed (bedroom), TV viewing group (living room), dining table and sink (kitchen). Add linked support/accent pieces around each anchor.
+- **TV stack (living room):** the TV screen (`televisionModern`) must set `on_surface_of` to its console/stand id (e.g. `sideTable`, `cabinetTelevision`); share the console center x/z. Never place the TV on the floor.
 - **Catalog:** use model_id values exactly as listed in the Kenney catalog. If unsure, pick the closest matching id from the catalog.
 
 Supported room types: bedroom, living_room, kitchen.

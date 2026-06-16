@@ -132,7 +132,18 @@ def _resolve_surface_parent(
     p: FurniturePlacementDraft,
     by_id: dict[str, FurniturePlacementDraft],
 ) -> str | None:
-    if not is_stackable_child_role(role_for_model(p.model_id)):
+    role = role_for_model(p.model_id)
+    if role == "tv":
+        if p.on_surface_of and p.on_surface_of in by_id:
+            parent = by_id[p.on_surface_of]
+            if is_valid_surface_stack(p.model_id, parent.model_id):
+                return p.on_surface_of
+        for other in by_id.values():
+            if other.relative_to == p.id and is_valid_surface_stack(
+                p.model_id, other.model_id
+            ):
+                return other.id
+    if not is_stackable_child_role(role):
         return None
     if p.on_surface_of and p.on_surface_of in by_id:
         parent = by_id[p.on_surface_of]
@@ -159,14 +170,39 @@ def _resolve_surface_parent(
 def auto_link_overlapping_stacks(
     placements: list[FurniturePlacementDraft],
 ) -> list[FurniturePlacementDraft]:
-    """Sync on_surface_of from current x/z overlap (link on overlap, clear when apart)."""
+    """Sync on_surface_of from overlap; preserve TV-on-console stacks."""
     by_id = {p.id: p for p in placements}
     out: list[FurniturePlacementDraft] = []
     for p in placements:
-        if not is_stackable_child_role(role_for_model(p.model_id)):
+        role = role_for_model(p.model_id)
+        if role == "tv":
+            parent_id = _resolve_surface_parent(p, by_id)
+            if parent_id and parent_id in by_id:
+                parent = by_id[parent_id]
+                out.append(
+                    p.model_copy(
+                        update={
+                            "on_surface_of": parent_id,
+                            "center_x_m": round(parent.center_x_m, 3),
+                            "center_z_m": round(parent.center_z_m, 3),
+                        }
+                    )
+                )
+                continue
+        if not is_stackable_child_role(role):
             out.append(p)
             continue
         parent_id = _find_stack_parent_by_overlap(p, by_id)
+        if (
+            parent_id is None
+            and role == "tv"
+            and p.on_surface_of
+            and p.on_surface_of in by_id
+        ):
+            parent = by_id[p.on_surface_of]
+            if is_valid_surface_stack(p.model_id, parent.model_id):
+                out.append(p)
+                continue
         if parent_id != p.on_surface_of:
             out.append(p.model_copy(update={"on_surface_of": parent_id}))
         else:
@@ -316,6 +352,7 @@ def draft_to_scene_graph(
                     type=ConstraintType.AGAINST_WALL,
                     furniture=p.id,
                     wall=wall,
+                    hard=cat == "counter" and draft.room_type == "kitchen",
                 )
             )
         elif cat == "bed":

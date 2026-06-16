@@ -1,0 +1,113 @@
+stacking:
+  rug:
+    on_top: false
+    beneath: true
+  decor:
+    on_top: true
+    beneath: false
+  lamp_desk:
+    on_top: true
+    beneath: true
+  tv:
+    on_top: true
+    beneath: false
+  tv_stand:
+    on_top: false
+    beneath: false
+  default:
+    on_top: false
+    beneath: false
+
+stack_parents:
+  on_top:
+    - nightstand
+    - side_table
+    - coffee_table
+    - desk
+    - dining_table
+    - counter
+    - bookshelf
+    - dresser
+    - wardrobe
+    - tv_stand
+  beneath:
+    - bed
+    - sofa
+    - coffee_table
+    - dining_table
+    - desk
+    - counter
+
+distance_m:
+  defaults:
+    min: 0.0
+    max: null
+  pairs:
+    sofa:
+      coffee_table: { min: 0.15, max: 0.75 }
+      tv: { min: 1.5, max: 6.0 }
+    bed:
+      nightstand: { min: 0.0, max: 0.85 }
+    desk:
+      chair: { min: 0.25, max: 1.25 }
+    dining_table:
+      chair: { min: 0.25, max: 1.25 }
+    coffee_table:
+      sofa: { min: 0.15, max: 0.75 }
+    tv:
+      sofa: { min: 1.5, max: 6.0 }
+    counter:
+      chair: { min: 0.25, max: 1.5 }
+    chair:
+      desk: { min: 0.25, max: 1.25 }
+      counter: { min: 0.25, max: 1.5 }
+      dining_table: { min: 0.25, max: 1.25 }
+
+wall_distance_m:
+  exempt:
+    - decor
+    - tv
+    - chair
+  defaults:
+    min: 0.0
+    max: null
+  categories:
+    bed: { min: 0.0, max: 0.25 }
+    sofa: { min: 0.0, max: 1.2 }
+    desk: { min: 0.0, max: 0.25 }
+    wardrobe: { min: 0.0, max: 0.35 }
+    coffee_table: { min: 0.5, max: 1.5 }
+    counter: { min: 0.0, max: 0.35 }
+    fridge: { min: 0.0, max: 0.15 }
+    dining_table: { min: 0.5, max: 2.5 }
+    nightstand: { min: 0.0, max: 0.35 }
+    bookshelf: { min: 0.0, max: 0.35 }
+    dresser: { min: 0.0, max: 0.35 }
+    rug: { min: 0.3, max: 1.2 }
+    lamp_desk: { min: 0.0, max: 0.5 }
+    lamp_floor: { min: 0.0, max: 0.5 }
+
+# Unobstructed zone in front of anchor (mesh forward / IP rot).
+# rot=0 → front faces +i; rot=1 → front faces +j.
+front_clearance_m:
+  global_exempt:
+    - decor
+    - rug
+    - lamp_desk
+    - lamp_floor
+  allowed_blockers:
+    chair: [desk, dining_table]
+    bar_stool: [counter]
+    sofa: [tv, tv_stand]
+    coffee_table: [tv, tv_stand]
+  anchors:
+    tv: 1.0
+    tv_stand: 1.0
+    dresser: 1.5
+    wardrobe: 1.5
+    counter: 1.5
+    desk: 0.75
+    fridge: 1.5
+    bookshelf: 1.5
+    sink: 1.5
+    stove: 1.5

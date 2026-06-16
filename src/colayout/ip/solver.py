@@ -8,7 +8,9 @@ from dataclasses import dataclass
 from ortools.sat.python import cp_model
 
 from colayout.grid.discretize import MAX_GRID_DIM, GridSpec, furniture_cells
+from colayout.ip import category_distance as ip_category_distance
 from colayout.ip import constraints as ip_constraints
+from colayout.ip import front_clearance as ip_front_clearance
 from colayout.ip import objectives as ip_objectives
 from colayout.schemas.placement import PlacedFurniture, RoomPlacementResult, StackMode
 from colayout.schemas.scene import ConstraintType, RoomSceneGraph
@@ -145,7 +147,25 @@ def placement_satisfies_hard_constraints(
     if len(x_intervals) > 1:
         model.AddNoOverlap2D(x_intervals, y_intervals)
 
-    ip_constraints.add_hard_constraints(model, fv_list, graph.constraints)
+    ip_constraints.add_hard_constraints(
+        model,
+        fv_list,
+        graph.constraints,
+        w_grid=w_grid,
+        l_grid=l_grid,
+    )
+    ip_front_clearance.add_front_clearance_constraints(
+        model, fv_list, graph, grid.modulor_cell_m
+    )
+    if not soft_constraints:
+        ip_category_distance.add_category_pair_hard_constraints(
+            model,
+            fv_list,
+            graph,
+            grid.modulor_cell_m,
+            room_width_m=grid.width_m,
+            room_length_m=grid.length_m,
+        )
 
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = 2.0
@@ -168,7 +188,25 @@ def solve_room_placement(
     if len(x_intervals) > 1:
         model.AddNoOverlap2D(x_intervals, y_intervals)
 
-    ip_constraints.add_hard_constraints(model, fv_list, graph.constraints)
+    ip_constraints.add_hard_constraints(
+        model,
+        fv_list,
+        graph.constraints,
+        w_grid=w_grid,
+        l_grid=l_grid,
+    )
+    ip_front_clearance.add_front_clearance_constraints(
+        model, fv_list, graph, grid.modulor_cell_m
+    )
+    if not config.soft_constraints:
+        ip_category_distance.add_category_pair_hard_constraints(
+            model,
+            fv_list,
+            graph,
+            grid.modulor_cell_m,
+            room_width_m=grid.width_m,
+            room_length_m=grid.length_m,
+        )
 
     if config.hints:
         for fv in fv_list:
@@ -180,7 +218,13 @@ def solve_room_placement(
                 model.AddHint(fv.rot, rot_h)
 
     obj_terms = ip_objectives.build_objective_interval(
-        model, fv_list, graph, w_grid, l_grid, grid.modulor_cell_m
+        model,
+        fv_list,
+        graph,
+        w_grid,
+        l_grid,
+        grid.modulor_cell_m,
+        soft_pair_penalties=config.soft_constraints,
     )
     if config.hints and config.soft_constraints:
         anchor_child_ids: set[str] = set()

@@ -765,7 +765,20 @@ def _ensure_tv_viewing_stack(
         messages.append(f"(info) added TV console '{console_id}' under anchor '{tv.id}'")
 
     if tv.on_surface_of != console.id:
-        updated[tv_idx] = tv.model_copy(update={"on_surface_of": console.id})
+        updated[tv_idx] = tv.model_copy(
+            update={
+                "on_surface_of": console.id,
+                "center_x_m": round(console.center_x_m, 3),
+                "center_z_m": round(console.center_z_m, 3),
+            }
+        )
+    else:
+        updated[tv_idx] = tv.model_copy(
+            update={
+                "center_x_m": round(console.center_x_m, 3),
+                "center_z_m": round(console.center_z_m, 3),
+            }
+        )
     if console.relative_to != tv.id:
         for i, p in enumerate(updated):
             if p.id == console.id:
@@ -773,6 +786,26 @@ def _ensure_tv_viewing_stack(
                 break
 
     return updated
+
+
+def repair_tv_viewing_stack(
+    draft: RoomLayoutDraft,
+    room: RoomSpec,
+) -> RoomLayoutDraft:
+    """Ensure living-room TV screens stack on a console (on_surface_of)."""
+    if room.type != "living_room":
+        return draft
+    messages: list[str] = []
+    used_ids = {p.id for p in draft.placements}
+    template = _template_by_role(room)
+    placements = _ensure_tv_viewing_stack(
+        list(draft.placements),
+        room,
+        used_ids,
+        template,
+        messages,
+    )
+    return draft.model_copy(update={"placements": placements})
 
 
 def ensure_anchor_children(

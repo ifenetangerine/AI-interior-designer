@@ -12,7 +12,9 @@ from colayout.llm.draft_to_hints import (
     auto_link_overlapping_stacks,
     footprint_m_for_placement,
 )
+from colayout.llm.anchor_structure import repair_tv_viewing_stack
 from colayout.llm.mock_layouts import _footprint_m
+from colayout.llm.snap_placement import snap_placements_to_walls
 from colayout.schemas.floor import RoomSpec
 from colayout.schemas.layout_draft import FurniturePlacementDraft, RoomLayoutDraft
 
@@ -38,6 +40,18 @@ def validate_layout_draft(
     placements = _renumber_placement_orders(placements)
     placements, clamp_msgs = _clamp_placements(placements, room)
     messages.extend(clamp_msgs)
+
+    snapped = snap_placements_to_walls(
+        draft.model_copy(update={"placements": placements}),
+        room,
+    )
+    placements = list(snapped.placements)
+
+    repaired = repair_tv_viewing_stack(
+        draft.model_copy(update={"placements": placements}),
+        room,
+    )
+    placements = list(repaired.placements)
 
     placements, surface_msgs = _sanitize_on_surface_of(placements)
     messages.extend(surface_msgs)
