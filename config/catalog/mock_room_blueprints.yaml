@@ -1,0 +1,77 @@
+bedroom:
+  standard:
+    weights: {rel: 0.2, bal: 0.0, walk: 0.1}
+    nodes:
+      - kind: compound_group
+        id: bed_cluster
+        blueprint_id: bedside_cluster
+        placement_order: 1
+        center_x_m: 2.0
+        center_z_m: 1.75
+        zone: sleep
+      - kind: compound_group
+        id: desk_cluster
+        blueprint_id: desk_cluster
+        placement_order: 2
+        center_x_m: 3.2
+        center_z_m: 2.2
+        zone: work
+      - kind: standalone_asset
+        id: wardrobe
+        model_id: cabinetBed
+        placement_order: 3
+        center_x_m: 0.6
+        center_z_m: 1.75
+        zone: storage
+
+living_room:
+  standard:
+    weights: {rel: 0.2, bal: 0.0, walk: 0.1}
+    nodes:
+      - kind: compound_group
+        id: lounge
+        blueprint_id: symmetric_lounge
+        placement_order: 1
+        center_x_m: 2.0
+        center_z_m: 1.8
+        zone: seating
+      - kind: compound_group
+        id: tv_wall
+        blueprint_id: tv_viewing_wall
+        placement_order: 2
+        center_x_m: 2.0
+        center_z_m: 2.8
+        zone: viewing
+
+kitchen:
+  standard:
+    weights: {rel: 0.2, bal: 0.0, walk: 0.1}
+    nodes:
+      - kind: compound_group
+        id: dining
+        blueprint_id: dining_set
+        placement_order: 1
+        center_x_m: 2.5
+        center_z_m: 1.5
+        zone: dining
+      - kind: standalone_asset
+        id: fridge
+        model_id: kitchenFridge
+        placement_order: 2
+        center_x_m: 4.5
+        center_z_m: 0.5
+        zone: kitchen
+      - kind: standalone_asset
+        id: sink
+        model_id: kitchenSink
+        placement_order: 3
+        center_x_m: 0.5
+        center_z_m: 3.4
+        zone: kitchen
+      - kind: standalone_asset
+        id: stove
+        model_id: kitchenStove
+        placement_order: 4
+        center_x_m: 3.7
+        center_z_m: 3.4
+        zone: kitchen

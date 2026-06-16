@@ -24,6 +24,7 @@ from colayout.llm.room_program import (
 )
 from colayout.schemas.architecture import resolve_architecture
 from colayout.schemas.floor import RoomSpec
+from colayout.schemas.compound import CompoundGroupPlan
 from colayout.schemas.scene import (
     ConstraintType,
     FurnitureConstraint,
@@ -327,6 +328,7 @@ def draft_to_scene_graph(
     room: RoomSpec | None = None,
     *,
     refine_mode: bool = True,
+    compound_groups: list[CompoundGroupPlan] | None = None,
 ) -> RoomSceneGraph:
     """Scene graph for IP refine: furniture, walls, and relational pairs."""
     furniture: list[FurnitureItem] = []
@@ -395,6 +397,7 @@ def draft_to_scene_graph(
         constraints=constraints,
         weights=draft.weights,
         architecture=architecture,
+        compound_groups=list(compound_groups or []),
     )
     if room is not None:
         from colayout.relations.apply import apply_anchor_relation_constraints

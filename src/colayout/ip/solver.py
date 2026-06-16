@@ -15,6 +15,11 @@ from colayout.ip import objectives as ip_objectives
 from colayout.schemas.placement import PlacedFurniture, RoomPlacementResult, StackMode
 from colayout.schemas.scene import ConstraintType, RoomSceneGraph
 
+from colayout.ip.compound_solver import (
+    build_compound_furniture_vars,
+    build_flat_furniture_vars,
+)
+from colayout.ip.furniture_vars import FurnitureVars
 from colayout.ip.constraints import (
     floor_occupancy_exempt_ids,
     stack_parent_map,
@@ -31,93 +36,26 @@ class SolveConfig:
     hint_scale: float = 1.0
 
 
-@dataclass
-class _FurnitureVars:
-    item_id: str
-    category: str
-    model_id: str | None
-    width_m: float
-    length_m: float
-    wc: int
-    lc: int
-    ox: cp_model.IntVar
-    oy: cp_model.IntVar
-    rot: cp_model.IntVar  # 0 = wc along i, 1 = swapped
-    size_x: cp_model.IntVar
-    size_y: cp_model.IntVar
-    end_x: cp_model.IntVar
-    end_y: cp_model.IntVar
-    x_interval: cp_model.IntervalVar
-    y_interval: cp_model.IntervalVar
-    centroid_i: cp_model.IntVar
-    centroid_j: cp_model.IntVar
-
+_FurnitureVars = FurnitureVars
 
 def _build_furniture_vars(
     model: cp_model.CpModel,
     graph: RoomSceneGraph,
     grid: GridSpec,
 ) -> tuple[list[_FurnitureVars], list[cp_model.IntervalVar], list[cp_model.IntervalVar]]:
-    w_grid, l_grid = grid.width_cells, grid.length_cells
-    fv_list: list[_FurnitureVars] = []
-    x_intervals: list[cp_model.IntervalVar] = []
-    y_intervals: list[cp_model.IntervalVar] = []
-    floor_exempt = floor_occupancy_exempt_ids(graph.constraints)
+    """Build per-item vars; compound groups use master cluster_x/z + derived children."""
+    if graph.compound_groups:
+        return build_compound_furniture_vars(model, graph, grid)
+    return build_flat_furniture_vars(model, graph, grid)
 
-    for item in graph.furniture:
-        wc, lc = furniture_cells(item, grid.modulor_cell_m)
-        ox = model.NewIntVar(0, w_grid, f"ox_{item.id}")
-        oy = model.NewIntVar(0, l_grid, f"oy_{item.id}")
-        rot = model.NewBoolVar(f"rot_{item.id}")
 
-        size_x = model.NewIntVar(1, w_grid, f"sx_{item.id}")
-        size_y = model.NewIntVar(1, l_grid, f"sy_{item.id}")
-        model.Add(size_x == wc).OnlyEnforceIf(rot.Not())
-        model.Add(size_x == lc).OnlyEnforceIf(rot)
-        model.Add(size_y == lc).OnlyEnforceIf(rot.Not())
-        model.Add(size_y == wc).OnlyEnforceIf(rot)
-
-        end_x = model.NewIntVar(0, w_grid, f"ex_{item.id}")
-        end_y = model.NewIntVar(0, l_grid, f"ey_{item.id}")
-        model.Add(end_x == ox + size_x)
-        model.Add(end_y == oy + size_y)
-        model.Add(end_x <= w_grid)
-        model.Add(end_y <= l_grid)
-
-        x_iv = model.NewIntervalVar(ox, size_x, end_x, f"xiv_{item.id}")
-        y_iv = model.NewIntervalVar(oy, size_y, end_y, f"yiv_{item.id}")
-        if item.id not in floor_exempt:
-            x_intervals.append(x_iv)
-            y_intervals.append(y_iv)
-
-        ci = model.NewIntVar(0, w_grid * 100, f"ci_{item.id}")
-        cj = model.NewIntVar(0, l_grid * 100, f"cj_{item.id}")
-        model.Add(ci * 2 == (ox + end_x) * 100)
-        model.Add(cj * 2 == (oy + end_y) * 100)
-
-        fv = _FurnitureVars(
-            item_id=item.id,
-            category=item.category or "misc",
-            model_id=item.model_id,
-            width_m=item.width_m or 1.0,
-            length_m=item.length_m or 1.0,
-            wc=wc,
-            lc=lc,
-            ox=ox,
-            oy=oy,
-            rot=rot,
-            size_x=size_x,
-            size_y=size_y,
-            end_x=end_x,
-            end_y=end_y,
-            x_interval=x_iv,
-            y_interval=y_iv,
-            centroid_i=ci,
-            centroid_j=cj,
-        )
-        fv_list.append(fv)
-
-    return fv_list, x_intervals, y_intervals
+def _build_flat_furniture_vars(
+    model: cp_model.CpModel,
+    graph: RoomSceneGraph,
+    grid: GridSpec,
+) -> tuple[list[_FurnitureVars], list[cp_model.IntervalVar], list[cp_model.IntervalVar]]:
+    """Backward-compatible alias."""
+    return build_flat_furniture_vars(model, graph, grid)
 
 
 def placement_satisfies_hard_constraints(

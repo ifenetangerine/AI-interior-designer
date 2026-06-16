@@ -48,8 +48,16 @@ class LLMProvider(ABC):
 class MockLLMProvider(LLMProvider):
     """Deterministic catalog kit for tests and offline runs."""
 
-    def __init__(self) -> None:
+    def __init__(self, *, use_blueprints: bool | None = None) -> None:
+        from colayout.llm.blueprint_pipeline import use_blueprint_pipeline
+
+        self.use_blueprints = (
+            use_blueprint_pipeline()
+            if use_blueprints is None
+            else use_blueprints
+        )
         self.last_generation_warnings: list[str] = []
+        self.last_compound_groups: list = []
 
     def generate_layout_draft(
         self,
@@ -59,10 +67,22 @@ class MockLLMProvider(LLMProvider):
     ) -> RoomLayoutDraft:
         del exclude_golden_ids
         self.last_generation_warnings = []
-        data = load_mock_layout(room)
-        data["room_id"] = room.id
-        data["room_type"] = room.type
-        draft = RoomLayoutDraft.model_validate(data)
+        self.last_compound_groups = []
+
+        if self.use_blueprints:
+            from colayout.llm.mock_blueprints import load_mock_blueprint
+            from colayout.placement.blueprint_expand import expand_room_blueprint
+
+            blueprint = load_mock_blueprint(room)
+            expanded = expand_room_blueprint(blueprint, cell_m=0.25)
+            self.last_compound_groups = expanded.compound_groups
+            draft = expanded.draft
+        else:
+            data = load_mock_layout(room)
+            data["room_id"] = room.id
+            data["room_type"] = room.type
+            draft = RoomLayoutDraft.model_validate(data)
+
         sanitized, val_msgs = validate_layout_draft(draft, room)
         self.last_generation_warnings.extend(val_msgs)
         return sanitized

@@ -4,6 +4,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, model_validator
 
 from colayout.schemas.architecture import RoomArchitecture
+from colayout.schemas.compound import CompoundGroupPlan
 
 
 class ConstraintType(str, Enum):
@@ -128,3 +129,4 @@ class RoomSceneGraph(BaseModel):
     weights: ObjectiveWeights = Field(default_factory=ObjectiveWeights)
     architecture: RoomArchitecture | None = None
     theta_metrics: ThetaMetrics | None = None
+    compound_groups: list[CompoundGroupPlan] = Field(default_factory=list)

@@ -63,8 +63,14 @@ def _scene_graph_with_theta(
     room: RoomSpec,
     *,
     refine_mode: bool = True,
+    compound_groups: list | None = None,
 ) -> RoomSceneGraph:
-    graph = draft_to_scene_graph(draft, room, refine_mode=refine_mode)
+    graph = draft_to_scene_graph(
+        draft,
+        room,
+        refine_mode=refine_mode,
+        compound_groups=compound_groups,
+    )
     return apply_theta(graph, load_room_theta(room.type))
 
 
@@ -103,8 +109,11 @@ def _place_room_llm_refine(
     draft, val_errors = validate_layout_draft(draft, room)
     warnings = _llm_generation_warnings(llm) + list(val_errors)
 
+    compound_groups = getattr(llm, "last_compound_groups", None) or []
     grid = discretize_room(room, modulor_cell_m)
-    graph = _scene_graph_with_theta(draft, room)
+    graph = _scene_graph_with_theta(
+        draft, room, compound_groups=compound_groups
+    )
     llm_placement = apply_facing_orientations(
         placement_result_from_draft(draft, grid), graph
     )
